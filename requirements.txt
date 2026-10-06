@@ -1,0 +1,1 @@
+# Sin dependencias externas: lexer y parser implementados desde cero con la librería estándar de Python.
