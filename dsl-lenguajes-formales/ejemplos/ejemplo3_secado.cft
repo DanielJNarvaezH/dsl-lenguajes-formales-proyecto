@@ -1,0 +1,13 @@
+# Simula los dias de secado del grano
+inicio
+    dato dia = 1;
+    dato humedad = 45;
+    mientras (humedad > 12) hacer
+        humedad = humedad - 6;   # pierde 6 puntos por dia
+        si (dia == 5 o no (humedad > 20)) entonces
+            mostrar("Revisar el secador");
+        fin
+        dia = dia + 1;
+    fin
+    mostrar(dia);
+fin
