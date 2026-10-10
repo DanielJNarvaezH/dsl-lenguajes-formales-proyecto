@@ -8,14 +8,16 @@ Los archivos fuente usan la extensión `.cft`.
 - **Identificadores:** empiezan con letra minúscula; después pueden tener letras minúsculas,
   dígitos o guion bajo. Ej: `lote_norte`, `kilos2`. No pueden ser palabras reservadas.
 - **Números:** enteros (`320`) o decimales con punto (`11.5`). No hay números negativos literales.
-- **Cadenas:** texto entre comillas dobles, sin tildes ni ñ y sin saltos de línea. Ej: `"Secar de nuevo"`
+- **Cadenas:** texto entre comillas dobles, sin saltos de línea. Solo admite letras minúsculas sin tildes,
+  dígitos, guion bajo y espacio. Ej: `"secar de nuevo"`
 - **Operadores aritméticos:** `+  -  *  /`
 - **Operadores relacionales:** `<  >  <=  >=  ==  !=`
 - **Operadores lógicos:** `y  o  no`
 - **Asignación:** `=`
 - **Delimitadores:** `(  )  ;`
-- **Comentarios:** desde `#` hasta el final de la línea (se ignoran)
-- **Espacios, tabulaciones y saltos de línea** solo separan tokens.
+- **Comentarios:** desde `#` hasta el final de la línea (se ignoran). Admiten los mismos caracteres que las cadenas.
+- **Espacios, tabulaciones, saltos de línea y retornos de carro** solo separan tokens.
+- No se admiten letras mayúsculas, tildes, ñ ni signos fuera de los listados (por ejemplo `,` o `:`).
 
 ## Construcciones
 
@@ -31,7 +33,8 @@ Los archivos fuente usan la extensión `.cft`.
 
 ## Reglas
 - Toda declaración, asignación y salida termina en `;`.
-- Una variable debe declararse con `dato` antes de usarse en una asignación.
+- Una variable debe declararse con `dato` antes de usarse en una asignación
+  (regla semántica: no la verifica el analizador sintáctico, queda fuera del alcance del proyecto).
 - Los bloques de `si` y `mientras` siempre se cierran con `fin`, por lo que el `sino`
   siempre pertenece al `si` abierto más cercano.
 - Precedencia, de mayor a menor:

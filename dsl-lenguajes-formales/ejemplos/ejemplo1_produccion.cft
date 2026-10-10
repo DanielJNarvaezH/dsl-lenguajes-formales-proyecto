@@ -1,4 +1,4 @@
-# Calcula la produccion total de dos lotes
+# calcula la produccion total de dos lotes
 inicio
     dato lote_norte = 320;
     dato lote_sur = 275.5;
@@ -6,7 +6,7 @@ inicio
     dato total_kilos = lote_norte + lote_sur;
     dato ingreso = total_kilos * precio_kilo - 150000 / 2;
     dato promedio_2lotes = (lote_norte + lote_sur) / 2;
-    mostrar("Kilos cosechados:");
+    mostrar("kilos cosechados");
     mostrar(total_kilos);
     mostrar(ingreso);
     mostrar(promedio_2lotes);
