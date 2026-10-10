@@ -1,0 +1,17 @@
+# Clasifica el cafe segun humedad y defectos
+inicio
+    dato humedad = 11.5;
+    dato defectos = 4;
+    si (humedad >= 10 y humedad <= 12) entonces
+        si (defectos < 5) entonces
+            mostrar("Cafe tipo exportacion");
+        sino
+            mostrar("Cafe para consumo interno");
+        fin
+    sino
+        mostrar("Secar de nuevo");
+    fin
+    si (defectos != 0) entonces
+        mostrar("Hay granos defectuosos");
+    fin
+fin
