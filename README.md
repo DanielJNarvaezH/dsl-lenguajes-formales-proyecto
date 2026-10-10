@@ -64,3 +64,23 @@
 
 # \- Sin librerías generadoras de parsers ni el módulo `re`: el lexer y el parser se implementan desde cero.
 
+## Convenciones de trabajo
+
+### Ramas
+- Toda tarea se trabaja en una rama propia creada desde `main`.
+- Formato: `feat/<ID-JIRA>`  
+  Ejemplos: `feat/SET-2`, `feat/SET-7`
+- No se hace commit directo sobre `main`; los cambios entran por Pull Request.
+
+### Commits
+- Todo commit debe iniciar con el ID de la tarea de Jira.
+- Formato: `<ID-JIRA>: <descripción breve en imperativo>`
+- Ejemplos:
+    - `SET-2: documenta convenciones de ramas y commits en README`
+    - `SET-5: agrega expresiones regulares de los tokens de Cafetal`
+    - `SET-9: implementa matriz de transiciones del AFD`
+
+### Pull Requests
+- Título del PR: `<ID-JIRA>: <descripción>`
+- Se revisa por el otro integrante antes de hacer merge a `main`.
+- Después del merge se elimina la rama.
