@@ -30,7 +30,7 @@ ER de la categoría (unión de las 12):
 PR = inicio, fin, dato, si, entonces, sino, mientras, hacer, mostrar, y, o, no
 
 ER factorizada por prefijos comunes:
-PR = inicio, fin, dato, s i(ε, no), entonces, m(ientras, ostrar), hacer, y, o, no
+PR = inicio, fin, dato, si(ε, no), entonces, m(ientras, ostrar), hacer, y, o, no
 
 - si / sino: comparten el prefijo "si". Después de leer "si", si sigue "no"
   el lexema es SINO; si no, es SI.
@@ -41,9 +41,9 @@ PR = inicio, fin, dato, s i(ε, no), entonces, m(ientras, ostrar), hacer, y, o, 
 
 | Token | ER | Lenguaje |
 |---|---|---|
-| MAS | '+' | {+} |
-| MENOS | - | {-} |
-| POR | '*' | {*} |
+| SUMA | '+' | {+} |
+| RESTA | - | {-} |
+| MULT | '*' | {*} |
 | DIV | / | {/} |
 
 OP_ARIT = '+', -, '*', /
@@ -58,7 +58,7 @@ OP_ARIT = '+', -, '*', /
 | MAYOR_IGUAL | >= | {>=} |
 | IGUAL | == | {==} |
 | DIFERENTE | != | {!=} |
-| ASIG | = | {=} |
+| ASIGNACION | = | {=} |
 
 ER factorizadas por prefijo común:
 
@@ -66,12 +66,12 @@ ER factorizadas por prefijo común:
 |---|---|---|---|
 | < | <(ε, =) | {<, <=} | ε → MENOR, = → MENOR_IGUAL |
 | > | >(ε, =) | {>, >=} | ε → MAYOR, = → MAYOR_IGUAL |
-| = | =(ε, =) | {=, ==} | ε → ASIG, = → IGUAL |
+| = | =(ε, =) | {=, ==} | ε → ASIGNACION, = → IGUAL |
 | ! | != | {!=} | solo DIFERENTE |
 
 Observación: "!" pertenece a Σ, pero "!" solo NO es un token. En el AFD, el
 estado alcanzado después de leer "!" es de no aceptación; si el siguiente
-símbolo no es "=", se produce un error léxico.
+símbolo no es "=", no existe transición y se produce un error léxico.
 
 ## 4. Delimitadores
 
@@ -94,10 +94,10 @@ decimales, las cadenas y los comentarios (ver ER-2).
    tiene una transición con "=" hacia otro estado de aceptación (MENOR_IGUAL).
 2. **Coincidencia más larga**: el analizador léxico avanza mientras exista
    transición y emite el token del último estado de aceptación alcanzado.
-    - "<=" → MENOR_IGUAL (no MENOR + ASIG)
-    - "==" → IGUAL (no ASIG + ASIG)
+    - "<=" → MENOR_IGUAL (no MENOR + ASIGNACION)
+    - "==" → IGUAL (no ASIGNACION + ASIGNACION)
     - "sino" → SINO (no SI + NO)
-    - "< =" → MENOR, ASIG (el espacio corta el lexema)
+    - "< =" → MENOR, ASIGNACION (el espacio corta el lexema)
 3. **Palabras reservadas e identificadores**: toda palabra reservada también
    cumple la forma de un identificador. Se aplica la coincidencia más larga y,
    si el lexema completo es exactamente una palabra reservada, gana la palabra
