@@ -15,7 +15,7 @@ Los archivos fuente usan la extensión `.cft`.
 - **Operadores lógicos:** `y  o  no`
 - **Asignación:** `=`
 - **Delimitadores:** `(  )  ;`
-- **Comentarios:** desde `#` hasta el final de la línea (se ignoran). Admiten los mismos caracteres que las cadenas.
+- **Comentarios:** desde `#` hasta el final de la línea (se ignoran). Admiten cualquier símbolo del alfabeto excepto el salto de línea y el retorno de carro.
 - **Espacios, tabulaciones, saltos de línea y retornos de carro** solo separan tokens.
 - No se admiten letras mayúsculas, tildes, ñ ni signos fuera de los listados (por ejemplo `,` o `:`).
 
