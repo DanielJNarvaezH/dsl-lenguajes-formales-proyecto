@@ -45,13 +45,22 @@ Como los subconjuntos son disjuntos dos a dos:
      '(', ')', ;, ., ", #, _,
      ␣, \t, \n, \r}
 
-## Subconjunto auxiliar para cadenas y comentarios
+## Subconjuntos auxiliares para cadenas y comentarios
 
-El contenido de una cadena y de un comentario está restringido a:
+El contenido de una cadena está restringido a:
 C = L ∪ D ∪ {_, ␣}      |C| = 38
 
-C ⊂ Σ. Las comillas " no pertenecen a C (delimitan la cadena) y \n no pertenece
-a C (termina el comentario).
+C ⊂ Σ. Las comillas " no pertenecen a C (delimitan la cadena) y los blancos
+distintos del espacio tampoco (una cadena no puede ocupar dos líneas).
+
+El contenido de un comentario admite cualquier símbolo de Σ excepto el salto de
+línea y el retorno de carro:
+K = Σ − {\n, \r}      |K| = 55 − 2 = 53
+
+K ⊂ Σ. El comentario termina al llegar \n o \r, que son los únicos símbolos de Σ
+que no pertenecen a K. Así, un símbolo como = o ; dentro de un comentario no lo
+corta. En las ER, K se escribe como la unión completa de sus 53 símbolos
+(ver er_tokens_variables.md).
 
 ## Función de cada símbolo
 
@@ -67,19 +76,20 @@ a C (termina el comentario).
 | " | delimitador de cadenas |
 | # | inicio de comentario |
 | _ | identificadores, cadenas y comentarios |
-| B | separadores; \n además cierra un comentario |
+| B | separadores; \n y \r además cierran un comentario |
 
 ## Símbolos que NO pertenecen a Σ
 
 Mayúsculas (A–Z), vocales con tilde, ñ, dos puntos, coma, llaves, corchetes,
 apóstrofo y cualquier otro carácter. Si un archivo .cft contiene un símbolo x ∉ Σ,
-el analizador léxico lo reporta como **error léxico** (el AFD pasa al estado de rechazo).
+el analizador léxico lo reporta como **error léxico**: el AFD no tiene transición
+para ese símbolo, por lo que el lexema se rechaza (no se usa estado sumidero).
 
 ## Separación alfabeto / léxico / gramática
 
 - Σ contiene **solo caracteres individuales**.
 - Los tokens (palabras reservadas como `mientras`, operadores compuestos como `<=`,
   identificadores, números y cadenas) son **cadenas de Σ\*** y se definen con
-  expresiones regulares en LEX-3.
+  expresiones regulares en ER-1 (tokens fijos) y ER-2 (tokens variables).
 - Los no terminales de la GIC (por ejemplo `<expresion>`) no son símbolos de Σ;
   la gramática trabaja sobre los tokens, no sobre los caracteres.
