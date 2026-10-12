@@ -42,7 +42,7 @@ El catálogo formal de tokens con sus códigos y expresiones regulares se define
 | Operadores relacionales | `<`, `>`, `<=`, `>=`, `==`, `!=` |
 | Asignación | `=` |
 | Delimitadores | `(`, `)`, `;` |
-| Comentarios (se descartan) | Desde `#` hasta el final de la línea; mismo contenido permitido que las cadenas |
+| Comentarios (se descartan) | Desde `#` hasta el final de la línea; admiten cualquier símbolo de Σ excepto el salto de línea |
 | Blancos (se descartan) | Espacio, tabulación, salto de línea y retorno de carro |
 
 ## 4. Programa de ejemplo
@@ -74,7 +74,8 @@ Cada día la humedad baja 6 puntos hasta quedar en 12 o menos. Cuando es el día
 | Todo bloque se cierra con `fin` | Elimina desde el diseño la ambigüedad del "else colgante": el `sino` pertenece al `si` abierto más cercano |
 | Condiciones y `mostrar` entre paréntesis | Separa sin ambigüedad la condición de la palabra `entonces` o `hacer` |
 | Fin de instrucción con `;` | Separa las instrucciones sin depender de saltos de línea ni sangría |
-| Texto de cadenas y comentarios restringido a minúsculas, dígitos, guion bajo y espacio | Reutiliza los conjuntos de los identificadores y mantiene Σ pequeño |
+| Texto de cadenas restringido a minúsculas, dígitos, guion bajo y espacio | Reutiliza los conjuntos de los identificadores y mantiene Σ pequeño |
+| Comentarios con cualquier símbolo de Σ hasta el fin de línea | Un símbolo como `;` o `=` dentro de un comentario no lo corta ni genera tokens ocultos |
 | Precedencia de mayor a menor: `( )`, `* /`, `+ -`, relacionales, `no`, `y`, `o` | Jerarquía estándar; los relacionales no son asociativos (`a < b < c` no es válido) |
 
 ## 6. Material que aporta a cada fase

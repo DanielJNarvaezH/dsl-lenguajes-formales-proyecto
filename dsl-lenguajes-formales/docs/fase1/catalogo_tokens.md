@@ -27,6 +27,7 @@ Estos nombres se usan en la columna "Lexema o patrón" y se formalizan en LEX-2.
 | Letra | Las 26 letras minúsculas de la `a` a la `z` (sin tildes ni `ñ`) |
 | Dígito | Del `0` al `9` |
 | Texto | Letra, dígito, guion bajo `_` o espacio |
+| Comentario | Cualquier símbolo de Σ excepto el salto de línea `\n` y el retorno de carro `\r` |
 
 ## 3. Catálogo
 
@@ -89,7 +90,7 @@ Estos nombres se usan en la columna "Lexema o patrón" y se formalizan en LEX-2.
 
 | Código | Categoría | Patrón | Tratamiento |
 | --- | --- | --- | --- |
-| 90 | COMENTARIO | `#` seguido de cero o más caracteres de Texto, hasta el fin de línea | Se reconoce y se descarta |
+| 90 | COMENTARIO | `#` seguido de cero o más caracteres de Comentario, hasta el fin de línea | Se reconoce y se descarta |
 | 91 | BLANCO | Uno o más espacios, tabulaciones, saltos de línea (`\n`) o retornos de carro (`\r`) | Se reconoce y se descarta; actualiza línea y columna |
 
 ### 3.7 Marcador del analizador sintáctico
@@ -148,7 +149,7 @@ Un error léxico ocurre cuando ningún token puede reconocerse desde la posició
 | `!` sin `=` | `! (x > 2)` | `!` solo es válido como parte de `!=`; la negación se escribe `no` |
 | Punto sin dígitos a ambos lados | `12.`, `.5` | DECIMAL exige dígitos antes y después del punto. En `12.` se reconoce ENTERO `12` y el punto queda en error |
 | Cadena sin cerrar o con salto de línea | `"secar de nuevo` | La comilla de cierre nunca llega |
-| Carácter no permitido dentro de cadena o comentario | `"Cafe"`, `# Revisar` | El contenido solo admite caracteres de Texto |
+| Carácter no permitido dentro de una cadena | `"a;b"`, `"x+1"` | El contenido de una cadena solo admite caracteres de Texto; la cadena queda sin cerrar |
 | Guion bajo al inicio | `_kilos` | Un ID debe empezar con letra |
 
 Hay casos que el analizador léxico acepta pero el sintáctico rechaza. Por ejemplo, `2lotes` se divide en ENTERO `2` e ID `lotes`, y el error aparece en el análisis sintáctico. Lo mismo ocurre con `-5`, que se divide en RESTA y ENTERO.
