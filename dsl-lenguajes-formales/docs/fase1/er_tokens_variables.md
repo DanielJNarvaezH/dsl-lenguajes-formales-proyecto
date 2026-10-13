@@ -12,6 +12,7 @@
 - Los símbolos de Σ que coinciden con metasímbolos se escriben entre comillas simples: `'('`, `')'`, `'*'`, `'+'` (ver `alfabeto.md`).
 - `.`, `"`, `#` y `_` no son metasímbolos en esta notación; dentro de una ER representan el propio símbolo de Σ.
 - `␣` denota el espacio, `\t` la tabulación, `\n` el salto de línea y `\r` el retorno de carro.
+- ε denota la cadena vacía. Es una ER primitiva básica, no un operador (ver `er.md`, sección 3).
 - Un token variable tiene infinitos lexemas posibles, por eso su ER usa cerraduras. Los tokens fijos (un solo lexema) están en `er_tokens_fijos.md`.
 
 ## 1. Expresiones auxiliares
