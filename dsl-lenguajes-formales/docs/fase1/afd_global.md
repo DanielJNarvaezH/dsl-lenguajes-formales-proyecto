@@ -1,18 +1,21 @@
 # Fase 1 — AFD global del analizador léxico de Cafetal
 
-**Tarea Jira:** AFD-3 — Unificación en el AFD global del analizador léxico
-**Responsable:** Daniel Josué Narváez Hincapié
+**Tareas Jira:** AFD-3 — Unificación en el AFD global del analizador léxico · AFD-4 — Grafo formal vectorizado y revisión
+**Responsables:** Daniel Josué Narváez Hincapié (AFD-3), Juan Diego García Albarracín (AFD-4)
 **Insumos:** AFD parciales de tokens fijos (`afd_tokens_fijos.md`, AFD-1) y de tokens variables (`afd_tokens_variables.md`, AFD-2)
-**Grafo:** `afd/afd3_global.drawio` y su imagen en `afd/img/`
+**Grafo:** `afd/afd3_global.drawio` y su imagen en `afd/img/afd_global.drawio.png` (versión vectorial: `afd/img/afd_global.drawio.svg`)
+**Matriz:** `afd/matriz_transiciones.md` y `src/lexer/tabla_afd.csv` (AFD-5)
+
+![AFD global de Cafetal](afd/img/afd_global.drawio.png)
 
 ---
 
 ## 1. Convención y observación sobre el estado de rechazo
 
 - Los estados se nombran q0, q1, q2…; q0 es el único estado inicial.
-- δ es una **función parcial**: una celda vacía (—) significa que no existe transición para ese par (estado, símbolo).
+- δ es una **función parcial**: una celda vacía de la matriz significa que no existe transición para ese par (estado, símbolo).
 
-> **Observación (indicación de la profesora).** El AFD global no incluye estado sumidero ni estado ∅. Como las expresiones regulares están bien definidas, no es necesario: una cadena se rechaza cuando llega un símbolo sin transición desde el estado actual o cuando termina en un estado que no es de aceptación. Este AFD parcial es equivalente al AFD completo que se obtendría agregando un estado de no aceptación q∅, con todas las transiciones faltantes dirigidas hacia él y un lazo con todos los símbolos de Σ; ambos reconocen el mismo lenguaje.
+> **Observación (indicación de la profesora).** El AFD global no incluye estado sumidero ni estado ∅. Como las expresiones regulares están bien definidas, no es necesario: una cadena se rechaza cuando llega un símbolo sin transición desde el estado actual o cuando termina en un estado que no es de aceptación. En la matriz de transiciones, las celdas sin transición quedan vacías y significan rechazo. Este AFD parcial es equivalente al AFD completo que se obtendría agregando un estado de no aceptación q∅, con todas las transiciones faltantes dirigidas hacia él y un lazo con todos los símbolos de Σ; ambos reconocen el mismo lenguaje.
 
 ## 2. Método de unificación
 
@@ -57,7 +60,7 @@ M = (Q, Σ, δ, q0, F)
 | --- | --- | --- |
 | q6, q9, q13, q15, q17, q25, q33, q39, q44, q45, q46, q48 | 12 | La palabra reservada que terminan (INICIO, FIN, DATO, SI, SINO, ENTONCES, MIENTRAS, MOSTRAR, HACER, Y, O, NO) |
 | q1–q5, q7, q8, q10–q12, q14, q16, q18–q24, q26–q32, q34–q38, q40–q43, q47 | 36 | ID (prefijos de palabras reservadas, ver sección 7) |
-| q49–q58, q60–q63 | 14 | Operadores, asignación y delimitadores, según AFD-1 |
+| q49–q58, q60–q63 | 14 | Operadores, asignación y delimitadores: MAS, MENOS, POR, DIV, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL, ASIG, IGUAL, DIFERENTE, PAR_ABRE, PAR_CIERRA, PUNTO_COMA |
 | q64 | 1 | ID |
 | q65, q67 | 2 | ENTERO, DECIMAL |
 | q69 | 1 | CADENA |
@@ -89,7 +92,7 @@ Abreviaturas: L = letras minúsculas, D = dígitos, B = {␣, \t, \n, \r}, C = L
 | `y` | q45 | `/` | q52 |
 | `o` | q46 | `<` | q53 |
 | `n` | q47 | `>` | q55 |
-| Las otras 16 letras | q64 | `=` | q57 |
+| L − {d, e, f, h, i, m, n, o, s, y} (16 letras) | q64 | `=` | q57 |
 | | | `!` | q59 |
 | | | `'('`, `')'`, `;` | q61, q62, q63 |
 
@@ -147,7 +150,7 @@ Cada estado tiene la transición que continúa la palabra reservada. **Todo el r
 | --- | --- |
 | q53 (MENOR) | `=` → q54 |
 | q55 (MAYOR) | `=` → q56 |
-| q57 (ASIGNACION) | `=` → q58 |
+| q57 (ASIG) | `=` → q58 |
 | q59 | `=` → q60 |
 | q49–q52, q54, q56, q58, q60–q63 | (ninguna) |
 
@@ -162,10 +165,10 @@ Un autómata es determinista si, para cada estado y cada símbolo, existe **a lo
 | Tipo | Clases | Símbolos |
 | --- | --- | --- |
 | Letras que aparecen en palabras reservadas | 14 | `a`, `c`, `d`, `e`, `f`, `h`, `i`, `m`, `n`, `o`, `r`, `s`, `t`, `y` (una clase cada una) |
-| Letras que no aparecen en ninguna palabra reservada | 1 | `b`, `g`, `j`, `k`, `l`, `p`, `q`, `u`, `v`, `w`, `x`, `z` |
+| Letras que no aparecen en ninguna palabra reservada | 1 | L₁ = {`b`, `g`, `j`, `k`, `l`, `p`, `q`, `u`, `v`, `w`, `x`, `z`} |
 | Dígitos | 1 | `0`–`9` |
 | Guion bajo | 1 | `_` |
-| Operadores y delimitadores | 11 | `+`, `-`, `*`, `/`, `<`, `>`, `=`, `!`, `(`, `)`, `;` (una clase cada uno) |
+| Operadores y delimitadores | 11 | `'+'`, `-`, `'*'`, `/`, `<`, `>`, `=`, `!`, `'('`, `')'`, `;` (una clase cada uno) |
 | Punto, comilla y numeral | 3 | `.`, `"`, `#` |
 | Blancos | 3 | `␣`, `\t`, y la clase {`\n`, `\r`} |
 
@@ -197,7 +200,7 @@ Junto con la regla del lexema más largo, esto produce:
 | `finca` | q0 → q7 → q8 → q9 →c→ q64 →a→ q64 | ID |
 | `entonces2` | … → q25 →2→ q64 | ID |
 
-Así, una variable nunca puede llamarse como una palabra reservada: `dato si = 3;` produce DATO, **SI**, ASIGNACION…, y el analizador sintáctico rechaza la declaración porque esperaba un ID.
+Así, una variable nunca puede llamarse como una palabra reservada: `dato si = 3;` produce DATO, **SI**, ASIG…, y el analizador sintáctico rechaza la declaración porque esperaba un ID.
 
 ## 8. Lexema más largo y retroceso
 
@@ -206,7 +209,7 @@ El analizador léxico avanza mientras exista transición y recuerda el **último
 | Entrada | Recorrido | Resultado |
 | --- | --- | --- |
 | `<=` | q0 → q53 → q54 | MENOR_IGUAL |
-| `< =` | q0 → q53; `␣` no tiene transición | MENOR; luego BLANCO y ASIGNACION |
+| `< =` | q0 → q53; `␣` no tiene transición | MENOR; luego BLANCO y ASIG |
 | `11.5` | q0 → q65 → q65 → q66 → q67 | DECIMAL |
 | `12.` | q0 → q65 → q65 → q66; termina en q66 ∉ F | Retrocede a q65: ENTERO `12`; el `.` queda como error léxico |
 | `!␣` | q0 → q59; `␣` no tiene transición | q59 ∉ F y no hubo aceptación: error léxico en `!` |
@@ -225,7 +228,34 @@ Se recorrieron los 3 programas de `ejemplos/` con el AFD global y la regla del l
 
 ## 10. Insumos para las siguientes tareas
 
-- **AFD-4 (grafo vectorizado):** el grafo del AFD global está en `afd/afd3_global.drawio`. Dibujar las transiciones de cada estado de palabra reservada hacia q64 daría 1 754 flechas, así que el grafo dibuja los caminos completos de todos los tokens, la transición q0 → q64 con las 16 letras que no inician palabra reservada, y una nota visible que explica los retornos a q64. AFD-4 consiste en revisar ese grafo contra la matriz, ajustar la presentación y exportar la imagen final.
-- **AFD-5 (matriz de transiciones):** 72 filas (q0–q71) y 34 columnas (las clases de la sección 6). Cada celda se llena con las transiciones de la sección 5, y las celdas sin transición quedan con —.
+- **AFD-4 (grafo vectorizado):** completado; ver sección 11. Dibujar cada transición de un estado de palabra reservada hacia q64 daría 1 738 flechas (48 estados × 37 símbolos de L ∪ D ∪ {_}, menos las 38 transiciones que continúan una palabra reservada). Por eso el grafo agrupa q1–q48 en un rectángulo punteado con **una sola flecha punteada** hacia q64, etiquetada `(L, D, _) − {símbolo que continúa la palabra}`. La leyenda del grafo lo indica explícitamente.
+- **AFD-5 (matriz de transiciones):** completada en `afd/matriz_transiciones.md`, con 72 filas y las 34 clases de la sección 6 (dividida en dos partes para su lectura). La versión sin agrupar (72 × 55) está en `src/lexer/tabla_afd.csv`. Las celdas sin transición quedan vacías.
 - **AFD-6 (justificación):** los estados de aceptación y no aceptación con su motivo están en la sección 4, y las trazas en las secciones 7 y 8.
-- **LXR-1 (lexer en Python):** el algoritmo de la sección 8, recorriendo la matriz de AFD-5.
+- **LXR-1 (lexer en Python):** el algoritmo de la sección 8, recorriendo `src/lexer/tabla_afd.csv`.
+
+## 11. Revisión del grafo contra la matriz (AFD-4)
+
+Se comparó el grafo con la matriz de transiciones en ambos sentidos: toda celda no vacía de la matriz tiene su flecha en el grafo, y todo símbolo de cada flecha del grafo está en la celda correspondiente de la matriz.
+
+| Verificación | Resultado |
+| --- | --- |
+| Número de estados: 72 en el grafo, 72 filas en la matriz | ✔ |
+| Estado inicial único (q0) en ambos | ✔ |
+| Estados de aceptación: 68 dobles círculos = 68 estados de F | ✔ |
+| Transiciones: 1 997 en el grafo (incluidos los retornos agrupados) y 1 997 en la matriz | ✔ |
+| Diferencias grafo → matriz y matriz → grafo | 0 |
+| Determinismo: ningún estado tiene dos transiciones con el mismo símbolo | ✔ |
+| Notación de subconjuntos y comillas simples en `'('`, `')'`, `'*'`, `'+'` | ✔ |
+
+### Correcciones realizadas
+
+| # | Inconsistencia encontrada | Corrección |
+| --- | --- | --- |
+| 1 | La leyenda indicaba que toda transición no dibujada es rechazo, pero los retornos a ID desde q1–q48 no estaban dibujados | Se agrupó q1–q48 con una flecha punteada hacia q64 y se ajustó la leyenda |
+| 2 | Etiquetas superpuestas en q64, q65, q70 y q71 | Se reubicaron los bucles y los nombres de token |
+| 3 | Nombres de tokens distintos a los de ER-1 (SUMA, RESTA, MULT, ASIGNACION) | Se unificaron como MAS, MENOS, POR, ASIG en el grafo, este documento, la matriz y el CSV |
+| 4 | La flecha inicial tenía el texto "inicio", que coincide con una palabra reservada | Se quitó el texto |
+| 5 | La transición q0 → q64 listaba 16 letras sueltas | Se expresó como L − {d, e, f, h, i, m, n, o, s, y} |
+| 6 | El título del grafo incluía el ID de Jira | Se dejó un título neutral |
+| 7 | Este documento indicaba que las celdas sin transición se marcan con "—" | Se corrigió: quedan vacías, según la indicación de la profesora |
+| 8 | El conteo de retornos a q64 era 1 754 | Se corrigió a 1 738, verificado contra la matriz |
