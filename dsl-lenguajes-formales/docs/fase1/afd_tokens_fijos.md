@@ -2,6 +2,8 @@
 
 Construidos a partir de las ER de ER-1 (er_tokens_fijos.md).
 
+**Grafos:** `afd/afd1_tokens_fijos.drawio` (páginas: Palabras reservadas, Operadores, Delimitadores) y sus imágenes en `afd/img/`. Los diagramas Mermaid de este documento son una vista rápida para GitHub.
+
 ## Definición formal
 
 M = (Q, Σ, δ, q0, F)
@@ -67,9 +69,9 @@ flowchart LR
 ```mermaid
 flowchart LR
     S(( )) --> q0((q0))
-    q0 -- "+" --> q49(((q49)))
+    q0 -- "'+'" --> q49(((q49)))
     q0 -- "-" --> q50(((q50)))
-    q0 -- "*" --> q51(((q51)))
+    q0 -- "'*'" --> q51(((q51)))
     q0 -- "/" --> q52(((q52)))
     q0 -- "#60;" --> q53(((q53))) -- "=" --> q54(((q54)))
     q0 -- "#62;" --> q55(((q55))) -- "=" --> q56(((q56)))
@@ -79,15 +81,15 @@ flowchart LR
 
 | Token | Recorrido | Aceptación |
 |---|---|---|
-| MAS | q0 -'+'→ q49 | q49 |
-| MENOS | q0 -(-)→ q50 | q50 |
-| POR | q0 -'*'→ q51 | q51 |
+| SUMA | q0 -'+'→ q49 | q49 |
+| RESTA | q0 -(-)→ q50 | q50 |
+| MULT | q0 -'*'→ q51 | q51 |
 | DIV | q0 -/→ q52 | q52 |
 | MENOR | q0 -<→ q53 | q53 |
 | MENOR_IGUAL | q0 -<→ q53 -=→ q54 | q54 |
 | MAYOR | q0 ->→ q55 | q55 |
 | MAYOR_IGUAL | q0 ->→ q55 -=→ q56 | q56 |
-| ASIG | q0 -=→ q57 | q57 |
+| ASIGNACION | q0 -=→ q57 | q57 |
 | IGUAL | q0 -=→ q57 -=→ q58 | q58 |
 | DIFERENTE | q0 -!→ q59 -=→ q60 | q60 |
 
