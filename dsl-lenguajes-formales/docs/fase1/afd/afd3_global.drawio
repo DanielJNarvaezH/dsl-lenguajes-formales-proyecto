@@ -235,19 +235,19 @@
         <mxCell id="q49" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q49" vertex="1">
           <mxGeometry height="46" width="46" x="627" y="1642" as="geometry" />
         </mxCell>
-        <mxCell id="t_q49" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="MAS" vertex="1">
+        <mxCell id="t_q49" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="SUMA" vertex="1">
           <mxGeometry height="18" width="110" x="595" y="1690" as="geometry" />
         </mxCell>
         <mxCell id="q50" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q50" vertex="1">
           <mxGeometry height="46" width="46" x="627" y="1728" as="geometry" />
         </mxCell>
-        <mxCell id="t_q50" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="MENOS" vertex="1">
+        <mxCell id="t_q50" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="RESTA" vertex="1">
           <mxGeometry height="18" width="110" x="595" y="1776" as="geometry" />
         </mxCell>
         <mxCell id="q51" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q51" vertex="1">
           <mxGeometry height="46" width="46" x="627" y="1814" as="geometry" />
         </mxCell>
-        <mxCell id="t_q51" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="POR" vertex="1">
+        <mxCell id="t_q51" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="MULT" vertex="1">
           <mxGeometry height="18" width="110" x="595" y="1862" as="geometry" />
         </mxCell>
         <mxCell id="q52" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q52" vertex="1">
@@ -283,7 +283,7 @@
         <mxCell id="q57" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q57" vertex="1">
           <mxGeometry height="46" width="46" x="627" y="2158" as="geometry" />
         </mxCell>
-        <mxCell id="t_q57" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="ASIG" vertex="1">
+        <mxCell id="t_q57" parent="1" style="text;html=0;align=center;verticalAlign=top;fontSize=11;fontStyle=2;" value="ASIGNACION" vertex="1">
           <mxGeometry height="18" width="110" x="595" y="2206" as="geometry" />
         </mxCell>
         <mxCell id="q58" parent="1" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=0;aspect=fixed;fontSize=12;fillColor=#ffffff;" value="q58" vertex="1">

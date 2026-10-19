@@ -1,7 +1,7 @@
 # Fase 1 — Matriz de transiciones δ del AFD de Cafetal
 
 AFD M = (Q, Σ, δ, q0, F), con Q = {q0, …, q71} (|Q| = 72), Σ de `alfabeto.md` (|Σ| = 55),
-estado inicial q0 y |F| = 68. La matriz corresponde exactamente al grafo `afd_global.drawio`.
+estado inicial q0 y |F| = 68. La matriz corresponde exactamente al grafo `afd/afd3_global.drawio`.
 
 ## Observación: sin estado sumidero
 
@@ -162,15 +162,15 @@ Subconjuntos usados en la definición: L = {a, …, z}, D = {0, …, 9}, C = L �
 | \*q46 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | O |
 | \*q47 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ID |
 | \*q48 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | NO |
-| \*q49 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | MAS |
-| \*q50 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | MENOS |
-| \*q51 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | POR |
+| \*q49 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | SUMA |
+| \*q50 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | RESTA |
+| \*q51 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | MULT |
 | \*q52 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | DIV |
 | \*q53 |  |  |  |  |  |  |  |  |  |  |  |  | q54 |  |  |  |  | MENOR |
 | \*q54 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | MENOR_IGUAL |
 | \*q55 |  |  |  |  |  |  |  |  |  |  |  |  | q56 |  |  |  |  | MAYOR |
 | \*q56 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | MAYOR_IGUAL |
-| \*q57 |  |  |  |  |  |  |  |  |  |  |  |  | q58 |  |  |  |  | ASIG |
+| \*q57 |  |  |  |  |  |  |  |  |  |  |  |  | q58 |  |  |  |  | ASIGNACION |
 | \*q58 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | IGUAL |
 | q59 |  |  |  |  |  |  |  |  |  |  |  |  | q60 |  |  |  |  |  |
 | \*q60 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | DIFERENTE |
@@ -196,7 +196,7 @@ Estados de no aceptación: q0 (inicial), q59 (leyó `!`), q66 (leyó `.` sin dí
 
 - Un estado está en F si y solo si la cadena leída desde q0 es un lexema completo de algún token.
 - Si δ(q, a) está vacía y q ∈ F, el token termina en q (coincidencia más larga) y el analizador vuelve a q0 con el símbolo a.
-- Si δ(q, a) está vacía y q ∉ F, se produce un error léxico. Ejemplos: `!␣` (q59), `12.␣` (q66), `"abc` + salto de línea (q68).
+- Si δ(q, a) está vacía y q ∉ F, el analizador retrocede al último estado de aceptación visitado y emite su token; si no visitó ninguno, se produce un error léxico. Ejemplos: `!␣` (q59, error en `!`), `12.␣` (q66: retrocede a q65, emite ENTERO `12` y el `.` queda en error), `"abc` + salto de línea (q68, error en `"`).
 - Todo símbolo que no pertenece a Σ (mayúsculas, tildes, ñ, `:`, `,`, …) no tiene columna; en q0 produce error léxico.
 
 ## Archivo CSV
