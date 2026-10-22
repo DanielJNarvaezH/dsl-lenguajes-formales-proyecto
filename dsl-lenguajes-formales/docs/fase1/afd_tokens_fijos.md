@@ -127,11 +127,11 @@ flowchart LR
 ## Trazas de verificación
 
 | Entrada | Recorrido | Resultado |
-|---|---|---|
+|---|---|--|
 | sino | q0 → q14 → q15 → q16 → q17 | q17 ∈ F → SINO |
 | si␣ | q0 → q14 → q15; δ(q15, ␣) no definida | q15 ∈ F → SI |
 | <= | q0 → q53 → q54 | q54 ∈ F → MENOR_IGUAL |
-| <␣= | q0 → q53; δ(q53, ␣) no definida | MENOR; luego ASIG |
+| <␣= | q0 → q53; δ(q53, ␣) no definida | MENOR; luego ASIGNACION |
 | !␣ | q0 → q59; δ(q59, ␣) no definida | q59 ∉ F → error léxico |
 | mos␣ | q0 → q26 → q34 → q35; δ(q35, ␣) no definida | q35 ∉ F → rechazo en este AFD parcial |
 
