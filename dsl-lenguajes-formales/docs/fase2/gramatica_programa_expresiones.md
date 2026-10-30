@@ -141,25 +141,21 @@ Derivación por la izquierda de `kilos + 25 * 2` (tokens: ID SUMA ENTERO MULT EN
 ⇒ ID SUMA ENTERO MULT ENTERO
 ```
 
-Árbol de derivación (a partir de `<suma>`):
+Árbol de derivación completo, desde `<expresion>`:
 
-```
-                <suma>
-         ┌────────┼─────────────┐
-       <suma>    SUMA        <termino>
-         │                ┌─────┼──────┐
-     <termino>        <termino> MULT  <factor>
-         │                │              │
-      <factor>         <factor>       ENTERO (2)
-         │                │
-      ID (kilos)      ENTERO (25)
-```
+![Árbol de derivación de kilos + 25 * 2](arboles/img/gic1_arboles_expresiones-Aritmetica.drawio.png)
 
-La multiplicación queda dentro del `<termino>` derecho, más abajo que la suma, así que `25 * 2` se agrupa primero. En el programa de secado, `kilos + 25 * 2` vale `kilos + 50`, nunca `(kilos + 25) * 2`.
+*Fuente editable: `arboles/gic1_arboles_expresiones.drawio`, página Aritmetica.*
+
+La multiplicación queda dentro del `<termino>` derecho, más abajo que la suma, así que `25 * 2` se agrupa primero: `kilos + 25 * 2` vale `kilos + 50`, nunca `(kilos + 25) * 2`.
 
 Un segundo ejemplo, con operadores lógicos, es la condición del programa de secado: `dia == 5 o no (humedad > 20)`. La derivación empieza por `<expresion> ⇒ <expresion> O <conjuncion>`:
 - el lado izquierdo deriva la comparación `dia == 5`;
 - el lado derecho deriva `NO <negacion>`, y la `<negacion>` llega hasta `<factor> ⇒ PAR_ABRE <expresion> PAR_CIERRA`, que contiene la comparación `humedad > 20`.
+
+![Árbol de derivación de dia == 5 o no (humedad > 20)](arboles/img/gic1_arboles_expresiones-Condicion.drawio.png)
+
+*Fuente editable: `arboles/gic1_arboles_expresiones.drawio`, página Condicion.*
 
 ## 5. Gramática formal
 
