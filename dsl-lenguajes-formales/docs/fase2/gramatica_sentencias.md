@@ -56,6 +56,12 @@ En muchos lenguajes, `si a entonces si b entonces x sino y` es ambiguo: el `sino
 | `si (a) entonces si (b) entonces x = 1; fin sino x = 2; fin` | El `sino` pertenece al `si` externo |
 | `si (a) entonces si (b) entonces x = 1; sino x = 2; fin` | No es derivable: falta un `fin` |
 
+Los árboles de las dos primeras entradas muestran que en cada caso el `sino` queda bajo un único `<condicional>`, el que cierra su propio `fin`:
+
+![Árboles del sino colgante](arboles/img/gic2_arboles_sentencias-SinoColgante.drawio.png)
+
+*Fuente editable: `arboles/gic2_arboles_sentencias.drawio`, página SinoColgante.*
+
 Se comprobó con un analizador general, que no supone nada sobre la forma de la gramática, que las dos primeras entradas, dentro de `inicio … fin`, tienen **exactamente un** árbol de derivación cada una, y que la tercera no tiene ninguno.
 
 ## 3. Gramática completa (GIC-1 + GIC-2)
@@ -115,7 +121,6 @@ Los tres programas de `ejemplos/` se convirtieron en tokens con el AFD de la Fas
 
 | Programa | Tokens | Sentencias | Árboles de derivación | Resultado |
 |---|---|---|---|---|
-
 | `ejemplo1_produccion.cft` | 66 | 10 | 1 | Derivable |
 | `ejemplo2_clasificacion.cft` | 62 | 9 | 1 | Derivable |
 | `ejemplo3_secado.cft` | 57 | 8 | 1 | Derivable |
@@ -425,160 +430,11 @@ Condición del `si` de `ejemplo3_secado.cft`: `dia == 5 o no (humedad > 20)`. El
 
 ### 4.5 Árbol de derivación de `ejemplo3_secado.cft`
 
-Las expresiones aparecen como hojas con su texto; el resto del árbol corresponde a la derivación de la sección 4.3.
+Las expresiones aparecen abreviadas (⇒\*) con los tokens que generan; el resto del árbol corresponde a la derivación de la sección 4.3.
 
-```mermaid
-flowchart TD
-    n1["programa"]
-    n2["inicio"]
-    n1 --> n2
-    n3["sentencias"]
-    n4["sentencias"]
-    n5["sentencias"]
-    n6["sentencias"]
-    n7["sentencias"]
-    n8["ε"]
-    n7 --> n8
-    n6 --> n7
-    n9["sentencia"]
-    n10["declaracion"]
-    n11["dato"]
-    n10 --> n11
-    n12["dia"]
-    n10 --> n12
-    n13["="]
-    n10 --> n13
-    n14(["expresion: 1"])
-    n10 --> n14
-    n15[";"]
-    n10 --> n15
-    n9 --> n10
-    n6 --> n9
-    n5 --> n6
-    n16["sentencia"]
-    n17["declaracion"]
-    n18["dato"]
-    n17 --> n18
-    n19["humedad"]
-    n17 --> n19
-    n20["="]
-    n17 --> n20
-    n21(["expresion: 45"])
-    n17 --> n21
-    n22[";"]
-    n17 --> n22
-    n16 --> n17
-    n5 --> n16
-    n4 --> n5
-    n23["sentencia"]
-    n24["ciclo"]
-    n25["mientras"]
-    n24 --> n25
-    n26["("]
-    n24 --> n26
-    n27(["expresion: humedad #gt; 12"])
-    n24 --> n27
-    n28[")"]
-    n24 --> n28
-    n29["hacer"]
-    n24 --> n29
-    n30["sentencias"]
-    n31["sentencias"]
-    n32["sentencias"]
-    n33["sentencias"]
-    n34["ε"]
-    n33 --> n34
-    n32 --> n33
-    n35["sentencia"]
-    n36["asignacion"]
-    n37["humedad"]
-    n36 --> n37
-    n38["="]
-    n36 --> n38
-    n39(["expresion: humedad - 6"])
-    n36 --> n39
-    n40[";"]
-    n36 --> n40
-    n35 --> n36
-    n32 --> n35
-    n31 --> n32
-    n41["sentencia"]
-    n42["condicional"]
-    n43["si"]
-    n42 --> n43
-    n44["("]
-    n42 --> n44
-    n45(["expresion: dia == 5 o no ( humedad #gt; 20 )"])
-    n42 --> n45
-    n46[")"]
-    n42 --> n46
-    n47["entonces"]
-    n42 --> n47
-    n48["sentencias"]
-    n49["sentencias"]
-    n50["ε"]
-    n49 --> n50
-    n48 --> n49
-    n51["sentencia"]
-    n52["salida"]
-    n53["mostrar"]
-    n52 --> n53
-    n54["("]
-    n52 --> n54
-    n55["argumento"]
-    n56["#quot;revisar el secador#quot;"]
-    n55 --> n56
-    n52 --> n55
-    n57[")"]
-    n52 --> n57
-    n58[";"]
-    n52 --> n58
-    n51 --> n52
-    n48 --> n51
-    n42 --> n48
-    n59["fin"]
-    n42 --> n59
-    n41 --> n42
-    n31 --> n41
-    n30 --> n31
-    n60["sentencia"]
-    n61["asignacion"]
-    n62["dia"]
-    n61 --> n62
-    n63["="]
-    n61 --> n63
-    n64(["expresion: dia + 1"])
-    n61 --> n64
-    n65[";"]
-    n61 --> n65
-    n60 --> n61
-    n30 --> n60
-    n24 --> n30
-    n66["fin"]
-    n24 --> n66
-    n23 --> n24
-    n4 --> n23
-    n3 --> n4
-    n67["sentencia"]
-    n68["salida"]
-    n69["mostrar"]
-    n68 --> n69
-    n70["("]
-    n68 --> n70
-    n71["argumento"]
-    n72(["expresion: dia"])
-    n71 --> n72
-    n68 --> n71
-    n73[")"]
-    n68 --> n73
-    n74[";"]
-    n68 --> n74
-    n67 --> n68
-    n3 --> n67
-    n1 --> n3
-    n75["fin"]
-    n1 --> n75
-```
+![Árbol de derivación de ejemplo3_secado.cft](arboles/img/gic2_arboles_sentencias-Secado.drawio.png)
+
+*Fuente editable: `arboles/gic2_arboles_sentencias.drawio`, página Secado. El árbol completo de la condición del `si` está en `arboles/gic1_arboles_expresiones.drawio`, página Condicion.*
 
 ## 5. Pendientes para las siguientes tareas
 
