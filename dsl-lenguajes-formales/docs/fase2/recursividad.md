@@ -2,7 +2,7 @@
 
 **Tarea Jira:** GIC-4 — Eliminación de recursividad por la izquierda
 **Responsable:** Juan Diego García Albarracín
-**Insumos:** `gramatica_programa_expresiones.md` (GIC-1), `gramatica_sentencias.md` (GIC-2) y el documento de GIC-3 (demostración de ambigüedad y estratificación)
+**Insumos:** `gramatica_programa_expresiones.md` (GIC-1), `gramatica_sentencias.md` (GIC-2) y `ambiguedad.md` (GIC-3)
 **Se complementa con:** GIC-5 (factorización por la izquierda) y GIC-6 (PRIMERO, SIGUIENTE y tabla LL(1))
 
 ---
@@ -59,7 +59,7 @@ Hay otras reglas recursivas, pero **no por la izquierda**, y no se modifican:
 | E21 `<factor> ::= PAR_ABRE <expresion> PAR_CIERRA` | `<expresion>` vuelve a aparecer, pero después del terminal PAR_ABRE |
 | C1, C2 y L1 | `<sentencias>` aparece después de SI … ENTONCES o MIENTRAS … HACER |
 
-Ninguna regla de GIC-2 es recursiva por la izquierda, como ya se indicaba en la sección 5 de ese documento.
+P2 es la única regla recursiva por la izquierda fuera de las expresiones, y viene de GIC-1. Ninguna de las reglas que agregó GIC-2 (A1, M1–M3, C1, C2 y L1) es recursiva por la izquierda, como ya se indicaba en la sección 5 de `gramatica_sentencias.md`.
 
 ### 3.2 Recursividad indirecta
 
@@ -531,39 +531,11 @@ En la primera derivación, las dos primeras reglas (E16, E16) se eligen **antes 
 
 ### 7.2 Forma del árbol
 
-En los árboles, `A ── B` indica que B es el único hijo de A.
+Los dos árboles de `10 - 4 - 2` desde `<suma>`, uno junto al otro:
 
-**Con la gramática de GIC-1:**
+![Árbol de 10 - 4 - 2 antes y después de eliminar la recursividad por la izquierda](arboles/img/gic4_recursividad-Comparacion.drawio.png)
 
-```
-<suma>
-├── <suma>
-│   ├── <suma> ── <termino> ── <factor> ── ENTERO⟨10⟩
-│   ├── RESTA
-│   └── <termino> ── <factor> ── ENTERO⟨4⟩
-├── RESTA
-└── <termino> ── <factor> ── ENTERO⟨2⟩
-```
-
-**Con la gramática sin recursividad por la izquierda:**
-
-```
-<suma>
-├── <termino>
-│   ├── <factor> ── ENTERO⟨10⟩
-│   └── <termino_prima> ── ε
-└── <suma_prima>
-    ├── RESTA
-    ├── <termino>
-    │   ├── <factor> ── ENTERO⟨4⟩
-    │   └── <termino_prima> ── ε
-    └── <suma_prima>
-        ├── RESTA
-        ├── <termino>
-        │   ├── <factor> ── ENTERO⟨2⟩
-        │   └── <termino_prima> ── ε
-        └── <suma_prima> ── ε
-```
+*Fuente editable: `arboles/gic4_recursividad.drawio`, página Comparacion.*
 
 - **La precedencia no cambia.** Los niveles son los mismos de GIC-1 y GIC-3: cada operador sigue apareciendo solo en las reglas de su nivel (O en R4, Y en R7, SUMA y RESTA en R10 y R11, MULT y DIV en R14 y R15), y el único camino de regreso al nivel superior sigue siendo E21, con paréntesis. En `kilos + 25 * 2`, el MULT sigue quedando dentro de un `<termino>`, más abajo que el SUMA.
 - **La asociatividad ya no se ve en la forma del árbol.** En GIC-1 la agrupación `(10 - 4) - 2` se lee directamente: el primer RESTA queda más abajo. En la gramática nueva, el árbol se inclina hacia la derecha, y los operandos y operadores quedan en una cadena de `<suma_prima>` en el mismo orden en que aparecen en el texto. La agrupación por la izquierda se recupera recorriendo esa cadena de izquierda a derecha. Como ya lo indica la sección 8 del documento de GIC-3, la forma en que el analizador de la Fase 3 refleje esa agrupación se define en la Fase 3; la transformación no cambia qué cadenas son válidas.
