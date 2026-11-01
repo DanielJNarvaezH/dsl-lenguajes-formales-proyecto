@@ -2,7 +2,7 @@
 
 **Tarea Jira:** GIC-6 — Conjuntos PRIMERO y SIGUIENTE y tabla LL(1)
 **Responsable:** Juan Diego García Albarracín
-**Insumos:** documento de GIC-5 (**Insumos:** `factorizacion.md` (GIC-5, gramática factorizada de la sección 6), `recursividad.md` (GIC-4) y `ambiguedad.md` (GIC-3) factorizada de la sección 6), `recursividad.md` (GIC-4) y `ambiguedad.md` (GIC-3)
+**Insumos:** `factorizacion.md` (GIC-5, gramática factorizada de la sección 6), `recursividad.md` (GIC-4) y `ambiguedad.md` (GIC-3)
 **Archivo asociado:** `src/parser/tabla_ll1.csv` (tabla LL(1) completa)
 **Se complementa con:** DOC-3 (documento de la Fase 2) y PAR-2 a PAR-4 (analizador sintáctico de la Fase 3)
 
@@ -29,7 +29,8 @@ Con ellos se construye la **tabla de análisis predictivo** M[A, t]: la regla qu
 
 ## 3. Gramática de partida
 
-Es la gramática factorizada de la sección 6 de `factorizacion.md` (GIC-5), sin cambios: …
+Es la gramática factorizada de la sección 6 de `factorizacion.md` (GIC-5), sin cambios:
+
 ```
 P1   <programa> ::= INICIO <sentencias> FIN
 R1   <sentencias> ::= <sentencia> <sentencias>
