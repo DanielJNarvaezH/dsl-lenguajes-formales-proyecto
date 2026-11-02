@@ -116,9 +116,15 @@ class PruebaPosiciones(unittest.TestCase):
 
 
 class PruebaErrores(unittest.TestCase):
+    """Comportamiento de LXR-1: el primer error detiene el análisis.
+
+    Desde LXR-2 el analizador continúa por defecto; estas pruebas usan
+    detener_en_error=True. El modo que continúa se prueba en
+    tests/test_errores_lexicos.py.
+    """
 
     def setUp(self):
-        self.lexer = AnalizadorLexico()
+        self.lexer = AnalizadorLexico(detener_en_error=True)
 
     def error(self, texto):
         with self.assertRaises(ErrorLexico) as contexto:

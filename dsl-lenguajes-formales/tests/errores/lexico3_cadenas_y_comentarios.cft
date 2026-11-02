@@ -1,0 +1,8 @@
+# cadenas y comentarios con errores
+inicio
+    dato dias = 3;
+    mostrar("secar de nuevo);
+    # Revisar el secador
+    mostrar("lote: norte");
+    dias = dias - 1 @
+fin

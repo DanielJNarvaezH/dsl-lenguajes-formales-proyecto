@@ -1,0 +1,10 @@
+# registro de un lote con simbolos fuera del alfabeto
+inicio
+    dato Kilos = 250;
+    dato año = 2026;
+    dato humedad = 11,5;
+    si (humedad > 12) entonces {
+        mostrar(humedad);
+    }
+    fin
+fin
