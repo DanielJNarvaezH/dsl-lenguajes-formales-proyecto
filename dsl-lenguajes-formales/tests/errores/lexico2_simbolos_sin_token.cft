@@ -1,0 +1,10 @@
+# simbolos de sigma que no forman ningun token
+inicio
+    dato _lote = 5;
+    dato precio = .5;
+    dato total = 12.;
+    si (!(total > 3)) entonces
+        mostrar(total);
+    fin
+    dato x = 3.x;
+fin
