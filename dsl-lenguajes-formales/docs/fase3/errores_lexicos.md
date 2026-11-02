@@ -3,7 +3,7 @@
 **Tarea Jira:** LXR-2 — Manejo de errores léxicos
 **Responsable:** Juan Diego García Albarracín
 **Insumos:** `lexer.md` y `src/lexer/lexer.py` (LXR-1), `docs/fase1/documento_fase1.md` (Tabla 17 y Traza 5) y `src/lexer/tabla_afd.csv`
-**Archivos:** `src/lexer/lexer.py` (modificado), `tests/test_errores_lexicos.py` (nuevo), `tests/test_lexer.py` (ajuste de una línea) y `tests/errores/lexico1_fuera_del_alfabeto.cft`, `lexico2_simbolos_sin_token.cft` y `lexico3_cadenas_y_comentarios.cft`
+**Archivos:** `src/lexer/lexer.py` (modificado), `tests/test_errores_lexicos.py` (nuevo), `tests/test_lexer.py` (ajuste de una línea) y `tests/errores/lexico1_fuera_del_alfabeto.cft`, `lexico2_simbolos_sin_token.cft` y `lexico3_cadenas_y_comentarios.cft`, y `docs/fase3/diagramas/lxr1_flujo_lexer.drawio` (actualizado)
 **Se complementa con:** PAR-4 y PAR-5 (errores sintácticos y punto de entrada) y TST-2 (suite de programas con errores)
 
 ---
@@ -52,6 +52,10 @@ El tercer caso es el de la Traza 5 de la Fase 1, la cadena sin cerrar. El error 
 ## 4. Cómo continúa el análisis
 
 Después de registrar el error, el análisis **continúa desde el símbolo siguiente al del error**, vuelve a q0 y recorre el AFD normalmente. El símbolo del error no produce ningún token.
+
+![Flujo del analizador léxico con el manejo de errores](diagramas/img/lxr1_flujo_lexer-Flujo.drawio.png)
+
+*Fuente editable: `diagramas/lxr1_flujo_lexer.drawio`. La caja de la derecha es el cambio de LXR-2: el error se agrega a la lista y el análisis sigue en posición + 1.*
 
 ```
 !x       →  error en '!'  y  ID 'x'
