@@ -88,7 +88,7 @@ Los constructores validan lo básico: el no terminal debe ir entre `< >` y tener
 
 Dos árboles son iguales (`==`) si coinciden en símbolos, reglas, tokens e hijos. Eso permite a TST-1 comparar el árbol que produce el parser con un árbol esperado.
 
-`recorrer` es iterativo, no recursivo: la lista `<sentencias>` es recursiva por la derecha (R1), así que un programa largo produce un árbol profundo, y un recorrido recursivo podría superar el límite de recursión de Python. Las pruebas lo comprueban con un árbol de 5 000 niveles.
+`recorrer` y la igualdad `==` son iterativos, no recursivos: la lista `<sentencias>` es recursiva por la derecha (R1), así que un programa largo produce un árbol profundo, y un recorrido o una comparación recursivos podrían superar el límite de recursión de Python (1 000 llamadas por defecto). Las pruebas lo comprueban recorriendo y comparando árboles de 5 000 niveles.
 
 ## 4. Decisiones de diseño
 
@@ -165,7 +165,7 @@ python -m unittest tests.test_arbol -v
 | Grupo | Qué comprueba |
 |---|---|
 | Nodo | Los tres tipos de nodo y sus propiedades, `agregar`, las validaciones de los constructores y el `repr` |
-| Árbol completo | Dos programas armados regla por regla con la gramática final (`inicio x = 1; fin` y un `si … sino … fin` con comparación y `mostrar` de una cadena): la frontera es la entrada sin `EOF`, `derivacion_izquierda()` coincide con el orden del analizador LL(1) de GIC-6, las ε están donde deben (solo como hijo único de R2, R5, R8, F3, R12 y R16), la posición de cada subárbol, la igualdad estructural y un árbol de 5 000 niveles |
+| Árbol completo | Dos programas armados regla por regla con la gramática final (`inicio x = 1; fin` y un `si … sino … fin` con comparación y `mostrar` de una cadena): la frontera es la entrada sin `EOF`, `derivacion_izquierda()` coincide con el orden del analizador LL(1) de GIC-6, las ε están donde deben (solo como hijo único de R2, R5, R8, F3, R12 y R16), la posición de cada subárbol, la igualdad estructural y un árbol de 5 000 niveles, que se recorre y se compara sin `RecursionError` |
 | Contrato | El lexer cumple el contrato con los 3 programas de `ejemplos/`, los 3 de `tests/errores/` y un archivo vacío; `verificar_contrato` detecta cada incumplimiento (lista vacía, sin `EOF`, `EOF` en medio, tipo fuera del catálogo, token descartable, orden alterado y elemento que no es `Token`); con errores léxicos la lista sigue cumpliendo |
 | Restricciones | `arbol.py` no importa `re` |
 
