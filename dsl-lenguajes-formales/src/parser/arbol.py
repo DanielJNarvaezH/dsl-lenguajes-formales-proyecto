@@ -73,12 +73,14 @@ def verificar_contrato(tokens):
         anterior = posicion
 
 
-@dataclass
+@dataclass(eq=False)
 class Nodo:
     """Nodo del árbol de derivación.
 
     Se crea con Nodo.no_terminal, Nodo.terminal o Nodo.vacio. Dos árboles son
-    iguales (==) si tienen los mismos símbolos, reglas, tokens e hijos.
+    iguales (==) si tienen los mismos símbolos, reglas, tokens e hijos. La
+    comparación es iterativa, como recorrer, para no depender del límite de
+    recursión de Python.
     """
 
     simbolo: str
@@ -179,6 +181,18 @@ class Nodo:
             if nodo.es_terminal:
                 return nodo.token.linea, nodo.token.columna
         return None
+
+    def __eq__(self, otro):
+        """Igualdad estructural, comparando los dos árboles nodo por nodo en preorden."""
+        if not isinstance(otro, Nodo):
+            return NotImplemented
+        pendientes = [(self, otro)]
+        while pendientes:
+            a, b = pendientes.pop()
+            if (a.simbolo, a.regla, a.token, len(a.hijos)) != (b.simbolo, b.regla, b.token, len(b.hijos)):
+                return False
+            pendientes.extend(zip(a.hijos, b.hijos))
+        return True
 
     def __repr__(self):
         if self.es_terminal:

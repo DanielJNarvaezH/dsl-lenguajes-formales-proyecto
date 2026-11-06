@@ -195,12 +195,18 @@ class PruebaArbolCompleto(unittest.TestCase):
         self.assertNotEqual(a, c)                                # cambia el lexema de ID
 
     def test_arbol_profundo_sin_limite_de_recursion(self):
-        raiz = Nodo.no_terminal("<sentencias>", "R1")
-        actual = raiz
-        for _ in range(5000):
-            actual = actual.agregar(Nodo.no_terminal("<sentencias>", "R1"))
-        actual.agregar(Nodo.vacio())
+        def profundo(hoja):
+            raiz = Nodo.no_terminal("<sentencias>", "R1")
+            actual = raiz
+            for _ in range(5000):
+                actual = actual.agregar(Nodo.no_terminal("<sentencias>", "R1"))
+            actual.agregar(hoja)
+            return raiz
+        raiz = profundo(Nodo.vacio())
         self.assertEqual(len(raiz.derivacion_izquierda()), 5001)
+        # La igualdad también es iterativa: compara 5 000 niveles sin RecursionError.
+        self.assertEqual(raiz, profundo(Nodo.vacio()))
+        self.assertNotEqual(raiz, profundo(Nodo.terminal(Token("ID", "x", 1, 1))))
 
 
 class PruebaContrato(unittest.TestCase):
