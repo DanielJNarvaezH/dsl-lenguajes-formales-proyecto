@@ -1,0 +1,10 @@
+# errores sintacticos en la forma de las sentencias
+inicio
+    dato si = 3;
+    humedad 12;
+    mientras (humedad > 12) entonces
+        humedad = humedad - 1;
+    fin
+    mostrar();
+    sino
+fin

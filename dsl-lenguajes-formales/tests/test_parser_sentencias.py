@@ -72,7 +72,9 @@ def referencia_ll1(tabla, tokens):
 
 
 def analizar(texto):
-    return Parser(AnalizadorLexico().analizar(texto)).analizar()
+    # Desde PAR-4 el parser se recupera por defecto; estas pruebas conservan el
+    # comportamiento de PAR-3, en el que el primer error detiene el análisis.
+    return Parser(AnalizadorLexico().analizar(texto), detener_en_error=True).analizar()
 
 
 def nodos(raiz, simbolo):
@@ -210,7 +212,7 @@ class PruebaReferenciaLL1(unittest.TestCase):
     def comparar(self, tokens, tabla):
         reglas_ref, error_ref = referencia_ll1(tabla, tokens)
         try:
-            raiz = Parser(tokens, tabla).analizar()
+            raiz = Parser(tokens, tabla, detener_en_error=True).analizar()
         except ErrorSintactico as error:
             self.assertEqual(tokens.index(error.encontrado), error_ref, tokens)
             return False

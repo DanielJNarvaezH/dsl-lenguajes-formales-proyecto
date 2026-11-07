@@ -6,11 +6,12 @@ Este documento describe `src/parser/parser.py`. Lo completan tres tareas:
 |---|---|---|
 | 1 a 7 | PAR-2 — Base común del parser y funciones de expresiones | Daniel Josué Narváez Hincapié |
 | 8 a 10 | PAR-3 — Funciones de sentencias y programa | Juan Diego García Albarracín |
-| (pendiente) | PAR-4 — Manejo de errores sintácticos | Daniel Josué Narváez Hincapié |
+| 11 a 14 | PAR-4 — Manejo de errores sintácticos | Daniel Josué Narváez Hincapié |
 
 **Insumos:** gramática final (`docs/fase2/factorizacion.md`, sección 6), tabla LL(1) (`src/parser/tabla_ll1.csv` y `docs/fase2/primero_siguiente_ll1.md`, GIC-6), `src/parser/arbol.py` y `docs/fase3/arbol.md` (PAR-1)
 **Archivos de PAR-2:** `src/parser/parser.py` (base común y expresiones) y `tests/test_parser_expresiones.py`
 **Archivos de PAR-3:** `src/parser/parser.py` (sección «Programa y sentencias (PAR-3)») y `tests/test_parser_sentencias.py`
+**Archivos de PAR-4:** `src/parser/parser.py` (base común y una línea en cada función), `src/parser/siguiente.csv`, `tests/test_errores_sintacticos.py`, `tests/errores/sintactico1_expresiones.cft`, `sintactico2_sentencias.cft` y `sintactico3_bloques.cft`, y `docs/fase3/diagramas/par4_modo_panico.drawio`
 
 ---
 
@@ -37,7 +38,7 @@ Estas piezas las usan tanto las funciones de expresiones (PAR-2) como las de sen
 | `predecir(A)` | M[A, actual.tipo]. Si la celda está vacía, llama a `_error` con la fila de A como esperados |
 | `emparejar(TIPO)` | Si el token actual es de ese tipo, lo consume y devuelve su hoja (`Nodo.terminal`). Si no, llama a `_error` con `[TIPO]` |
 | `verificar_fin()` | Comprueba que después del símbolo inicial solo quede EOF |
-| `_error(esperados, contexto)` | Lanza `ErrorSintactico`. Es el único punto de manejo de errores: PAR-4 lo reemplaza por la recuperación en modo pánico |
+| `_error(esperados, contexto)` | En PAR-2 lanzaba `ErrorSintactico`. Desde PAR-4 registra el error en `errores` y el análisis se recupera (sección 11); con `detener_en_error=True` lo sigue lanzando |
 | `analizar()` | Analiza un programa completo: `programa()` y después `verificar_fin()`. Desde PAR-3 analiza cualquier archivo `.cft` |
 | `analizar_fragmento(A, *seguido_de)` | Analiza solo el no terminal A, seguido de los terminales indicados y de EOF. Sirve para probar partes de la gramática |
 
@@ -148,7 +149,7 @@ Ejemplos:
 | `(a;` | `;` al emparejar el `)` de E21 | PAR_CIERRA |
 | `a; b` | `b` después del `;` | el fin del archivo |
 
-PAR-4 reemplaza `_error` por la recuperación en modo pánico: registrar el error, descartar tokens hasta uno del conjunto SIGUIENTE del no terminal y continuar, para listar varios errores.
+Desde PAR-4, estos mismos errores se registran y el análisis continúa (sección 11). Las pruebas de esta sección usan `detener_en_error=True`, que conserva el comportamiento de PAR-2.
 
 ## 6. Límite de anidamiento
 
@@ -285,4 +286,165 @@ Resultado: **24 pruebas, todas correctas.** Con las de LXR-1, LXR-2, PAR-1 y PAR
 
 ```
 python -m unittest tests.test_lexer tests.test_errores_lexicos tests.test_arbol tests.test_parser_expresiones tests.test_parser_sentencias -v
+```
+
+## 11. Manejo de errores sintácticos (PAR-4)
+
+### 11.1 Qué cambia
+
+Hasta PAR-3, el primer error sintáctico detenía el análisis. Con PAR-4, el parser **registra cada error, se recupera en modo pánico y sigue analizando**, de modo que en una sola pasada lista varios errores, en el orden del texto:
+
+```python
+parser = Parser(tokens)
+arbol = parser.analizar()
+for error in parser.errores:
+    print(error)
+```
+
+Cada error es un `ErrorSintactico`, el mismo de PAR-2: el token esperado (o la lista de esperados) frente al encontrado, con su línea y su columna. Con `Parser(tokens, detener_en_error=True)` se conserva el comportamiento de PAR-2 y PAR-3, igual que `detener_en_error` en el analizador léxico (LXR-2).
+
+`analizar()` siempre devuelve un árbol. Si `errores` no está vacío, el árbol está incompleto: tiene nodos de regla `ERROR`, que son no terminales que no se pudieron derivar, y hojas de lexema vacío, que son terminales que faltaban. Mostrar el árbol solo cuando no hay errores, o el listado de errores en caso contrario, es decisión de `main.py` (PAR-5); el enunciado pide «el árbol de derivación sintáctica o el listado de errores».
+
+### 11.2 Datos que usa la recuperación
+
+| Dato | Origen |
+|---|---|
+| SIGUIENTE(A) de cada no terminal | `src/parser/siguiente.csv`, copiado de la sección 6.4 de `primero_siguiente_ll1.md` (GIC-6). Las pruebas lo vuelven a calcular desde la gramática y comprueban que coincide |
+| Con qué tokens puede empezar A | La fila de A en la tabla LL(1): si M[A, t] tiene regla, A puede continuar con t |
+| `ANCLAJE` = {DATO, SI, MIENTRAS, MOSTRAR, SINO, FIN} | Las palabras que empiezan una sentencia o terminan un bloque (sección 11.3) |
+
+### 11.3 Recuperación en `predecir`: modo pánico con SIGUIENTE
+
+Cuando la celda M[A, t] está vacía:
+
+1. Se registra el error: se esperaba cualquiera de la fila de A y se encontró t.
+2. **Se descartan tokens** mientras el token actual no sea EOF, A no pueda empezar con él y no esté en SIGUIENTE(A) ∪ ANCLAJE.
+3. Si ahora A puede empezar con el token, M[A, t] tiene regla y A se deriva normalmente.
+4. Si no, el token está en SIGUIENTE(A) o es de anclaje: **A se omite**. Su función devuelve `omitido(A)`, un nodo con regla `ERROR` y sin hijos, y la función que la llamó sigue con ese mismo token, que es justamente uno que puede venir después de A.
+
+Para el paso 4, cada una de las 23 funciones empieza ahora así:
+
+```python
+regla = self.predecir("<factor>")
+if regla is None:                       # PAR-4: no se pudo derivar
+    return self.omitido("<factor>")
+nodo = Nodo.no_terminal("<factor>", regla)
+```
+
+Es el único cambio en las funciones de PAR-2 y PAR-3: el resto de cada función no cambia.
+
+**Por qué el anclaje.** Con SIGUIENTE(A) solo, un error dentro de una expresión puede descartar la sentencia siguiente. Por ejemplo, en `x = 1` seguido de `fin`, SIGUIENTE(`<termino_prima>`) no contiene FIN, así que el `fin` se descartaría y el análisis llegaría al final del archivo con errores falsos. Aho et al. (2006, sección 4.4.5) recomiendan agregar al conjunto de sincronización de una construcción los símbolos que empiezan las construcciones de nivel superior. En Cafetal son las palabras que empiezan una sentencia y las que terminan un bloque. Todas están en la fila de `<sentencias>`, así que siempre hay una función abierta que puede usarlas. ID no se incluye porque también aparece dentro de las expresiones, y ENTONCES y HACER tampoco, porque solo los usa la cabecera de un bloque: fuera de ella, el parser quedaría detenido en el mismo token.
+
+**Ejemplo:** `inicio x = a < b < c; z = 2; fin`.
+
+| Paso | Qué pasa |
+|---|---|
+| 1 | Después de `a < b`, `conjuncion_prima` recibe el segundo `<`: M[`<conjuncion_prima>`, MENOR] está vacía. Error: se esperaba Y, O, PAR_CIERRA o PUNTO_COMA |
+| 2 | Se descartan `<` y `c`; el `;` está en SIGUIENTE(`<conjuncion_prima>`) |
+| 3 | M[`<conjuncion_prima>`, PUNTO_COMA] = R8: se aplica ε y el análisis sigue |
+| 4 | `asignacion` empareja el `;` y la sentencia `z = 2;` se analiza normalmente |
+
+Resultado: un solo error, en la línea 1, columna 18.
+
+### 11.4 Recuperación en `emparejar`: token que falta o que sobra
+
+Cuando la regla pide el terminal T y el token actual t es otro:
+
+1. Se registra el error: se esperaba T y se encontró t.
+2. **Si el token siguiente es T, t sobra:** se descarta y se empareja T.
+3. **Si no, T falta:** se supone insertado. `emparejar` devuelve una hoja de T con lexema vacío y no consume t, que queda para el resto de la regla.
+
+| Entrada | Caso | Qué hace |
+|---|---|---|
+| `inicio sino fin` | SINO sobra antes del FIN del programa | Descarta SINO y empareja FIN |
+| `inicio x 1; fin` | Falta el `=` | Supone el `=` y sigue con `1;` |
+| `inicio dato si = 3; fin` | Falta el ID (SI no puede ser variable) | Supone el ID; luego, al emparejar el `=`, ve que SI sobra y lo descarta. Se reporta un solo error |
+
+Estas dos acciones (insertar o borrar un token) son la recuperación a nivel de frase que describen Aho et al. (2006, sección 4.4.5) para un terminal en la cima de la pila del analizador predictivo.
+
+Las dos recuperaciones, la de `predecir` (11.3) y la de `emparejar` (esta sección), se resumen en el siguiente diagrama:
+
+![Recuperación de errores sintácticos en modo pánico](diagramas/img/par4_modo_panico.drawio.png)
+
+*Fuente editable: `diagramas/par4_modo_panico.drawio`.*
+
+### 11.5 Errores en cascada
+
+Después de un error, varias funciones pueden encontrar tokens inesperados por el mismo error mientras el parser se recupera. Por eso, **después de un error no se registra otro hasta que se empareje correctamente algún token.** Por ejemplo, en `mostrar(;` seguido de `dato = 4;` en la línea siguiente, el error real es el `;` sin argumento. Después, `salida` no encuentra el `)` ni el `;`, pero esos avisos se suprimen porque son consecuencia del primero. El siguiente error, `dato = 4` sin identificador, sí se registra, porque antes se emparejó DATO.
+
+### 11.6 Por qué la recuperación siempre termina
+
+Cada error termina en una de cuatro acciones: descartar tokens (paso 2 de 11.3), omitir un no terminal (paso 4), descartar un token sobrante o suponer uno faltante (11.4). Las acciones que no consumen tokens, omitir y suponer, avanzan en la regla que se está analizando, y una regla tiene un lado derecho finito. Toda recursión, directa (`sentencias`, `negacion` y las cuatro `_prima`) o indirecta (`factor` → `expresion`, y `condicional` o `ciclo` → `sentencias`), pasa por una regla que la tabla eligió con el token actual, y el primer terminal de esa regla es justamente ese token: se empareja y se consume antes de volver a llamar. Así, cada vuelta consume al menos un token. Por eso el análisis siempre llega al final del archivo. Las pruebas lo comprueban con miles de programas inválidos (sección 13).
+
+## 12. Ejemplos
+
+### 12.1 Un error real, un error reportado
+
+| Entrada | Error reportado |
+|---|---|
+| `inicio x = 1 fin` | Columna 14, `fin`: falta el `;` (sincroniza con FIN, de anclaje) |
+| `inicio mientras (a) entonces x = 1; fin fin` | Columna 21: se esperaba HACER y se encontró `entonces`. El cuerpo del ciclo se analiza igual |
+| `inicio si (a entonces x = 1; fin fin` | Columna 14, `entonces`: falta el `)` |
+| `inicio x = (a + ; z = 1; fin` | Columna 17, `;`: falta un operando |
+| `inicio x = a b c; fin` | Columna 14, `b`: operando de más |
+| `inicio mostrar("a" + 1); fin` | Columna 20, `+`: una CADENA solo puede ser todo el argumento de `mostrar` |
+| `inicio x = 1;` | Columna 14: falta el `fin` del programa |
+
+### 12.2 Programas con varios errores
+
+Los tres archivos nuevos de `tests/errores/` no tienen errores léxicos y sí varios errores sintácticos, en líneas distintas. Junto con los tres de LXR-2, completan los seis programas con errores que pide TST-2.
+
+| Archivo | Línea | Columna | Encontrado | Error |
+|---|---|---|---|---|
+| `sintactico1_expresiones.cft` | 4 | 28 | `;` | `(kilos + ;`: falta un operando |
+| | 5 | 26 | `*` | `kilos * * 2`: dos operadores seguidos |
+| | 6 | 20 | `<` | `kilos < 10 < 20`: relacionales encadenados |
+| | 10 | 5 | `mostrar` | Falta el `;` al final de la línea 9: se detecta en el primer token de la línea 10 |
+| `sintactico2_sentencias.cft` | 3 | 10 | `si` | `dato si = 3;`: palabra reservada como variable |
+| | 4 | 13 | `12` | `humedad 12;`: falta el `=` |
+| | 5 | 29 | `entonces` | `mientras (…) entonces`: se esperaba HACER |
+| | 8 | 13 | `)` | `mostrar();`: falta el argumento |
+| | 9 | 5 | `sino` | `sino` sin `si` |
+| `sintactico3_bloques.cft` | 4 | 8 | `dia` | `si dia == 1 entonces`: falta el `(` |
+| | 4 | 17 | `entonces` | … y también el `)` |
+| | 15 | 1 | fin del archivo | El `si … sino` de la línea 7 no tiene su `fin`: el último `fin` lo cierra y el programa queda sin el suyo |
+
+Por ejemplo, para `sintactico2_sentencias.cft`:
+
+```
+Error sintáctico en la línea 3, columna 10: se esperaba ID y se encontró 'si' (SI).
+Error sintáctico en la línea 4, columna 13: se esperaba ASIGNACION y se encontró '12' (ENTERO).
+Error sintáctico en la línea 5, columna 29: se esperaba HACER y se encontró 'entonces' (ENTONCES).
+Error sintáctico en la línea 8, columna 13: se esperaba NO, ID, ENTERO, DECIMAL, CADENA o PAR_ABRE y se encontró ')' (PAR_CIERRA).
+Error sintáctico en la línea 9, columna 5: se esperaba FIN y se encontró 'sino' (SINO).
+```
+
+### 12.3 Limitaciones
+
+El modo pánico es una heurística: garantiza que el análisis termina y que el primer error es exacto, pero no siempre adivina la intención del programador.
+
+- **Un error puede ocultar una sentencia.** En `x = 1` seguido de `z = 2;` en la línea siguiente, falta el `;` de la primera línea, y la recuperación descarta `z = 2` hasta el `;`. Se reporta un solo error, en `z`, pero `z = 2` no se analiza por separado.
+- **Un error puede producir otro real.** En `si dia == 1 entonces`, faltan los dos paréntesis, y se reportan los dos.
+- **Un `sino` o un `fin` de más en el nivel del programa termina el análisis.** El `fin` que sobra cierra el programa, y lo que queda después solo produce el error «se esperaba el fin del archivo».
+
+## 13. Pruebas de PAR-4
+
+```
+python -m unittest tests.test_errores_sintacticos -v
+```
+
+| Grupo | Qué comprueba |
+|---|---|
+| SIGUIENTE | `siguiente.csv` coincide con SIGUIENTE calculado desde la gramática con el algoritmo de punto fijo de GIC-6; el anclaje está contenido en la fila de `<sentencias>` y no incluye ID |
+| Recuperación | 14 entradas con un error real cada una producen exactamente un error, con su token, línea y columna; un programa con tres errores en líneas distintas; la cabecera sin paréntesis; el texto del mensaje (esperado frente a encontrado); el árbol con nodos ERROR y hojas insertadas; el modo `detener_en_error` |
+| Archivos con errores | Los tres archivos de la sección 12.2 producen exactamente esos errores, en orden y sin errores léxicos |
+| Sin errores | Los tres programas de `ejemplos/` no tienen errores, y el árbol es igual al del modo que se detiene |
+| Propiedades | Todos los programas `inicio w fin` con w de hasta 3 tokens de un alfabeto de 16 (4 369 programas) y 300 variantes de los programas de ejemplo con 1 a 4 tokens cambiados. En todos, el análisis llega al final; hay errores si y solo si el modo que se detiene encuentra uno; el primer error es el mismo; y los errores están en el orden del texto, cada uno en un token distinto. Al menos una variante tiene varios errores |
+
+Las pruebas de PAR-2 y PAR-3 que esperan que el primer error detenga el análisis ahora crean el parser con `detener_en_error=True`. Es el único cambio en esos archivos, como hizo LXR-2 con las de LXR-1.
+
+Resultado: **12 pruebas, todas correctas.** Con las anteriores, la suite tiene 111 pruebas y todas pasan:
+
+```
+python -m unittest discover -s tests -t . -v
 ```

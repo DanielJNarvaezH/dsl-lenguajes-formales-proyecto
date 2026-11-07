@@ -1,0 +1,41 @@
+<mxfile host="Electron" version="29.6.1" pages="1">
+  <diagram id="panico" name="Panico">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1220" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" parent="1" style="text;html=0;fontSize=16;fontStyle=1;align=left;" value="PAR-4 — Recuperación de errores sintácticos en modo pánico" vertex="1"><mxGeometry x="40" y="0" width="700" height="30" as="geometry"/></mxCell>
+        <mxCell id="t1" parent="1" style="text;html=0;fontSize=14;fontStyle=1;align=center;" value="predecir(A)" vertex="1"><mxGeometry x="40" y="50" width="300" height="26" as="geometry"/></mxCell>
+        <mxCell id="p0" parent="1" style="ellipse;whiteSpace=wrap;html=0;fontSize=12;" value="Entrar a la función de A&#xa;con el token actual t" vertex="1"><mxGeometry x="90" y="90" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="p1" parent="1" style="rhombus;whiteSpace=wrap;html=0;fontSize=12;" value="¿M[A, t] tiene&#xa;regla?" vertex="1"><mxGeometry x="90" y="180" width="200" height="100" as="geometry"/></mxCell>
+        <mxCell id="p2" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Registrar el error:&#xa;se esperaba la fila de A,&#xa;se encontró t" vertex="1"><mxGeometry x="90" y="320" width="200" height="70" as="geometry"/></mxCell>
+        <mxCell id="p3" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Descartar tokens mientras t no sea EOF,&#xa;A no pueda empezar con t&#xa;y t no esté en SIGUIENTE(A) ∪ ANCLAJE" vertex="1"><mxGeometry x="60" y="420" width="260" height="80" as="geometry"/></mxCell>
+        <mxCell id="p4" parent="1" style="rhombus;whiteSpace=wrap;html=0;fontSize=12;" value="¿M[A, t] tiene&#xa;regla ahora?" vertex="1"><mxGeometry x="90" y="530" width="200" height="100" as="geometry"/></mxCell>
+        <mxCell id="p5" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Aplicar la regla:&#xa;crear el nodo y recorrer&#xa;su lado derecho" vertex="1"><mxGeometry x="380" y="195" width="200" height="70" as="geometry"/></mxCell>
+        <mxCell id="p6" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Omitir A: devolver un nodo ERROR;&#xa;quien llamó sigue con t&#xa;(t ∈ SIGUIENTE(A) o es de anclaje)" vertex="1"><mxGeometry x="60" y="670" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="t2" parent="1" style="text;html=0;fontSize=14;fontStyle=1;align=center;" value="emparejar(T)" vertex="1"><mxGeometry x="660" y="50" width="300" height="26" as="geometry"/></mxCell>
+        <mxCell id="e0" parent="1" style="ellipse;whiteSpace=wrap;html=0;fontSize=12;" value="La regla pide el terminal T;&#xa;el token actual es t" vertex="1"><mxGeometry x="710" y="90" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="e1" parent="1" style="rhombus;whiteSpace=wrap;html=0;fontSize=12;" value="¿t es T?" vertex="1"><mxGeometry x="710" y="180" width="200" height="100" as="geometry"/></mxCell>
+        <mxCell id="e2" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Consumir t y devolver su hoja;&#xa;recuperando ← falso" vertex="1"><mxGeometry x="960" y="195" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="e3" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Registrar el error:&#xa;se esperaba T, se encontró t" vertex="1"><mxGeometry x="710" y="320" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="e4" parent="1" style="rhombus;whiteSpace=wrap;html=0;fontSize=12;" value="¿el token siguiente&#xa;es T?" vertex="1"><mxGeometry x="710" y="420" width="200" height="100" as="geometry"/></mxCell>
+        <mxCell id="e5" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="t sobra: descartarlo y&#xa;consumir T; recuperando ← falso" vertex="1"><mxGeometry x="960" y="435" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="e6" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="T falta: suponerlo insertado&#xa;(hoja de lexema vacío),&#xa;sin consumir t" vertex="1"><mxGeometry x="710" y="560" width="200" height="70" as="geometry"/></mxCell>
+        <mxCell id="e0x" edge="1" parent="1" source="p0" target="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e1x" edge="1" parent="1" source="p1" target="p5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="sí"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2x" edge="1" parent="1" source="p1" target="p2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="no"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3x" edge="1" parent="1" source="p2" target="p3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4x" edge="1" parent="1" source="p3" target="p4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5x" edge="1" parent="1" source="p4" target="p5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="sí"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="480" y="580"/></Array></mxGeometry></mxCell>
+        <mxCell id="e6x" edge="1" parent="1" source="p4" target="p6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="no"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7x" edge="1" parent="1" source="e0" target="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8x" edge="1" parent="1" source="e1" target="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="sí"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9x" edge="1" parent="1" source="e1" target="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="no"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10x" edge="1" parent="1" source="e3" target="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11x" edge="1" parent="1" source="e4" target="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="sí"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12x" edge="1" parent="1" source="e4" target="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="no"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="nota" parent="1" style="text;html=0;fontSize=11;align=left;verticalAlign=top;whiteSpace=wrap;strokeColor=default;spacing=6;" value="Registrar el error solo ocurre si el parser no se está recuperando de otro: después de un error no se registra otro hasta que se empareje un token (supresión de errores en cascada). ANCLAJE = {DATO, SI, MIENTRAS, MOSTRAR, SINO, FIN}. SIGUIENTE(A) se lee de siguiente.csv (GIC-6). Con detener_en_error=True, registrar el error lo lanza y el análisis se detiene." vertex="1"><mxGeometry x="40" y="770" width="1140" height="50" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
