@@ -5,11 +5,12 @@ Este documento describe `src/parser/parser.py`. Lo completan tres tareas:
 | Sección | Tarea | Responsable |
 |---|---|---|
 | 1 a 7 | PAR-2 — Base común del parser y funciones de expresiones | Daniel Josué Narváez Hincapié |
-| (pendiente) | PAR-3 — Funciones de sentencias y programa | Juan Diego García Albarracín |
+| 8 a 10 | PAR-3 — Funciones de sentencias y programa | Juan Diego García Albarracín |
 | (pendiente) | PAR-4 — Manejo de errores sintácticos | Daniel Josué Narváez Hincapié |
 
 **Insumos:** gramática final (`docs/fase2/factorizacion.md`, sección 6), tabla LL(1) (`src/parser/tabla_ll1.csv` y `docs/fase2/primero_siguiente_ll1.md`, GIC-6), `src/parser/arbol.py` y `docs/fase3/arbol.md` (PAR-1)
 **Archivos de PAR-2:** `src/parser/parser.py` (base común y expresiones) y `tests/test_parser_expresiones.py`
+**Archivos de PAR-3:** `src/parser/parser.py` (sección «Programa y sentencias (PAR-3)») y `tests/test_parser_sentencias.py`
 
 ---
 
@@ -37,7 +38,7 @@ Estas piezas las usan tanto las funciones de expresiones (PAR-2) como las de sen
 | `emparejar(TIPO)` | Si el token actual es de ese tipo, lo consume y devuelve su hoja (`Nodo.terminal`). Si no, llama a `_error` con `[TIPO]` |
 | `verificar_fin()` | Comprueba que después del símbolo inicial solo quede EOF |
 | `_error(esperados, contexto)` | Lanza `ErrorSintactico`. Es el único punto de manejo de errores: PAR-4 lo reemplaza por la recuperación en modo pánico |
-| `analizar()` | Analiza un programa completo: `programa()` y después `verificar_fin()`. Funciona cuando PAR-3 agregue `programa()` |
+| `analizar()` | Analiza un programa completo: `programa()` y después `verificar_fin()`. Desde PAR-3 analiza cualquier archivo `.cft` |
 | `analizar_fragmento(A, *seguido_de)` | Analiza solo el no terminal A, seguido de los terminales indicados y de EOF. Sirve para probar partes de la gramática |
 
 `ErrorSintactico` tiene el token `encontrado`, su `linea` y `columna`, la lista de `esperados` y el `contexto` (el no terminal o el terminal que se estaba analizando). Su mensaje sigue el formato de los errores léxicos de LXR-2:
@@ -168,8 +169,120 @@ python -m unittest tests.test_parser_expresiones -v
 | Errores | Los cuatro casos de la sección 5: posición, contexto, esperados (que son la fila de la tabla) y mensaje |
 | Restricciones | `parser.py` no importa `re`, y dentro de la clase `Parser` toda comparación con texto fijo es con una etiqueta de regla de la tabla |
 
-Resultado: **21 pruebas, todas correctas.** Con las de LXR-1, LXR-2 y PAR-1, la suite tiene 75 pruebas y todas pasan:
+Resultado: **21 pruebas, todas correctas.**
+
+## 8. Funciones de programa y sentencias (PAR-3)
+
+Están al final de la clase `Parser`, en la sección «Programa y sentencias (PAR-3)», con la misma forma de las de expresiones (sección 1): predecir, crear el nodo, recorrer el lado derecho y devolver el nodo. Encima de cada función está su regla BNF como comentario, y la misma regla está en su docstring.
+
+| Función | Reglas | Lado derecho que escribe |
+|---|---|---|
+| `programa` | P1 | `emparejar("INICIO")`, `sentencias()`, `emparejar("FIN")` |
+| `sentencias` | R1, R2 | R1: `sentencia()`, `sentencias()` · R2: ε |
+| `sentencia` | P4 a P8 | P4: `declaracion()` · P5: `asignacion()` · P6: `salida()` · P7: `condicional()` · P8: `ciclo()` |
+| `declaracion` | D1 | `emparejar("DATO")`, `emparejar("ID")`, `emparejar("ASIGNACION")`, `expresion()`, `emparejar("PUNTO_COMA")` |
+| `asignacion` | A1 | `emparejar("ID")`, `emparejar("ASIGNACION")`, `expresion()`, `emparejar("PUNTO_COMA")` |
+| `salida` | M1 | `emparejar("MOSTRAR")`, `emparejar("PAR_ABRE")`, `argumento()`, `emparejar("PAR_CIERRA")`, `emparejar("PUNTO_COMA")` |
+| `argumento` | M2, M3 | M2: `expresion()` · M3: `emparejar("CADENA")` |
+| `condicional` | F4 | `emparejar("SI")`, `emparejar("PAR_ABRE")`, `expresion()`, `emparejar("PAR_CIERRA")`, `emparejar("ENTONCES")`, `sentencias()`, `condicional_prima()` |
+| `condicional_prima` | F5, F6 | F5: `emparejar("FIN")` · F6: `emparejar("SINO")`, `sentencias()`, `emparejar("FIN")` |
+| `ciclo` | L1 | `emparejar("MIENTRAS")`, `emparejar("PAR_ABRE")`, `expresion()`, `emparejar("PAR_CIERRA")`, `emparejar("HACER")`, `sentencias()`, `emparejar("FIN")` |
+
+Algunas observaciones:
+
+- **Entrada/salida.** La tarea habla de entrada/salida, pero Cafetal solo tiene `mostrar`: GIC-2 (sección 1) ya documentó que no hay instrucción de lectura, porque los datos se escriben en el programa con `dato`. Por eso la única sentencia de este grupo es `salida`.
+- **`sentencia` elige entre cinco reglas con la etiqueta.** Las cinco tienen la misma forma (un solo no terminal), pero cada una llama a una función distinta, así que se usa una cadena `if regla == "P4" … elif …` en vez de un diccionario: se lee igual que las reglas P4 a P8 de la BNF.
+- **`condicional_prima` termina siempre con FIN.** F5 y F6 terminan en FIN, así que el `emparejar("FIN")` va después del `if`, para las dos reglas. Es la forma que mostraba la sección 4.
+- **`sentencias` aplica R2 con FIN o SINO.** Es su SIGUIENTE (GIC-6, sección 6.4). Cuando aparece un SINO que no corresponde a ningún `si`, `sentencias` aplica R2 igual, y el error aparece un paso después, al emparejar el FIN que se esperaba (sección 9.3).
+- **El sino colgante no necesita ninguna regla especial.** Cada `si` cierra con su propio `fin` dentro de F5 o F6, así que la función no tiene que decidir a qué `si` pertenece un `sino`: lo decide la tabla, como se demostró en GIC-3 (sección 6.3) y GIC-5 (sección 5.1).
+
+Con estas funciones, los 23 no terminales de la tabla tienen su función, y `Parser(tokens).analizar()` analiza un archivo completo:
+
+```python
+from src.lexer.lexer import AnalizadorLexico
+from src.parser.parser import Parser
+
+tokens = AnalizadorLexico().analizar_archivo("ejemplos/ejemplo3_secado.cft")
+arbol = Parser(tokens).analizar()
+print(arbol.derivacion_izquierda())
+```
+
+El punto de entrada por línea de comandos, que une lexer, parser y salida, es de PAR-5.
+
+## 9. Comportamiento con programas completos
+
+### 9.1 Programas de ejemplo
+
+Los tres programas de `ejemplos/` se analizan sin errores. La frontera de cada árbol es la lista de tokens sin EOF, y la cantidad de reglas aplicadas coincide con las trazas del analizador LL(1) con pila de GIC-6 (sección 12 de `primero_siguiente_ll1.md`: los pasos totales menos los emparejamientos de tokens y el paso de aceptación; por ejemplo, 241 − 66 − 1 = 174):
+
+| Programa | Tokens | Reglas aplicadas |
+|---|---|---|
+| `ejemplo1_produccion.cft` | 66 | 174 |
+| `ejemplo2_clasificacion.cft` | 62 | 134 |
+| `ejemplo3_secado.cft` | 57 | 165 |
+
+En `ejemplo3_secado.cft`, las ocho sentencias quedan en este orden de preorden: dos declaraciones, el ciclo y, dentro de él, la asignación, el condicional (con su `mostrar`) y la otra asignación, y al final el `mostrar` del programa.
+
+### 9.2 Ejemplo: `si (a) entonces x = 1; sino x = 2; fin`
+
+| Paso | Función | Token actual | M[A, token] | Qué hace |
+|---|---|---|---|---|
+| 1 | `sentencia` | SI | P7 | Llama a `condicional` |
+| 2 | `condicional` | SI | F4 | Empareja SI y PAR_ABRE, llama a `expresion()` (R3 … R5 con `a`), empareja PAR_CIERRA y ENTONCES |
+| 3 | `sentencias` | ID `x` | R1 | `sentencia()` → P5 → `asignacion()` (A1: `x = 1;`) |
+| 4 | `sentencias` | SINO | R2 | ε: SINO ∈ SIGUIENTE(`<sentencias>`) |
+| 5 | `condicional_prima` | SINO | F6 | Empareja SINO, llama a `sentencias()` |
+| 6 | `sentencias` | ID `x` | R1 | `x = 2;` |
+| 7 | `sentencias` | FIN | R2 | ε |
+| 8 | `condicional_prima` | — | — | Empareja FIN |
+
+F6 se elige recién en el paso 5, cuando llega SINO, y no al comienzo del condicional: eso es lo que permitió la factorización de GIC-5.
+
+### 9.3 Errores en sentencias
+
+Hasta PAR-4, el primer error detiene el análisis (sección 5). Estos son los casos que verifican las pruebas:
+
+| Entrada | Dónde se detecta | Esperados |
+|---|---|---|
+| archivo vacío | `predecir("<programa>")` con EOF | INICIO |
+| `inicio x = 1;` (falta el `fin`) | `predecir("<sentencias>")` con EOF | La fila de `<sentencias>`: FIN, DATO, SI, SINO, MIENTRAS, MOSTRAR e ID |
+| `inicio x = 1 fin` (falta el `;`) | `predecir("<termino_prima>")` con FIN: FIN no puede seguir a una expresión | La fila de `<termino_prima>` |
+| `inicio dato si = 3; fin` | `emparejar("ID")` con SI (GIC-1, sección 3) | ID |
+| `inicio sino fin` | `emparejar("FIN")` de P1, después de que `sentencias` aplicó R2 con SINO | FIN |
+| `inicio mientras (a) entonces fin fin` | `emparejar("HACER")` con ENTONCES | HACER |
+| `inicio mostrar(); fin` | `predecir("<argumento>")` con PAR_CIERRA | La fila de `<argumento>` |
+| `inicio fin fin` | `verificar_fin()` | el fin del archivo |
+| `inicio si (a) entonces si (b) entonces x = 1; sino x = 2; fin fin` (falta un `fin`) | El primer FIN cierra el `si` interno (F6) y el segundo, el externo (F5); el programa queda sin su `fin` y el error aparece en `predecir("<sentencias>")` con EOF | La fila de `<sentencias>` |
+
+Por ejemplo, para `inicio`, `  mientras (a) entonces fin` y `fin` en tres líneas:
 
 ```
-python -m unittest tests.test_lexer tests.test_errores_lexicos tests.test_arbol tests.test_parser_expresiones -v
+Error sintáctico en la línea 2, columna 16: se esperaba HACER y se encontró 'entonces' (ENTONCES).
+```
+
+### 9.4 Límite de anidamiento de las sentencias
+
+`<sentencias>` es recursiva por la derecha (R1), así que cada sentencia de una lista agrega una llamada de Python, y cada bloque anidado (`si` o `mientras`) agrega unas tres (`sentencias`, `sentencia` y `condicional` o `ciclo`). Con el límite de recursión por defecto (1 000), se midió que el parser analiza unas **980 sentencias seguidas** y unos **320 bloques anidados**. Igual que en la sección 6, los programas de Cafetal quedan muy por debajo, y las pruebas verifican 500 sentencias seguidas y 100 bloques anidados.
+
+## 10. Pruebas de PAR-3
+
+```
+python -m unittest tests.test_parser_sentencias -v
+```
+
+| Grupo | Qué comprueba |
+|---|---|
+| Funciones | Una función por cada uno de los 10 no terminales de programa y sentencias, con todas sus reglas en el docstring; con PAR-2, los 23 no terminales de la tabla tienen función |
+| Programas de ejemplo | Los tres programas: la frontera es la entrada sin EOF, las reglas coinciden con el analizador LL(1) con pila (174, 134 y 165) y cada nodo tiene exactamente los hijos de su regla; estructura de las sentencias del secado y del cuerpo de su ciclo |
+| Árboles de PAR-1 | El parser construye exactamente los dos árboles que PAR-1 armó regla por regla (`inicio x = 1; fin` y un `si … sino … fin`) |
+| Sentencias | Programa vacío; las cinco reglas de `<sentencia>`; `mostrar` con cadena y con expresión; bloques vacíos con y sin `sino`; las dos lecturas del sino colgante y el texto al que le falta un `fin`; anidamiento de `mientras` y `si`; 500 sentencias y 100 bloques anidados |
+| Referencia LL(1) | El mismo algoritmo con pila de PAR-2, con la gramática completa: todos los programas `inicio w fin` con w de hasta 4 tokens de un alfabeto de 12 (22 621 programas) y 300 programas generados al azar desde `<programa>` con 2 variantes de un token cambiado cada uno. El parser acepta y rechaza exactamente lo mismo, aplica las mismas reglas en el mismo orden y, cuando rechaza, se detiene en el mismo token |
+| Errores | Los casos de la sección 9.3: contexto, esperados (fila de la tabla), posición y mensaje |
+
+La prueba de restricciones de PAR-2 (sección 7) también cubre estas funciones: revisa toda la clase `Parser`, y todas las comparaciones de PAR-3 son con etiquetas de regla.
+
+Resultado: **24 pruebas, todas correctas.** Con las de LXR-1, LXR-2, PAR-1 y PAR-2, la suite tiene 99 pruebas y todas pasan:
+
+```
+python -m unittest tests.test_lexer tests.test_errores_lexicos tests.test_arbol tests.test_parser_expresiones tests.test_parser_sentencias -v
 ```

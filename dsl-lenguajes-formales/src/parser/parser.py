@@ -345,3 +345,130 @@ class Parser:
     # ------------------------------------------------------------------
     # Programa y sentencias (PAR-3)
     # ------------------------------------------------------------------
+    # Cafetal no tiene instrucción de lectura: la única sentencia de
+    # entrada/salida es mostrar (GIC-2, sección 1).
+
+    # P1   <programa> ::= INICIO <sentencias> FIN
+    def programa(self):
+        """P1: <programa> ::= INICIO <sentencias> FIN"""
+        nodo = Nodo.no_terminal("<programa>", self.predecir("<programa>"))
+        nodo.agregar(self.emparejar("INICIO"))
+        nodo.agregar(self.sentencias())
+        nodo.agregar(self.emparejar("FIN"))
+        return nodo
+
+    # R1   <sentencias> ::= <sentencia> <sentencias>
+    # R2   <sentencias> ::= ε
+    def sentencias(self):
+        """R1: <sentencias> ::= <sentencia> <sentencias> | R2: ε"""
+        regla = self.predecir("<sentencias>")
+        nodo = Nodo.no_terminal("<sentencias>", regla)
+        if regla == "R1":
+            nodo.agregar(self.sentencia())
+            nodo.agregar(self.sentencias())
+        else:                                   # R2: llegó FIN o SINO
+            nodo.agregar(Nodo.vacio())
+        return nodo
+
+    # P4   <sentencia> ::= <declaracion>
+    # P5   <sentencia> ::= <asignacion>
+    # P6   <sentencia> ::= <salida>
+    # P7   <sentencia> ::= <condicional>
+    # P8   <sentencia> ::= <ciclo>
+    def sentencia(self):
+        """P4: <sentencia> ::= <declaracion> | P5: <asignacion> | P6: <salida> | P7: <condicional> | P8: <ciclo>"""
+        regla = self.predecir("<sentencia>")
+        nodo = Nodo.no_terminal("<sentencia>", regla)
+        if regla == "P4":
+            nodo.agregar(self.declaracion())
+        elif regla == "P5":
+            nodo.agregar(self.asignacion())
+        elif regla == "P6":
+            nodo.agregar(self.salida())
+        elif regla == "P7":
+            nodo.agregar(self.condicional())
+        else:                                   # P8
+            nodo.agregar(self.ciclo())
+        return nodo
+
+    # D1   <declaracion> ::= DATO ID ASIGNACION <expresion> PUNTO_COMA
+    def declaracion(self):
+        """D1: <declaracion> ::= DATO ID ASIGNACION <expresion> PUNTO_COMA"""
+        nodo = Nodo.no_terminal("<declaracion>", self.predecir("<declaracion>"))
+        nodo.agregar(self.emparejar("DATO"))
+        nodo.agregar(self.emparejar("ID"))
+        nodo.agregar(self.emparejar("ASIGNACION"))
+        nodo.agregar(self.expresion())
+        nodo.agregar(self.emparejar("PUNTO_COMA"))
+        return nodo
+
+    # A1   <asignacion> ::= ID ASIGNACION <expresion> PUNTO_COMA
+    def asignacion(self):
+        """A1: <asignacion> ::= ID ASIGNACION <expresion> PUNTO_COMA"""
+        nodo = Nodo.no_terminal("<asignacion>", self.predecir("<asignacion>"))
+        nodo.agregar(self.emparejar("ID"))
+        nodo.agregar(self.emparejar("ASIGNACION"))
+        nodo.agregar(self.expresion())
+        nodo.agregar(self.emparejar("PUNTO_COMA"))
+        return nodo
+
+    # M1   <salida> ::= MOSTRAR PAR_ABRE <argumento> PAR_CIERRA PUNTO_COMA
+    def salida(self):
+        """M1: <salida> ::= MOSTRAR PAR_ABRE <argumento> PAR_CIERRA PUNTO_COMA"""
+        nodo = Nodo.no_terminal("<salida>", self.predecir("<salida>"))
+        nodo.agregar(self.emparejar("MOSTRAR"))
+        nodo.agregar(self.emparejar("PAR_ABRE"))
+        nodo.agregar(self.argumento())
+        nodo.agregar(self.emparejar("PAR_CIERRA"))
+        nodo.agregar(self.emparejar("PUNTO_COMA"))
+        return nodo
+
+    # M2   <argumento> ::= <expresion>
+    # M3   <argumento> ::= CADENA
+    def argumento(self):
+        """M2: <argumento> ::= <expresion> | M3: CADENA"""
+        regla = self.predecir("<argumento>")
+        nodo = Nodo.no_terminal("<argumento>", regla)
+        if regla == "M3":
+            nodo.agregar(self.emparejar("CADENA"))
+        else:                                   # M2
+            nodo.agregar(self.expresion())
+        return nodo
+
+    # F4   <condicional> ::= SI PAR_ABRE <expresion> PAR_CIERRA ENTONCES <sentencias> <condicional_prima>
+    def condicional(self):
+        """F4: <condicional> ::= SI PAR_ABRE <expresion> PAR_CIERRA ENTONCES <sentencias> <condicional_prima>"""
+        nodo = Nodo.no_terminal("<condicional>", self.predecir("<condicional>"))
+        nodo.agregar(self.emparejar("SI"))
+        nodo.agregar(self.emparejar("PAR_ABRE"))
+        nodo.agregar(self.expresion())
+        nodo.agregar(self.emparejar("PAR_CIERRA"))
+        nodo.agregar(self.emparejar("ENTONCES"))
+        nodo.agregar(self.sentencias())
+        nodo.agregar(self.condicional_prima())
+        return nodo
+
+    # F5   <condicional_prima> ::= FIN
+    # F6   <condicional_prima> ::= SINO <sentencias> FIN
+    def condicional_prima(self):
+        """F5: <condicional_prima> ::= FIN | F6: SINO <sentencias> FIN"""
+        regla = self.predecir("<condicional_prima>")
+        nodo = Nodo.no_terminal("<condicional_prima>", regla)
+        if regla == "F6":
+            nodo.agregar(self.emparejar("SINO"))
+            nodo.agregar(self.sentencias())
+        nodo.agregar(self.emparejar("FIN"))     # F5 y F6 terminan con FIN
+        return nodo
+
+    # L1   <ciclo> ::= MIENTRAS PAR_ABRE <expresion> PAR_CIERRA HACER <sentencias> FIN
+    def ciclo(self):
+        """L1: <ciclo> ::= MIENTRAS PAR_ABRE <expresion> PAR_CIERRA HACER <sentencias> FIN"""
+        nodo = Nodo.no_terminal("<ciclo>", self.predecir("<ciclo>"))
+        nodo.agregar(self.emparejar("MIENTRAS"))
+        nodo.agregar(self.emparejar("PAR_ABRE"))
+        nodo.agregar(self.expresion())
+        nodo.agregar(self.emparejar("PAR_CIERRA"))
+        nodo.agregar(self.emparejar("HACER"))
+        nodo.agregar(self.sentencias())
+        nodo.agregar(self.emparejar("FIN"))
+        return nodo
