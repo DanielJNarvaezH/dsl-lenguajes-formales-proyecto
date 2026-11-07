@@ -1,0 +1,22 @@
+       <programa>
+⇒ P1   INICIO <sentencias> FIN
+⇒ R1   INICIO <sentencia> <sentencias> FIN
+⇒ P5   INICIO <asignacion> <sentencias> FIN
+⇒ A1   INICIO ID⟨x⟩ ASIGNACION <expresion> PUNTO_COMA <sentencias> FIN
+⇒ R3   INICIO ID⟨x⟩ ASIGNACION <conjuncion> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R6   INICIO ID⟨x⟩ ASIGNACION <negacion> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ E6   INICIO ID⟨x⟩ ASIGNACION <comparacion> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ F1   INICIO ID⟨x⟩ ASIGNACION <suma> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R9   INICIO ID⟨x⟩ ASIGNACION <termino> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R13  INICIO ID⟨x⟩ ASIGNACION <factor> <termino_prima> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ E22  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ <termino_prima> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R16  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R11  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA <termino> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R13  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA <factor> <termino_prima> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ E23  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ <termino_prima> <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R16  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ <suma_prima> <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R12  INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ <comparacion_prima> <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ F3   INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ <conjuncion_prima> <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R8   INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ <expresion_prima> PUNTO_COMA <sentencias> FIN
+⇒ R5   INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ PUNTO_COMA <sentencias> FIN
+⇒ R2   INICIO ID⟨x⟩ ASIGNACION ID⟨a⟩ RESTA ENTERO⟨1⟩ PUNTO_COMA FIN

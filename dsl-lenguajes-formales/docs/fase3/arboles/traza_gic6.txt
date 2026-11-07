@@ -1,0 +1,36 @@
+<programa> [P1]
+├── INICIO 'inicio'
+├── <sentencias> [R1]
+│   ├── <sentencia> [P5]
+│   │   └── <asignacion> [A1]
+│   │       ├── ID 'x'
+│   │       ├── ASIGNACION '='
+│   │       ├── <expresion> [R3]
+│   │       │   ├── <conjuncion> [R6]
+│   │       │   │   ├── <negacion> [E6]
+│   │       │   │   │   └── <comparacion> [F1]
+│   │       │   │   │       ├── <suma> [R9]
+│   │       │   │   │       │   ├── <termino> [R13]
+│   │       │   │   │       │   │   ├── <factor> [E22]
+│   │       │   │   │       │   │   │   └── ID 'a'
+│   │       │   │   │       │   │   └── <termino_prima> [R16]
+│   │       │   │   │       │   │       └── ε
+│   │       │   │   │       │   └── <suma_prima> [R11]
+│   │       │   │   │       │       ├── RESTA '-'
+│   │       │   │   │       │       ├── <termino> [R13]
+│   │       │   │   │       │       │   ├── <factor> [E23]
+│   │       │   │   │       │       │   │   └── ENTERO '1'
+│   │       │   │   │       │       │   └── <termino_prima> [R16]
+│   │       │   │   │       │       │       └── ε
+│   │       │   │   │       │       └── <suma_prima> [R12]
+│   │       │   │   │       │           └── ε
+│   │       │   │   │       └── <comparacion_prima> [F3]
+│   │       │   │   │           └── ε
+│   │       │   │   └── <conjuncion_prima> [R8]
+│   │       │   │       └── ε
+│   │       │   └── <expresion_prima> [R5]
+│   │       │       └── ε
+│   │       └── PUNTO_COMA ';'
+│   └── <sentencias> [R2]
+│       └── ε
+└── FIN 'fin'
