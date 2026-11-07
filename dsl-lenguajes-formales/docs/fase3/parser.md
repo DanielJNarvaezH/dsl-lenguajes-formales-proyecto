@@ -362,6 +362,12 @@ Cuando la regla pide el terminal T y el token actual t es otro:
 
 Estas dos acciones (insertar o borrar un token) son la recuperación a nivel de frase que describen Aho et al. (2006, sección 4.4.5) para un terminal en la cima de la pila del analizador predictivo.
 
+Las dos recuperaciones, la de `predecir` (11.3) y la de `emparejar` (esta sección), se resumen en el siguiente diagrama:
+
+![Recuperación de errores sintácticos en modo pánico](diagramas/img/par4_modo_panico.drawio.png)
+
+*Fuente editable: `diagramas/par4_modo_panico.drawio`.*
+
 ### 11.5 Errores en cascada
 
 Después de un error, varias funciones pueden encontrar tokens inesperados por el mismo error mientras el parser se recupera. Por eso, **después de un error no se registra otro hasta que se empareje correctamente algún token.** Por ejemplo, en `mostrar(;` seguido de `dato = 4;` en la línea siguiente, el error real es el `;` sin argumento. Después, `salida` no encuentra el `)` ni el `;`, pero esos avisos se suprimen porque son consecuencia del primero. El siguiente error, `dato = 4` sin identificador, sí se registra, porque antes se emparejó DATO.
