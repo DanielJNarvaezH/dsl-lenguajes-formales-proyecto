@@ -1,0 +1,14 @@
+# errores sintacticos en los bloques y en el cierre del programa
+inicio
+    dato dia = 1;
+    si dia == 1 entonces
+        mostrar("primer dia");
+    fin
+    si (dia > 0) entonces
+        dia = dia + 1;
+    sino
+        dia = 0;
+    mientras (dia < 5) hacer
+        dia = dia + 1;
+    fin
+fin

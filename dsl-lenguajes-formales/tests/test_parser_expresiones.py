@@ -182,7 +182,7 @@ class PruebaReferenciaLL1(unittest.TestCase):
         tabla = TablaLL1()
         reglas_ref, error_ref = referencia_ll1(tabla, tokens, "<expresion>", seguido_de)
         try:
-            raiz = Parser(tokens, tabla).analizar_fragmento("<expresion>", *seguido_de)
+            raiz = Parser(tokens, tabla, detener_en_error=True).analizar_fragmento("<expresion>", *seguido_de)
         except ErrorSintactico as error:
             self.assertEqual(tokens.index(error.encontrado), error_ref, tokens)
             return False
@@ -222,13 +222,20 @@ class PruebaReferenciaLL1(unittest.TestCase):
 
 
 class PruebaErrores(unittest.TestCase):
+    """Comportamiento de PAR-2: el primer error detiene el análisis.
+
+    Desde PAR-4 el parser se recupera por defecto; estas pruebas usan
+    detener_en_error=True. La recuperación se prueba en
+    tests/test_errores_sintacticos.py.
+    """
 
     def setUp(self):
         self.lexer = AnalizadorLexico()
 
     def error(self, texto):
         with self.assertRaises(ErrorSintactico) as contexto:
-            Parser(self.lexer.analizar(texto)).analizar_fragmento("<expresion>", "PUNTO_COMA")
+            Parser(self.lexer.analizar(texto), detener_en_error=True).analizar_fragmento(
+                "<expresion>", "PUNTO_COMA")
         return contexto.exception
 
     def test_relacionales_encadenados(self):
@@ -262,7 +269,8 @@ class PruebaErrores(unittest.TestCase):
 
     def test_sobra_texto_al_final(self):
         with self.assertRaises(ErrorSintactico) as contexto:
-            Parser(self.lexer.analizar("a; b")).analizar_fragmento("<expresion>", "PUNTO_COMA")
+            Parser(self.lexer.analizar("a; b"), detener_en_error=True).analizar_fragmento(
+                "<expresion>", "PUNTO_COMA")
         self.assertEqual(contexto.exception.esperados, ["EOF"])
         self.assertIn("se esperaba el fin del archivo", str(contexto.exception))
 

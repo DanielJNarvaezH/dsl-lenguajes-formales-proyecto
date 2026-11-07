@@ -19,10 +19,23 @@ lado derecho de las reglas de su no terminal. Si la tabla no tiene regla para
 el par (no terminal, token actual), o el token no es el terminal que la regla
 pide, hay un error sintáctico.
 
+Errores sintácticos (PAR-4): cada error se registra con el token esperado y el
+encontrado, su línea y su columna, y el análisis continúa en modo pánico:
+
+* en predecir(A), se descartan tokens hasta uno con el que A pueda empezar o
+  uno de SIGUIENTE(A) (más las palabras reservadas de anclaje). Si A puede
+  empezar, se deriva normalmente; si no, A se omite y su función devuelve un
+  nodo de error, para que quien la llamó siga con ese token;
+* en emparejar(T), si el token sobra (el siguiente sí es T) se descarta; si
+  no, se supone que T faltaba y se sigue como si estuviera.
+
+Así se listan varios errores en una sola pasada. Con detener_en_error=True el
+primer error detiene el análisis, como en PAR-2 y PAR-3.
+
 Este archivo tiene tres partes:
 
 * base común (PAR-2): TablaLL1, ErrorSintactico y la clase Parser con el
-  token actual, predecir, emparejar y el manejo de errores;
+  token actual, predecir, emparejar y el manejo de errores (PAR-4);
 * funciones de expresiones (PAR-2);
 * funciones de programa y sentencias (PAR-3).
 """
@@ -30,11 +43,29 @@ Este archivo tiene tres partes:
 import csv
 from pathlib import Path
 
+from ..lexer.lexer import Token
 from ..lexer.tokens import EOF
 from .arbol import Nodo
 
-# Ruta de la tabla: junto a este archivo, sin rutas fijas del equipo.
+# Rutas de los datos de GIC-6: junto a este archivo, sin rutas fijas del equipo.
 RUTA_TABLA_LL1 = Path(__file__).with_name("tabla_ll1.csv")
+RUTA_SIGUIENTE = Path(__file__).with_name("siguiente.csv")
+
+# Etiqueta del nodo de un no terminal que no se pudo derivar (PAR-4).
+REGLA_ERROR = "ERROR"
+
+# Anclaje del modo pánico (PAR-4): además de SIGUIENTE(A), la búsqueda de un
+# token de sincronización se detiene en las palabras reservadas que empiezan
+# una sentencia (DATO, SI, MIENTRAS, MOSTRAR) o terminan un bloque (SINO, FIN),
+# aunque no estén en SIGUIENTE(A). Es la recomendación de Aho et al. (2006,
+# sección 4.4.5) de agregar al conjunto de sincronización de una construcción
+# los símbolos que empiezan las construcciones de nivel superior: si el error
+# está dentro de una expresión, el análisis se retoma en la sentencia siguiente
+# en lugar de descartarla. Siempre hay una <sentencias> abierta que puede usar
+# esos tokens. ID no se incluye porque también aparece dentro de las
+# expresiones, ni ENTONCES y HACER, porque solo los usa la cabecera de un
+# bloque y fuera de ella dejarían al parser detenido en el mismo token.
+ANCLAJE = frozenset({"DATO", "SI", "MIENTRAS", "MOSTRAR", "SINO", "FIN"})
 
 
 class ErrorTablaLL1(Exception):
@@ -109,6 +140,15 @@ class TablaLL1:
         return [t for t in self.terminales if (no_terminal, t) in self.celdas]
 
 
+def cargar_siguiente(ruta=RUTA_SIGUIENTE):
+    """Conjuntos SIGUIENTE de GIC-6 (sección 6.4): {no terminal: frozenset de terminales}."""
+    with open(ruta, encoding="utf-8", newline="") as archivo:
+        filas = list(csv.reader(archivo))
+    if not filas or filas[0] != ["no_terminal", "siguiente"]:
+        raise ErrorTablaLL1(f"{ruta}: la cabecera debe ser 'no_terminal,siguiente'")
+    return {no_terminal: frozenset(terminales.split()) for no_terminal, terminales in filas[1:]}
+
+
 class Parser:
     """Analizador sintáctico descendente recursivo, dirigido por la tabla LL(1).
 
@@ -116,10 +156,14 @@ class Parser:
     construye el árbol de derivación.
     """
 
-    def __init__(self, tokens, tabla=None):
+    def __init__(self, tokens, tabla=None, siguiente=None, detener_en_error=False):
         self.tokens = list(tokens)
         self.tabla = tabla if tabla is not None else TablaLL1()
+        self.siguiente = siguiente if siguiente is not None else cargar_siguiente()
+        self.detener_en_error = detener_en_error
         self.posicion = 0
+        self.errores = []                 # ErrorSintactico, en el orden del texto
+        self._recuperando = False         # True desde un error hasta el siguiente emparejamiento
 
     # ------------------------------------------------------------------
     # Base común (PAR-2)
@@ -131,35 +175,85 @@ class Parser:
         return self.tokens[self.posicion]
 
     def predecir(self, no_terminal):
-        """Regla que la tabla LL(1) indica para el no terminal y el token actual."""
+        """Regla que la tabla LL(1) indica para el no terminal y el token actual.
+
+        Si la celda está vacía, registra el error y se sincroniza (PAR-4).
+        Devuelve None si el no terminal debe omitirse: en ese caso su función
+        devuelve self.omitido(no_terminal).
+        """
         regla = self.tabla.regla(no_terminal, self.actual.tipo)
         if regla is None:
             self._error(self.tabla.esperados(no_terminal), no_terminal)
+            regla = self._sincronizar(no_terminal)
         return regla
 
+    def _sincronizar(self, no_terminal):
+        """Modo pánico: descarta tokens hasta uno de sincronización.
+
+        Se detiene en un token con el que el no terminal puede empezar (la
+        tabla tiene regla), en uno de SIGUIENTE(no terminal), en una palabra de ANCLAJE
+        o en EOF. Devuelve la regla si el no terminal puede continuar, o None
+        si hay que omitirlo.
+        """
+        parada = self.siguiente[no_terminal] | ANCLAJE
+        while (self.actual.tipo != EOF
+               and self.tabla.regla(no_terminal, self.actual.tipo) is None
+               and self.actual.tipo not in parada):
+            self.posicion += 1
+        return self.tabla.regla(no_terminal, self.actual.tipo)
+
+    def omitido(self, no_terminal):
+        """Nodo de un no terminal que no se pudo derivar: regla ERROR y sin hijos."""
+        return Nodo.no_terminal(no_terminal, REGLA_ERROR)
+
     def emparejar(self, tipo):
-        """Consume el token actual si es del terminal que pide la regla y devuelve su hoja."""
+        """Consume el token actual si es del terminal que pide la regla y devuelve su hoja.
+
+        Si no lo es, registra el error y se recupera (PAR-4): si el token
+        actual sobra porque el siguiente sí es el esperado, lo descarta y
+        empareja el siguiente; si no, supone que el terminal faltaba y sigue sin
+        consumir nada, con una hoja de lexema vacío en lugar del token.
+        """
         token = self.actual
-        if token.tipo != tipo:
-            self._error([tipo], tipo)
-        self.posicion += 1
-        return Nodo.terminal(token)
+        if token.tipo == tipo:
+            self.posicion += 1
+            self._recuperando = False
+            return Nodo.terminal(token)
+        self._error([tipo], tipo)
+        if token.tipo != EOF and self.tokens[self.posicion + 1].tipo == tipo:
+            self.posicion += 2                    # token sobrante: se descarta
+            self._recuperando = False
+            return Nodo.terminal(self.tokens[self.posicion - 1])
+        return Nodo.terminal(Token(tipo, "", token.linea, token.columna))   # token faltante
 
     def verificar_fin(self):
-        """Después del símbolo inicial solo puede quedar EOF."""
+        """Después del símbolo inicial solo puede quedar EOF. Lo que sobra se ignora."""
         if self.actual.tipo != EOF:
             self._error([EOF], EOF)
+            self.posicion = len(self.tokens) - 1
 
     def _error(self, esperados, contexto):
-        """Error sintáctico en el token actual.
+        """Registra un error sintáctico en el token actual (PAR-4).
 
-        En PAR-2 el análisis se detiene en el primer error. PAR-4 reemplaza
-        este método por la recuperación en modo pánico con SIGUIENTE.
+        Después de un error no se registra otro hasta que se empareje
+        correctamente algún token: mientras el parser se recupera, las funciones
+        que encuentran tokens inesperados lo hacen por el mismo error, y esos
+        avisos en cascada no aportan información (Aho et al., 2006, sección
+        4.4.5). Con detener_en_error=True lanza el error, como en PAR-2 y PAR-3.
         """
-        raise ErrorSintactico(self.actual, esperados, contexto)
+        error = ErrorSintactico(self.actual, esperados, contexto)
+        if self.detener_en_error:
+            raise error
+        if not self._recuperando:
+            self.errores.append(error)
+            self._recuperando = True
 
     def analizar(self):
-        """Analiza un programa completo: <programa> seguido de EOF (requiere PAR-3)."""
+        """Analiza un programa completo: <programa> seguido de EOF.
+
+        Devuelve el árbol. Si hubo errores (self.errores no está vacío), el
+        árbol está incompleto: tiene nodos ERROR y hojas de lexema vacío.
+        """
         raiz = self.programa()
         self.verificar_fin()
         return raiz
@@ -186,7 +280,10 @@ class Parser:
     # R3   <expresion> ::= <conjuncion> <expresion_prima>
     def expresion(self):
         """R3: <expresion> ::= <conjuncion> <expresion_prima>"""
-        nodo = Nodo.no_terminal("<expresion>", self.predecir("<expresion>"))
+        regla = self.predecir("<expresion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<expresion>")
+        nodo = Nodo.no_terminal("<expresion>", regla)
         nodo.agregar(self.conjuncion())
         nodo.agregar(self.expresion_prima())
         return nodo
@@ -196,6 +293,8 @@ class Parser:
     def expresion_prima(self):
         """R4: <expresion_prima> ::= O <conjuncion> <expresion_prima> | R5: ε"""
         regla = self.predecir("<expresion_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<expresion_prima>")
         nodo = Nodo.no_terminal("<expresion_prima>", regla)
         if regla == "R4":
             nodo.agregar(self.emparejar("O"))
@@ -208,7 +307,10 @@ class Parser:
     # R6   <conjuncion> ::= <negacion> <conjuncion_prima>
     def conjuncion(self):
         """R6: <conjuncion> ::= <negacion> <conjuncion_prima>"""
-        nodo = Nodo.no_terminal("<conjuncion>", self.predecir("<conjuncion>"))
+        regla = self.predecir("<conjuncion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<conjuncion>")
+        nodo = Nodo.no_terminal("<conjuncion>", regla)
         nodo.agregar(self.negacion())
         nodo.agregar(self.conjuncion_prima())
         return nodo
@@ -218,6 +320,8 @@ class Parser:
     def conjuncion_prima(self):
         """R7: <conjuncion_prima> ::= Y <negacion> <conjuncion_prima> | R8: ε"""
         regla = self.predecir("<conjuncion_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<conjuncion_prima>")
         nodo = Nodo.no_terminal("<conjuncion_prima>", regla)
         if regla == "R7":
             nodo.agregar(self.emparejar("Y"))
@@ -232,6 +336,8 @@ class Parser:
     def negacion(self):
         """E5: <negacion> ::= NO <negacion> | E6: <comparacion>"""
         regla = self.predecir("<negacion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<negacion>")
         nodo = Nodo.no_terminal("<negacion>", regla)
         if regla == "E5":
             nodo.agregar(self.emparejar("NO"))
@@ -243,7 +349,10 @@ class Parser:
     # F1   <comparacion> ::= <suma> <comparacion_prima>
     def comparacion(self):
         """F1: <comparacion> ::= <suma> <comparacion_prima>"""
-        nodo = Nodo.no_terminal("<comparacion>", self.predecir("<comparacion>"))
+        regla = self.predecir("<comparacion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<comparacion>")
+        nodo = Nodo.no_terminal("<comparacion>", regla)
         nodo.agregar(self.suma())
         nodo.agregar(self.comparacion_prima())
         return nodo
@@ -253,6 +362,8 @@ class Parser:
     def comparacion_prima(self):
         """F2: <comparacion_prima> ::= <op_rel> <suma> | F3: ε"""
         regla = self.predecir("<comparacion_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<comparacion_prima>")
         nodo = Nodo.no_terminal("<comparacion_prima>", regla)
         if regla == "F2":
             nodo.agregar(self.op_rel())
@@ -270,6 +381,8 @@ class Parser:
     def op_rel(self):
         """E9: <op_rel> ::= MENOR | E10: MAYOR | E11: MENOR_IGUAL | E12: MAYOR_IGUAL | E13: IGUAL | E14: DIFERENTE"""
         regla = self.predecir("<op_rel>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<op_rel>")
         nodo = Nodo.no_terminal("<op_rel>", regla)
         nodo.agregar(self.emparejar(self.TERMINAL_OP_REL[regla]))
         return nodo
@@ -277,7 +390,10 @@ class Parser:
     # R9   <suma> ::= <termino> <suma_prima>
     def suma(self):
         """R9: <suma> ::= <termino> <suma_prima>"""
-        nodo = Nodo.no_terminal("<suma>", self.predecir("<suma>"))
+        regla = self.predecir("<suma>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<suma>")
+        nodo = Nodo.no_terminal("<suma>", regla)
         nodo.agregar(self.termino())
         nodo.agregar(self.suma_prima())
         return nodo
@@ -290,6 +406,8 @@ class Parser:
     def suma_prima(self):
         """R10: <suma_prima> ::= SUMA <termino> <suma_prima> | R11: RESTA <termino> <suma_prima> | R12: ε"""
         regla = self.predecir("<suma_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<suma_prima>")
         nodo = Nodo.no_terminal("<suma_prima>", regla)
         if regla in self.OPERADOR_SUMA:         # R10 o R11
             nodo.agregar(self.emparejar(self.OPERADOR_SUMA[regla]))
@@ -302,7 +420,10 @@ class Parser:
     # R13  <termino> ::= <factor> <termino_prima>
     def termino(self):
         """R13: <termino> ::= <factor> <termino_prima>"""
-        nodo = Nodo.no_terminal("<termino>", self.predecir("<termino>"))
+        regla = self.predecir("<termino>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<termino>")
+        nodo = Nodo.no_terminal("<termino>", regla)
         nodo.agregar(self.factor())
         nodo.agregar(self.termino_prima())
         return nodo
@@ -315,6 +436,8 @@ class Parser:
     def termino_prima(self):
         """R14: <termino_prima> ::= MULT <factor> <termino_prima> | R15: DIV <factor> <termino_prima> | R16: ε"""
         regla = self.predecir("<termino_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<termino_prima>")
         nodo = Nodo.no_terminal("<termino_prima>", regla)
         if regla in self.OPERADOR_TERMINO:      # R14 o R15
             nodo.agregar(self.emparejar(self.OPERADOR_TERMINO[regla]))
@@ -333,6 +456,8 @@ class Parser:
     def factor(self):
         """E21: <factor> ::= PAR_ABRE <expresion> PAR_CIERRA | E22: ID | E23: ENTERO | E24: DECIMAL"""
         regla = self.predecir("<factor>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<factor>")
         nodo = Nodo.no_terminal("<factor>", regla)
         if regla == "E21":
             nodo.agregar(self.emparejar("PAR_ABRE"))
@@ -351,7 +476,10 @@ class Parser:
     # P1   <programa> ::= INICIO <sentencias> FIN
     def programa(self):
         """P1: <programa> ::= INICIO <sentencias> FIN"""
-        nodo = Nodo.no_terminal("<programa>", self.predecir("<programa>"))
+        regla = self.predecir("<programa>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<programa>")
+        nodo = Nodo.no_terminal("<programa>", regla)
         nodo.agregar(self.emparejar("INICIO"))
         nodo.agregar(self.sentencias())
         nodo.agregar(self.emparejar("FIN"))
@@ -362,6 +490,8 @@ class Parser:
     def sentencias(self):
         """R1: <sentencias> ::= <sentencia> <sentencias> | R2: ε"""
         regla = self.predecir("<sentencias>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<sentencias>")
         nodo = Nodo.no_terminal("<sentencias>", regla)
         if regla == "R1":
             nodo.agregar(self.sentencia())
@@ -378,6 +508,8 @@ class Parser:
     def sentencia(self):
         """P4: <sentencia> ::= <declaracion> | P5: <asignacion> | P6: <salida> | P7: <condicional> | P8: <ciclo>"""
         regla = self.predecir("<sentencia>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<sentencia>")
         nodo = Nodo.no_terminal("<sentencia>", regla)
         if regla == "P4":
             nodo.agregar(self.declaracion())
@@ -394,7 +526,10 @@ class Parser:
     # D1   <declaracion> ::= DATO ID ASIGNACION <expresion> PUNTO_COMA
     def declaracion(self):
         """D1: <declaracion> ::= DATO ID ASIGNACION <expresion> PUNTO_COMA"""
-        nodo = Nodo.no_terminal("<declaracion>", self.predecir("<declaracion>"))
+        regla = self.predecir("<declaracion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<declaracion>")
+        nodo = Nodo.no_terminal("<declaracion>", regla)
         nodo.agregar(self.emparejar("DATO"))
         nodo.agregar(self.emparejar("ID"))
         nodo.agregar(self.emparejar("ASIGNACION"))
@@ -405,7 +540,10 @@ class Parser:
     # A1   <asignacion> ::= ID ASIGNACION <expresion> PUNTO_COMA
     def asignacion(self):
         """A1: <asignacion> ::= ID ASIGNACION <expresion> PUNTO_COMA"""
-        nodo = Nodo.no_terminal("<asignacion>", self.predecir("<asignacion>"))
+        regla = self.predecir("<asignacion>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<asignacion>")
+        nodo = Nodo.no_terminal("<asignacion>", regla)
         nodo.agregar(self.emparejar("ID"))
         nodo.agregar(self.emparejar("ASIGNACION"))
         nodo.agregar(self.expresion())
@@ -415,7 +553,10 @@ class Parser:
     # M1   <salida> ::= MOSTRAR PAR_ABRE <argumento> PAR_CIERRA PUNTO_COMA
     def salida(self):
         """M1: <salida> ::= MOSTRAR PAR_ABRE <argumento> PAR_CIERRA PUNTO_COMA"""
-        nodo = Nodo.no_terminal("<salida>", self.predecir("<salida>"))
+        regla = self.predecir("<salida>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<salida>")
+        nodo = Nodo.no_terminal("<salida>", regla)
         nodo.agregar(self.emparejar("MOSTRAR"))
         nodo.agregar(self.emparejar("PAR_ABRE"))
         nodo.agregar(self.argumento())
@@ -428,6 +569,8 @@ class Parser:
     def argumento(self):
         """M2: <argumento> ::= <expresion> | M3: CADENA"""
         regla = self.predecir("<argumento>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<argumento>")
         nodo = Nodo.no_terminal("<argumento>", regla)
         if regla == "M3":
             nodo.agregar(self.emparejar("CADENA"))
@@ -438,7 +581,10 @@ class Parser:
     # F4   <condicional> ::= SI PAR_ABRE <expresion> PAR_CIERRA ENTONCES <sentencias> <condicional_prima>
     def condicional(self):
         """F4: <condicional> ::= SI PAR_ABRE <expresion> PAR_CIERRA ENTONCES <sentencias> <condicional_prima>"""
-        nodo = Nodo.no_terminal("<condicional>", self.predecir("<condicional>"))
+        regla = self.predecir("<condicional>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<condicional>")
+        nodo = Nodo.no_terminal("<condicional>", regla)
         nodo.agregar(self.emparejar("SI"))
         nodo.agregar(self.emparejar("PAR_ABRE"))
         nodo.agregar(self.expresion())
@@ -453,6 +599,8 @@ class Parser:
     def condicional_prima(self):
         """F5: <condicional_prima> ::= FIN | F6: SINO <sentencias> FIN"""
         regla = self.predecir("<condicional_prima>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<condicional_prima>")
         nodo = Nodo.no_terminal("<condicional_prima>", regla)
         if regla == "F6":
             nodo.agregar(self.emparejar("SINO"))
@@ -463,7 +611,10 @@ class Parser:
     # L1   <ciclo> ::= MIENTRAS PAR_ABRE <expresion> PAR_CIERRA HACER <sentencias> FIN
     def ciclo(self):
         """L1: <ciclo> ::= MIENTRAS PAR_ABRE <expresion> PAR_CIERRA HACER <sentencias> FIN"""
-        nodo = Nodo.no_terminal("<ciclo>", self.predecir("<ciclo>"))
+        regla = self.predecir("<ciclo>")
+        if regla is None:                       # PAR-4: no se pudo derivar
+            return self.omitido("<ciclo>")
+        nodo = Nodo.no_terminal("<ciclo>", regla)
         nodo.agregar(self.emparejar("MIENTRAS"))
         nodo.agregar(self.emparejar("PAR_ABRE"))
         nodo.agregar(self.expresion())
