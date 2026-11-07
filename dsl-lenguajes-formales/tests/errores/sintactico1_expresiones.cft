@@ -1,0 +1,11 @@
+# errores sintacticos en expresiones
+inicio
+    dato kilos = 250;
+    dato precio = (kilos + ;
+    dato total = kilos * * 2;
+    si (kilos < 10 < 20) entonces
+        mostrar(total);
+    fin
+    dato promedio = kilos / 2
+    mostrar(promedio);
+fin
