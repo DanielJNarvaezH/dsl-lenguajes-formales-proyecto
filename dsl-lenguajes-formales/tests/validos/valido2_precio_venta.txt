@@ -1,0 +1,357 @@
+<programa> [P1]
+├── INICIO 'inicio'
+├── <sentencias> [R1]
+│   ├── <sentencia> [P4]
+│   │   └── <declaracion> [D1]
+│   │       ├── DATO 'dato'
+│   │       ├── ID 'factor'
+│   │       ├── ASIGNACION '='
+│   │       ├── <expresion> [R3]
+│   │       │   ├── <conjuncion> [R6]
+│   │       │   │   ├── <negacion> [E6]
+│   │       │   │   │   └── <comparacion> [F1]
+│   │       │   │   │       ├── <suma> [R9]
+│   │       │   │   │       │   ├── <termino> [R13]
+│   │       │   │   │       │   │   ├── <factor> [E24]
+│   │       │   │   │       │   │   │   └── DECIMAL '92.8'
+│   │       │   │   │       │   │   └── <termino_prima> [R16]
+│   │       │   │   │       │   │       └── ε
+│   │       │   │   │       │   └── <suma_prima> [R12]
+│   │       │   │   │       │       └── ε
+│   │       │   │   │       └── <comparacion_prima> [F3]
+│   │       │   │   │           └── ε
+│   │       │   │   └── <conjuncion_prima> [R8]
+│   │       │   │       └── ε
+│   │       │   └── <expresion_prima> [R5]
+│   │       │       └── ε
+│   │       └── PUNTO_COMA ';'
+│   └── <sentencias> [R1]
+│       ├── <sentencia> [P4]
+│       │   └── <declaracion> [D1]
+│       │       ├── DATO 'dato'
+│       │       ├── ID 'humedad'
+│       │       ├── ASIGNACION '='
+│       │       ├── <expresion> [R3]
+│       │       │   ├── <conjuncion> [R6]
+│       │       │   │   ├── <negacion> [E6]
+│       │       │   │   │   └── <comparacion> [F1]
+│       │       │   │   │       ├── <suma> [R9]
+│       │       │   │   │       │   ├── <termino> [R13]
+│       │       │   │   │       │   │   ├── <factor> [E23]
+│       │       │   │   │       │   │   │   └── ENTERO '11'
+│       │       │   │   │       │   │   └── <termino_prima> [R16]
+│       │       │   │   │       │   │       └── ε
+│       │       │   │   │       │   └── <suma_prima> [R12]
+│       │       │   │   │       │       └── ε
+│       │       │   │   │       └── <comparacion_prima> [F3]
+│       │       │   │   │           └── ε
+│       │       │   │   └── <conjuncion_prima> [R8]
+│       │       │   │       └── ε
+│       │       │   └── <expresion_prima> [R5]
+│       │       │       └── ε
+│       │       └── PUNTO_COMA ';'
+│       └── <sentencias> [R1]
+│           ├── <sentencia> [P4]
+│           │   └── <declaracion> [D1]
+│           │       ├── DATO 'dato'
+│           │       ├── ID 'precio_base'
+│           │       ├── ASIGNACION '='
+│           │       ├── <expresion> [R3]
+│           │       │   ├── <conjuncion> [R6]
+│           │       │   │   ├── <negacion> [E6]
+│           │       │   │   │   └── <comparacion> [F1]
+│           │       │   │   │       ├── <suma> [R9]
+│           │       │   │   │       │   ├── <termino> [R13]
+│           │       │   │   │       │   │   ├── <factor> [E23]
+│           │       │   │   │       │   │   │   └── ENTERO '2100000'
+│           │       │   │   │       │   │   └── <termino_prima> [R16]
+│           │       │   │   │       │   │       └── ε
+│           │       │   │   │       │   └── <suma_prima> [R12]
+│           │       │   │   │       │       └── ε
+│           │       │   │   │       └── <comparacion_prima> [F3]
+│           │       │   │   │           └── ε
+│           │       │   │   └── <conjuncion_prima> [R8]
+│           │       │   │       └── ε
+│           │       │   └── <expresion_prima> [R5]
+│           │       │       └── ε
+│           │       └── PUNTO_COMA ';'
+│           └── <sentencias> [R1]
+│               ├── <sentencia> [P4]
+│               │   └── <declaracion> [D1]
+│               │       ├── DATO 'dato'
+│               │       ├── ID 'precio'
+│               │       ├── ASIGNACION '='
+│               │       ├── <expresion> [R3]
+│               │       │   ├── <conjuncion> [R6]
+│               │       │   │   ├── <negacion> [E6]
+│               │       │   │   │   └── <comparacion> [F1]
+│               │       │   │   │       ├── <suma> [R9]
+│               │       │   │   │       │   ├── <termino> [R13]
+│               │       │   │   │       │   │   ├── <factor> [E22]
+│               │       │   │   │       │   │   │   └── ID 'precio_base'
+│               │       │   │   │       │   │   └── <termino_prima> [R16]
+│               │       │   │   │       │   │       └── ε
+│               │       │   │   │       │   └── <suma_prima> [R12]
+│               │       │   │   │       │       └── ε
+│               │       │   │   │       └── <comparacion_prima> [F3]
+│               │       │   │   │           └── ε
+│               │       │   │   └── <conjuncion_prima> [R8]
+│               │       │   │       └── ε
+│               │       │   └── <expresion_prima> [R5]
+│               │       │       └── ε
+│               │       └── PUNTO_COMA ';'
+│               └── <sentencias> [R1]
+│                   ├── <sentencia> [P7]
+│                   │   └── <condicional> [F4]
+│                   │       ├── SI 'si'
+│                   │       ├── PAR_ABRE '('
+│                   │       ├── <expresion> [R3]
+│                   │       │   ├── <conjuncion> [R6]
+│                   │       │   │   ├── <negacion> [E6]
+│                   │       │   │   │   └── <comparacion> [F1]
+│                   │       │   │   │       ├── <suma> [R9]
+│                   │       │   │   │       │   ├── <termino> [R13]
+│                   │       │   │   │       │   │   ├── <factor> [E22]
+│                   │       │   │   │       │   │   │   └── ID 'factor'
+│                   │       │   │   │       │   │   └── <termino_prima> [R16]
+│                   │       │   │   │       │   │       └── ε
+│                   │       │   │   │       │   └── <suma_prima> [R12]
+│                   │       │   │   │       │       └── ε
+│                   │       │   │   │       └── <comparacion_prima> [F2]
+│                   │       │   │   │           ├── <op_rel> [E11]
+│                   │       │   │   │           │   └── MENOR_IGUAL '<='
+│                   │       │   │   │           └── <suma> [R9]
+│                   │       │   │   │               ├── <termino> [R13]
+│                   │       │   │   │               │   ├── <factor> [E23]
+│                   │       │   │   │               │   │   └── ENTERO '94'
+│                   │       │   │   │               │   └── <termino_prima> [R16]
+│                   │       │   │   │               │       └── ε
+│                   │       │   │   │               └── <suma_prima> [R12]
+│                   │       │   │   │                   └── ε
+│                   │       │   │   └── <conjuncion_prima> [R7]
+│                   │       │   │       ├── Y 'y'
+│                   │       │   │       ├── <negacion> [E6]
+│                   │       │   │       │   └── <comparacion> [F1]
+│                   │       │   │       │       ├── <suma> [R9]
+│                   │       │   │       │       │   ├── <termino> [R13]
+│                   │       │   │       │       │   │   ├── <factor> [E22]
+│                   │       │   │       │       │   │   │   └── ID 'humedad'
+│                   │       │   │       │       │   │   └── <termino_prima> [R16]
+│                   │       │   │       │       │   │       └── ε
+│                   │       │   │       │       │   └── <suma_prima> [R12]
+│                   │       │   │       │       │       └── ε
+│                   │       │   │       │       └── <comparacion_prima> [F2]
+│                   │       │   │       │           ├── <op_rel> [E12]
+│                   │       │   │       │           │   └── MAYOR_IGUAL '>='
+│                   │       │   │       │           └── <suma> [R9]
+│                   │       │   │       │               ├── <termino> [R13]
+│                   │       │   │       │               │   ├── <factor> [E23]
+│                   │       │   │       │               │   │   └── ENTERO '10'
+│                   │       │   │       │               │   └── <termino_prima> [R16]
+│                   │       │   │       │               │       └── ε
+│                   │       │   │       │               └── <suma_prima> [R12]
+│                   │       │   │       │                   └── ε
+│                   │       │   │       └── <conjuncion_prima> [R8]
+│                   │       │   │           └── ε
+│                   │       │   └── <expresion_prima> [R5]
+│                   │       │       └── ε
+│                   │       ├── PAR_CIERRA ')'
+│                   │       ├── ENTONCES 'entonces'
+│                   │       ├── <sentencias> [R1]
+│                   │       │   ├── <sentencia> [P5]
+│                   │       │   │   └── <asignacion> [A1]
+│                   │       │   │       ├── ID 'precio'
+│                   │       │   │       ├── ASIGNACION '='
+│                   │       │   │       ├── <expresion> [R3]
+│                   │       │   │       │   ├── <conjuncion> [R6]
+│                   │       │   │       │   │   ├── <negacion> [E6]
+│                   │       │   │       │   │   │   └── <comparacion> [F1]
+│                   │       │   │       │   │   │       ├── <suma> [R9]
+│                   │       │   │       │   │   │       │   ├── <termino> [R13]
+│                   │       │   │       │   │   │       │   │   ├── <factor> [E22]
+│                   │       │   │       │   │   │       │   │   │   └── ID 'precio_base'
+│                   │       │   │       │   │   │       │   │   └── <termino_prima> [R14]
+│                   │       │   │       │   │   │       │   │       ├── MULT '*'
+│                   │       │   │       │   │   │       │   │       ├── <factor> [E24]
+│                   │       │   │       │   │   │       │   │       │   └── DECIMAL '1.05'
+│                   │       │   │       │   │   │       │   │       └── <termino_prima> [R16]
+│                   │       │   │       │   │   │       │   │           └── ε
+│                   │       │   │       │   │   │       │   └── <suma_prima> [R12]
+│                   │       │   │       │   │   │       │       └── ε
+│                   │       │   │       │   │   │       └── <comparacion_prima> [F3]
+│                   │       │   │       │   │   │           └── ε
+│                   │       │   │       │   │   └── <conjuncion_prima> [R8]
+│                   │       │   │       │   │       └── ε
+│                   │       │   │       │   └── <expresion_prima> [R5]
+│                   │       │   │       │       └── ε
+│                   │       │   │       └── PUNTO_COMA ';'
+│                   │       │   └── <sentencias> [R1]
+│                   │       │       ├── <sentencia> [P6]
+│                   │       │       │   └── <salida> [M1]
+│                   │       │       │       ├── MOSTRAR 'mostrar'
+│                   │       │       │       ├── PAR_ABRE '('
+│                   │       │       │       ├── <argumento> [M3]
+│                   │       │       │       │   └── CADENA '"bonificacion por calidad"'
+│                   │       │       │       ├── PAR_CIERRA ')'
+│                   │       │       │       └── PUNTO_COMA ';'
+│                   │       │       └── <sentencias> [R2]
+│                   │       │           └── ε
+│                   │       └── <condicional_prima> [F6]
+│                   │           ├── SINO 'sino'
+│                   │           ├── <sentencias> [R1]
+│                   │           │   ├── <sentencia> [P5]
+│                   │           │   │   └── <asignacion> [A1]
+│                   │           │   │       ├── ID 'precio'
+│                   │           │   │       ├── ASIGNACION '='
+│                   │           │   │       ├── <expresion> [R3]
+│                   │           │   │       │   ├── <conjuncion> [R6]
+│                   │           │   │       │   │   ├── <negacion> [E6]
+│                   │           │   │       │   │   │   └── <comparacion> [F1]
+│                   │           │   │       │   │   │       ├── <suma> [R9]
+│                   │           │   │       │   │   │       │   ├── <termino> [R13]
+│                   │           │   │       │   │   │       │   │   ├── <factor> [E22]
+│                   │           │   │       │   │   │       │   │   │   └── ID 'precio_base'
+│                   │           │   │       │   │   │       │   │   └── <termino_prima> [R16]
+│                   │           │   │       │   │   │       │   │       └── ε
+│                   │           │   │       │   │   │       │   └── <suma_prima> [R11]
+│                   │           │   │       │   │   │       │       ├── RESTA '-'
+│                   │           │   │       │   │   │       │       ├── <termino> [R13]
+│                   │           │   │       │   │   │       │       │   ├── <factor> [E23]
+│                   │           │   │       │   │   │       │       │   │   └── ENTERO '50000'
+│                   │           │   │       │   │   │       │       │   └── <termino_prima> [R16]
+│                   │           │   │       │   │   │       │       │       └── ε
+│                   │           │   │       │   │   │       │       └── <suma_prima> [R12]
+│                   │           │   │       │   │   │       │           └── ε
+│                   │           │   │       │   │   │       └── <comparacion_prima> [F3]
+│                   │           │   │       │   │   │           └── ε
+│                   │           │   │       │   │   └── <conjuncion_prima> [R8]
+│                   │           │   │       │   │       └── ε
+│                   │           │   │       │   └── <expresion_prima> [R5]
+│                   │           │   │       │       └── ε
+│                   │           │   │       └── PUNTO_COMA ';'
+│                   │           │   └── <sentencias> [R2]
+│                   │           │       └── ε
+│                   │           └── FIN 'fin'
+│                   └── <sentencias> [R1]
+│                       ├── <sentencia> [P7]
+│                       │   └── <condicional> [F4]
+│                       │       ├── SI 'si'
+│                       │       ├── PAR_ABRE '('
+│                       │       ├── <expresion> [R3]
+│                       │       │   ├── <conjuncion> [R6]
+│                       │       │   │   ├── <negacion> [E6]
+│                       │       │   │   │   └── <comparacion> [F1]
+│                       │       │   │   │       ├── <suma> [R9]
+│                       │       │   │   │       │   ├── <termino> [R13]
+│                       │       │   │   │       │   │   ├── <factor> [E22]
+│                       │       │   │   │       │   │   │   └── ID 'humedad'
+│                       │       │   │   │       │   │   └── <termino_prima> [R16]
+│                       │       │   │   │       │   │       └── ε
+│                       │       │   │   │       │   └── <suma_prima> [R12]
+│                       │       │   │   │       │       └── ε
+│                       │       │   │   │       └── <comparacion_prima> [F2]
+│                       │       │   │   │           ├── <op_rel> [E14]
+│                       │       │   │   │           │   └── DIFERENTE '!='
+│                       │       │   │   │           └── <suma> [R9]
+│                       │       │   │   │               ├── <termino> [R13]
+│                       │       │   │   │               │   ├── <factor> [E23]
+│                       │       │   │   │               │   │   └── ENTERO '11'
+│                       │       │   │   │               │   └── <termino_prima> [R16]
+│                       │       │   │   │               │       └── ε
+│                       │       │   │   │               └── <suma_prima> [R12]
+│                       │       │   │   │                   └── ε
+│                       │       │   │   └── <conjuncion_prima> [R8]
+│                       │       │   │       └── ε
+│                       │       │   └── <expresion_prima> [R5]
+│                       │       │       └── ε
+│                       │       ├── PAR_CIERRA ')'
+│                       │       ├── ENTONCES 'entonces'
+│                       │       ├── <sentencias> [R1]
+│                       │       │   ├── <sentencia> [P6]
+│                       │       │   │   └── <salida> [M1]
+│                       │       │   │       ├── MOSTRAR 'mostrar'
+│                       │       │   │       ├── PAR_ABRE '('
+│                       │       │   │       ├── <argumento> [M3]
+│                       │       │   │       │   └── CADENA '"revisar humedad"'
+│                       │       │   │       ├── PAR_CIERRA ')'
+│                       │       │   │       └── PUNTO_COMA ';'
+│                       │       │   └── <sentencias> [R2]
+│                       │       │       └── ε
+│                       │       └── <condicional_prima> [F5]
+│                       │           └── FIN 'fin'
+│                       └── <sentencias> [R1]
+│                           ├── <sentencia> [P7]
+│                           │   └── <condicional> [F4]
+│                           │       ├── SI 'si'
+│                           │       ├── PAR_ABRE '('
+│                           │       ├── <expresion> [R3]
+│                           │       │   ├── <conjuncion> [R6]
+│                           │       │   │   ├── <negacion> [E6]
+│                           │       │   │   │   └── <comparacion> [F1]
+│                           │       │   │   │       ├── <suma> [R9]
+│                           │       │   │   │       │   ├── <termino> [R13]
+│                           │       │   │   │       │   │   ├── <factor> [E22]
+│                           │       │   │   │       │   │   │   └── ID 'precio'
+│                           │       │   │   │       │   │   └── <termino_prima> [R16]
+│                           │       │   │   │       │   │       └── ε
+│                           │       │   │   │       │   └── <suma_prima> [R12]
+│                           │       │   │   │       │       └── ε
+│                           │       │   │   │       └── <comparacion_prima> [F2]
+│                           │       │   │   │           ├── <op_rel> [E13]
+│                           │       │   │   │           │   └── IGUAL '=='
+│                           │       │   │   │           └── <suma> [R9]
+│                           │       │   │   │               ├── <termino> [R13]
+│                           │       │   │   │               │   ├── <factor> [E22]
+│                           │       │   │   │               │   │   └── ID 'precio_base'
+│                           │       │   │   │               │   └── <termino_prima> [R16]
+│                           │       │   │   │               │       └── ε
+│                           │       │   │   │               └── <suma_prima> [R12]
+│                           │       │   │   │                   └── ε
+│                           │       │   │   └── <conjuncion_prima> [R8]
+│                           │       │   │       └── ε
+│                           │       │   └── <expresion_prima> [R5]
+│                           │       │       └── ε
+│                           │       ├── PAR_CIERRA ')'
+│                           │       ├── ENTONCES 'entonces'
+│                           │       ├── <sentencias> [R1]
+│                           │       │   ├── <sentencia> [P6]
+│                           │       │   │   └── <salida> [M1]
+│                           │       │   │       ├── MOSTRAR 'mostrar'
+│                           │       │   │       ├── PAR_ABRE '('
+│                           │       │   │       ├── <argumento> [M3]
+│                           │       │   │       │   └── CADENA '"precio sin cambios"'
+│                           │       │   │       ├── PAR_CIERRA ')'
+│                           │       │   │       └── PUNTO_COMA ';'
+│                           │       │   └── <sentencias> [R2]
+│                           │       │       └── ε
+│                           │       └── <condicional_prima> [F5]
+│                           │           └── FIN 'fin'
+│                           └── <sentencias> [R1]
+│                               ├── <sentencia> [P6]
+│                               │   └── <salida> [M1]
+│                               │       ├── MOSTRAR 'mostrar'
+│                               │       ├── PAR_ABRE '('
+│                               │       ├── <argumento> [M2]
+│                               │       │   └── <expresion> [R3]
+│                               │       │       ├── <conjuncion> [R6]
+│                               │       │       │   ├── <negacion> [E6]
+│                               │       │       │   │   └── <comparacion> [F1]
+│                               │       │       │   │       ├── <suma> [R9]
+│                               │       │       │   │       │   ├── <termino> [R13]
+│                               │       │       │   │       │   │   ├── <factor> [E22]
+│                               │       │       │   │       │   │   │   └── ID 'precio'
+│                               │       │       │   │       │   │   └── <termino_prima> [R16]
+│                               │       │       │   │       │   │       └── ε
+│                               │       │       │   │       │   └── <suma_prima> [R12]
+│                               │       │       │   │       │       └── ε
+│                               │       │       │   │       └── <comparacion_prima> [F3]
+│                               │       │       │   │           └── ε
+│                               │       │       │   └── <conjuncion_prima> [R8]
+│                               │       │       │       └── ε
+│                               │       │       └── <expresion_prima> [R5]
+│                               │       │           └── ε
+│                               │       ├── PAR_CIERRA ')'
+│                               │       └── PUNTO_COMA ';'
+│                               └── <sentencias> [R2]
+│                                   └── ε
+└── FIN 'fin'

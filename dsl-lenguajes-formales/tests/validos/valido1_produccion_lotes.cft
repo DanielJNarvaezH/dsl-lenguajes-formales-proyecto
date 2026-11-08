@@ -1,0 +1,14 @@
+# produccion de tres lotes y promedio por arbol
+inicio
+    dato lote_a = 320;
+    dato lote_b = 275.5;
+    dato lote_c = 410;
+    dato arboles = 1200;
+    dato total = lote_a + lote_b + lote_c;
+    dato promedio = total / arboles;
+    dato ajuste = (lote_a - lote_b) * 2 + lote_c / 4 - 0.75;
+    mostrar("produccion total");
+    mostrar(total);
+    mostrar(promedio * 1000);
+    mostrar(ajuste);
+fin

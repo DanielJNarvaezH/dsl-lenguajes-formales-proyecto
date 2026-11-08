@@ -1,0 +1,20 @@
+# precio de venta segun factor de rendimiento y humedad
+inicio
+    dato factor = 92.8;
+    dato humedad = 11;
+    dato precio_base = 2100000;
+    dato precio = precio_base;
+    si (factor <= 94 y humedad >= 10) entonces
+        precio = precio_base * 1.05;
+        mostrar("bonificacion por calidad");
+    sino
+        precio = precio_base - 50000;
+    fin
+    si (humedad != 11) entonces
+        mostrar("revisar humedad");
+    fin
+    si (precio == precio_base) entonces
+        mostrar("precio sin cambios");
+    fin
+    mostrar(precio);
+fin

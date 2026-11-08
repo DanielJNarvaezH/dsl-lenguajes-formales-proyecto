@@ -1,0 +1,286 @@
+<programa> [P1]
+├── INICIO 'inicio'
+├── <sentencias> [R1]
+│   ├── <sentencia> [P4]
+│   │   └── <declaracion> [D1]
+│   │       ├── DATO 'dato'
+│   │       ├── ID 'defectos'
+│   │       ├── ASIGNACION '='
+│   │       ├── <expresion> [R3]
+│   │       │   ├── <conjuncion> [R6]
+│   │       │   │   ├── <negacion> [E6]
+│   │       │   │   │   └── <comparacion> [F1]
+│   │       │   │   │       ├── <suma> [R9]
+│   │       │   │   │       │   ├── <termino> [R13]
+│   │       │   │   │       │   │   ├── <factor> [E23]
+│   │       │   │   │       │   │   │   └── ENTERO '3'
+│   │       │   │   │       │   │   └── <termino_prima> [R16]
+│   │       │   │   │       │   │       └── ε
+│   │       │   │   │       │   └── <suma_prima> [R12]
+│   │       │   │   │       │       └── ε
+│   │       │   │   │       └── <comparacion_prima> [F3]
+│   │       │   │   │           └── ε
+│   │       │   │   └── <conjuncion_prima> [R8]
+│   │       │   │       └── ε
+│   │       │   └── <expresion_prima> [R5]
+│   │       │       └── ε
+│   │       └── PUNTO_COMA ';'
+│   └── <sentencias> [R1]
+│       ├── <sentencia> [P4]
+│       │   └── <declaracion> [D1]
+│       │       ├── DATO 'dato'
+│       │       ├── ID 'broca'
+│       │       ├── ASIGNACION '='
+│       │       ├── <expresion> [R3]
+│       │       │   ├── <conjuncion> [R6]
+│       │       │   │   ├── <negacion> [E6]
+│       │       │   │   │   └── <comparacion> [F1]
+│       │       │   │   │       ├── <suma> [R9]
+│       │       │   │   │       │   ├── <termino> [R13]
+│       │       │   │   │       │   │   ├── <factor> [E24]
+│       │       │   │   │       │   │   │   └── DECIMAL '1.5'
+│       │       │   │   │       │   │   └── <termino_prima> [R16]
+│       │       │   │   │       │   │       └── ε
+│       │       │   │   │       │   └── <suma_prima> [R12]
+│       │       │   │   │       │       └── ε
+│       │       │   │   │       └── <comparacion_prima> [F3]
+│       │       │   │   │           └── ε
+│       │       │   │   └── <conjuncion_prima> [R8]
+│       │       │   │       └── ε
+│       │       │   └── <expresion_prima> [R5]
+│       │       │       └── ε
+│       │       └── PUNTO_COMA ';'
+│       └── <sentencias> [R1]
+│           ├── <sentencia> [P4]
+│           │   └── <declaracion> [D1]
+│           │       ├── DATO 'dato'
+│           │       ├── ID 'pasilla'
+│           │       ├── ASIGNACION '='
+│           │       ├── <expresion> [R3]
+│           │       │   ├── <conjuncion> [R6]
+│           │       │   │   ├── <negacion> [E6]
+│           │       │   │   │   └── <comparacion> [F1]
+│           │       │   │   │       ├── <suma> [R9]
+│           │       │   │   │       │   ├── <termino> [R13]
+│           │       │   │   │       │   │   ├── <factor> [E23]
+│           │       │   │   │       │   │   │   └── ENTERO '0'
+│           │       │   │   │       │   │   └── <termino_prima> [R16]
+│           │       │   │   │       │   │       └── ε
+│           │       │   │   │       │   └── <suma_prima> [R12]
+│           │       │   │   │       │       └── ε
+│           │       │   │   │       └── <comparacion_prima> [F3]
+│           │       │   │   │           └── ε
+│           │       │   │   └── <conjuncion_prima> [R8]
+│           │       │   │       └── ε
+│           │       │   └── <expresion_prima> [R5]
+│           │       │       └── ε
+│           │       └── PUNTO_COMA ';'
+│           └── <sentencias> [R1]
+│               ├── <sentencia> [P7]
+│               │   └── <condicional> [F4]
+│               │       ├── SI 'si'
+│               │       ├── PAR_ABRE '('
+│               │       ├── <expresion> [R3]
+│               │       │   ├── <conjuncion> [R6]
+│               │       │   │   ├── <negacion> [E6]
+│               │       │   │   │   └── <comparacion> [F1]
+│               │       │   │   │       ├── <suma> [R9]
+│               │       │   │   │       │   ├── <termino> [R13]
+│               │       │   │   │       │   │   ├── <factor> [E22]
+│               │       │   │   │       │   │   │   └── ID 'defectos'
+│               │       │   │   │       │   │   └── <termino_prima> [R16]
+│               │       │   │   │       │   │       └── ε
+│               │       │   │   │       │   └── <suma_prima> [R12]
+│               │       │   │   │       │       └── ε
+│               │       │   │   │       └── <comparacion_prima> [F2]
+│               │       │   │   │           ├── <op_rel> [E9]
+│               │       │   │   │           │   └── MENOR '<'
+│               │       │   │   │           └── <suma> [R9]
+│               │       │   │   │               ├── <termino> [R13]
+│               │       │   │   │               │   ├── <factor> [E23]
+│               │       │   │   │               │   │   └── ENTERO '5'
+│               │       │   │   │               │   └── <termino_prima> [R16]
+│               │       │   │   │               │       └── ε
+│               │       │   │   │               └── <suma_prima> [R12]
+│               │       │   │   │                   └── ε
+│               │       │   │   └── <conjuncion_prima> [R8]
+│               │       │   │       └── ε
+│               │       │   └── <expresion_prima> [R5]
+│               │       │       └── ε
+│               │       ├── PAR_CIERRA ')'
+│               │       ├── ENTONCES 'entonces'
+│               │       ├── <sentencias> [R1]
+│               │       │   ├── <sentencia> [P7]
+│               │       │   │   └── <condicional> [F4]
+│               │       │   │       ├── SI 'si'
+│               │       │   │       ├── PAR_ABRE '('
+│               │       │   │       ├── <expresion> [R3]
+│               │       │   │       │   ├── <conjuncion> [R6]
+│               │       │   │       │   │   ├── <negacion> [E6]
+│               │       │   │       │   │   │   └── <comparacion> [F1]
+│               │       │   │       │   │   │       ├── <suma> [R9]
+│               │       │   │       │   │   │       │   ├── <termino> [R13]
+│               │       │   │       │   │   │       │   │   ├── <factor> [E22]
+│               │       │   │       │   │   │       │   │   │   └── ID 'broca'
+│               │       │   │       │   │   │       │   │   └── <termino_prima> [R16]
+│               │       │   │       │   │   │       │   │       └── ε
+│               │       │   │       │   │   │       │   └── <suma_prima> [R12]
+│               │       │   │       │   │   │       │       └── ε
+│               │       │   │       │   │   │       └── <comparacion_prima> [F2]
+│               │       │   │       │   │   │           ├── <op_rel> [E9]
+│               │       │   │       │   │   │           │   └── MENOR '<'
+│               │       │   │       │   │   │           └── <suma> [R9]
+│               │       │   │       │   │   │               ├── <termino> [R13]
+│               │       │   │       │   │   │               │   ├── <factor> [E23]
+│               │       │   │       │   │   │               │   │   └── ENTERO '2'
+│               │       │   │       │   │   │               │   └── <termino_prima> [R16]
+│               │       │   │       │   │   │               │       └── ε
+│               │       │   │       │   │   │               └── <suma_prima> [R12]
+│               │       │   │       │   │   │                   └── ε
+│               │       │   │       │   │   └── <conjuncion_prima> [R8]
+│               │       │   │       │   │       └── ε
+│               │       │   │       │   └── <expresion_prima> [R5]
+│               │       │   │       │       └── ε
+│               │       │   │       ├── PAR_CIERRA ')'
+│               │       │   │       ├── ENTONCES 'entonces'
+│               │       │   │       ├── <sentencias> [R1]
+│               │       │   │       │   ├── <sentencia> [P6]
+│               │       │   │       │   │   └── <salida> [M1]
+│               │       │   │       │   │       ├── MOSTRAR 'mostrar'
+│               │       │   │       │   │       ├── PAR_ABRE '('
+│               │       │   │       │   │       ├── <argumento> [M3]
+│               │       │   │       │   │       │   └── CADENA '"excelso"'
+│               │       │   │       │   │       ├── PAR_CIERRA ')'
+│               │       │   │       │   │       └── PUNTO_COMA ';'
+│               │       │   │       │   └── <sentencias> [R2]
+│               │       │   │       │       └── ε
+│               │       │   │       └── <condicional_prima> [F6]
+│               │       │   │           ├── SINO 'sino'
+│               │       │   │           ├── <sentencias> [R1]
+│               │       │   │           │   ├── <sentencia> [P6]
+│               │       │   │           │   │   └── <salida> [M1]
+│               │       │   │           │   │       ├── MOSTRAR 'mostrar'
+│               │       │   │           │   │       ├── PAR_ABRE '('
+│               │       │   │           │   │       ├── <argumento> [M3]
+│               │       │   │           │   │       │   └── CADENA '"tipo exportacion"'
+│               │       │   │           │   │       ├── PAR_CIERRA ')'
+│               │       │   │           │   │       └── PUNTO_COMA ';'
+│               │       │   │           │   └── <sentencias> [R2]
+│               │       │   │           │       └── ε
+│               │       │   │           └── FIN 'fin'
+│               │       │   └── <sentencias> [R2]
+│               │       │       └── ε
+│               │       └── <condicional_prima> [F6]
+│               │           ├── SINO 'sino'
+│               │           ├── <sentencias> [R1]
+│               │           │   ├── <sentencia> [P6]
+│               │           │   │   └── <salida> [M1]
+│               │           │   │       ├── MOSTRAR 'mostrar'
+│               │           │   │       ├── PAR_ABRE '('
+│               │           │   │       ├── <argumento> [M3]
+│               │           │   │       │   └── CADENA '"consumo interno"'
+│               │           │   │       ├── PAR_CIERRA ')'
+│               │           │   │       └── PUNTO_COMA ';'
+│               │           │   └── <sentencias> [R2]
+│               │           │       └── ε
+│               │           └── FIN 'fin'
+│               └── <sentencias> [R1]
+│                   ├── <sentencia> [P7]
+│                   │   └── <condicional> [F4]
+│                   │       ├── SI 'si'
+│                   │       ├── PAR_ABRE '('
+│                   │       ├── <expresion> [R3]
+│                   │       │   ├── <conjuncion> [R6]
+│                   │       │   │   ├── <negacion> [E6]
+│                   │       │   │   │   └── <comparacion> [F1]
+│                   │       │   │   │       ├── <suma> [R9]
+│                   │       │   │   │       │   ├── <termino> [R13]
+│                   │       │   │   │       │   │   ├── <factor> [E22]
+│                   │       │   │   │       │   │   │   └── ID 'pasilla'
+│                   │       │   │   │       │   │   └── <termino_prima> [R16]
+│                   │       │   │   │       │   │       └── ε
+│                   │       │   │   │       │   └── <suma_prima> [R12]
+│                   │       │   │   │       │       └── ε
+│                   │       │   │   │       └── <comparacion_prima> [F2]
+│                   │       │   │   │           ├── <op_rel> [E10]
+│                   │       │   │   │           │   └── MAYOR '>'
+│                   │       │   │   │           └── <suma> [R9]
+│                   │       │   │   │               ├── <termino> [R13]
+│                   │       │   │   │               │   ├── <factor> [E23]
+│                   │       │   │   │               │   │   └── ENTERO '0'
+│                   │       │   │   │               │   └── <termino_prima> [R16]
+│                   │       │   │   │               │       └── ε
+│                   │       │   │   │               └── <suma_prima> [R12]
+│                   │       │   │   │                   └── ε
+│                   │       │   │   └── <conjuncion_prima> [R8]
+│                   │       │   │       └── ε
+│                   │       │   └── <expresion_prima> [R5]
+│                   │       │       └── ε
+│                   │       ├── PAR_CIERRA ')'
+│                   │       ├── ENTONCES 'entonces'
+│                   │       ├── <sentencias> [R1]
+│                   │       │   ├── <sentencia> [P7]
+│                   │       │   │   └── <condicional> [F4]
+│                   │       │   │       ├── SI 'si'
+│                   │       │   │       ├── PAR_ABRE '('
+│                   │       │   │       ├── <expresion> [R3]
+│                   │       │   │       │   ├── <conjuncion> [R6]
+│                   │       │   │       │   │   ├── <negacion> [E6]
+│                   │       │   │       │   │   │   └── <comparacion> [F1]
+│                   │       │   │       │   │   │       ├── <suma> [R9]
+│                   │       │   │       │   │   │       │   ├── <termino> [R13]
+│                   │       │   │       │   │   │       │   │   ├── <factor> [E22]
+│                   │       │   │       │   │   │       │   │   │   └── ID 'pasilla'
+│                   │       │   │       │   │   │       │   │   └── <termino_prima> [R16]
+│                   │       │   │       │   │   │       │   │       └── ε
+│                   │       │   │       │   │   │       │   └── <suma_prima> [R12]
+│                   │       │   │       │   │   │       │       └── ε
+│                   │       │   │       │   │   │       └── <comparacion_prima> [F2]
+│                   │       │   │       │   │   │           ├── <op_rel> [E10]
+│                   │       │   │       │   │   │           │   └── MAYOR '>'
+│                   │       │   │       │   │   │           └── <suma> [R9]
+│                   │       │   │       │   │   │               ├── <termino> [R13]
+│                   │       │   │       │   │   │               │   ├── <factor> [E23]
+│                   │       │   │       │   │   │               │   │   └── ENTERO '10'
+│                   │       │   │       │   │   │               │   └── <termino_prima> [R16]
+│                   │       │   │       │   │   │               │       └── ε
+│                   │       │   │       │   │   │               └── <suma_prima> [R12]
+│                   │       │   │       │   │   │                   └── ε
+│                   │       │   │       │   │   └── <conjuncion_prima> [R8]
+│                   │       │   │       │   │       └── ε
+│                   │       │   │       │   └── <expresion_prima> [R5]
+│                   │       │   │       │       └── ε
+│                   │       │   │       ├── PAR_CIERRA ')'
+│                   │       │   │       ├── ENTONCES 'entonces'
+│                   │       │   │       ├── <sentencias> [R1]
+│                   │       │   │       │   ├── <sentencia> [P6]
+│                   │       │   │       │   │   └── <salida> [M1]
+│                   │       │   │       │   │       ├── MOSTRAR 'mostrar'
+│                   │       │   │       │   │       ├── PAR_ABRE '('
+│                   │       │   │       │   │       ├── <argumento> [M3]
+│                   │       │   │       │   │       │   └── CADENA '"separar pasilla"'
+│                   │       │   │       │   │       ├── PAR_CIERRA ')'
+│                   │       │   │       │   │       └── PUNTO_COMA ';'
+│                   │       │   │       │   └── <sentencias> [R2]
+│                   │       │   │       │       └── ε
+│                   │       │   │       └── <condicional_prima> [F5]
+│                   │       │   │           └── FIN 'fin'
+│                   │       │   └── <sentencias> [R2]
+│                   │       │       └── ε
+│                   │       └── <condicional_prima> [F6]
+│                   │           ├── SINO 'sino'
+│                   │           ├── <sentencias> [R1]
+│                   │           │   ├── <sentencia> [P6]
+│                   │           │   │   └── <salida> [M1]
+│                   │           │   │       ├── MOSTRAR 'mostrar'
+│                   │           │   │       ├── PAR_ABRE '('
+│                   │           │   │       ├── <argumento> [M3]
+│                   │           │   │       │   └── CADENA '"sin pasilla"'
+│                   │           │   │       ├── PAR_CIERRA ')'
+│                   │           │   │       └── PUNTO_COMA ';'
+│                   │           │   └── <sentencias> [R2]
+│                   │           │       └── ε
+│                   │           └── FIN 'fin'
+│                   └── <sentencias> [R2]
+│                       └── ε
+└── FIN 'fin'

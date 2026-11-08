@@ -1,0 +1,12 @@
+# estructura de un programa en construccion con bloques vacios
+inicio
+    dato pendientes = 0;
+    si (pendientes > 0) entonces
+    sino
+    fin
+    mientras (pendientes > 0) hacer
+    fin
+    si (pendientes == 0) entonces
+    fin
+    mostrar((pendientes + 1) * 2);
+fin
