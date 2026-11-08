@@ -114,13 +114,13 @@ Para `tests/errores/lexico2_simbolos_sin_token.cft`:
   Error léxico en la línea 5, columna 20, símbolo '.': no forma ningún token.
   Error léxico en la línea 6, columna 9, símbolo '!': no forma ningún token.
   Error léxico en la línea 9, columna 15, símbolo '.': no forma ningún token.
-N errores sintácticos:
-  Error sintáctico en la línea …
+1 error sintáctico:
+  Error sintáctico en la línea 9, columna 16: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'x' (ID).
 
-M errores en total; no se muestra el árbol de derivación.
+6 errores en total; no se muestra el árbol de derivación.
 ```
 
-Los errores sintácticos de este archivo dependen de la recuperación de PAR-4, por eso aquí no se transcriben. Los mensajes son los de `ErrorLexico` (LXR-2) y `ErrorSintactico` (PAR-2 y PAR-4), sin cambios.
+El error sintáctico es consecuencia del último error léxico (sección 3.1): en la línea 9, `3.x` pierde el punto, y el parser recibe `3 x`, dos operandos seguidos. Los mensajes son los de `ErrorLexico` (LXR-2) y `ErrorSintactico` (PAR-2 y PAR-4), sin cambios.
 
 ### 4.4 Códigos de salida
 
