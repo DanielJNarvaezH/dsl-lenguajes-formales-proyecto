@@ -200,7 +200,7 @@ Se ejecutaron sobre una copia del proyecto: los conteos, las trazas y las salida
 
 Traza de `12.` después del cambio: q0 →1→ q65 →2→ q65 →.→ q66, y se acaba el texto (o llega `;`, que no tiene transición desde q66). Ahora q66 ∈ F, así que se emite DECIMAL `12.` sin retroceder. Antes, q66 ∉ F obligaba a retroceder a q65.
 
-**Qué hay que actualizar además.** En la Fase 1: la ER de la Tabla 6, la factorizada de la Tabla 7, el ejemplo `12.` de la Tabla 8, F y la Tabla 11, las Tablas 16, 18 y 19 (q66 deja de ser de no aceptación). Pruebas que cambian: en `test_lexer.py`, `test_estados_de_aceptacion` (68 → 69, y q66 sale del conjunto que no acepta) y `test_retroceso_al_ultimo_estado_de_aceptacion` (`12.x` ya no tiene error); en `test_errores_lexicos.py`, los errores esperados de `lexico2_simbolos_sin_token.cft` (desaparecen los de `12.` y `3.x`) y `test_retroceso_y_error`.
+**Qué hay que actualizar además.** En la Fase 1: la ER de la Tabla 6, la factorizada de la Tabla 7, el ejemplo `12.` de la Tabla 8, F y la Tabla 11, las Tablas 16, 18 y 19 (q66 deja de ser de no aceptación). Pruebas que cambian: en `test_lexer.py`, `test_estados_de_aceptacion` (68 → 69, y q66 sale del conjunto que no acepta) y `test_retroceso_al_ultimo_estado_de_aceptacion` (`12.x` ya no tiene error); en `test_errores_lexicos.py`, los errores esperados de `lexico2_simbolos_sin_token.cft` (desaparecen los de `12.` y `3.x`) y `test_retroceso_y_error`; en `test_main.py`, `test_errores_lexicos` (espera 5 errores léxicos en `lexico2`); y en `test_errores.py` (TST-2), la lista `ESPERADOS_A_MANO` de `lexico2` y su salida esperada, que se regenera con `python -m tests.test_errores --regenerar`.
 
 **Preguntas probables.** ¿Y si se pidiera aceptar `.5`? Entonces hace falta una transición nueva δ(q0, `.`) hacia un estado nuevo que espere dígitos, y la ER sería `(D)+.(D)*, .(D)+`. ¿Por qué no cambió ninguna transición? Porque `(D)*` y `(D)+` producen el mismo lazo sobre q67; lo único que cambia es si el estado anterior al lazo ya es un lexema completo (pregunta 4).
 
@@ -262,7 +262,10 @@ El lenguaje de `<declaracion>` es (DATO ID)(ASIGNACION `<expresion>` PUNTO_COMA 
 # D1   <declaracion> ::= DATO ID <declaracion_prima>
 def declaracion(self):
     """D1: <declaracion> ::= DATO ID <declaracion_prima>"""
-    nodo = Nodo.no_terminal("<declaracion>", self.predecir("<declaracion>"))
+    regla = self.predecir("<declaracion>")
+    if regla is None:                       # PAR-4: no se pudo derivar
+        return self.omitido("<declaracion>")
+    nodo = Nodo.no_terminal("<declaracion>", regla)
     nodo.agregar(self.emparejar("DATO"))
     nodo.agregar(self.emparejar("ID"))
     nodo.agregar(self.declaracion_prima())
@@ -273,6 +276,8 @@ def declaracion(self):
 def declaracion_prima(self):
     """D2: <declaracion_prima> ::= ASIGNACION <expresion> PUNTO_COMA | D3: PUNTO_COMA"""
     regla = self.predecir("<declaracion_prima>")
+    if regla is None:                       # PAR-4: no se pudo derivar
+        return self.omitido("<declaracion_prima>")
     nodo = Nodo.no_terminal("<declaracion_prima>", regla)
     if regla == "D2":
         nodo.agregar(self.emparejar("ASIGNACION"))
@@ -281,7 +286,7 @@ def declaracion_prima(self):
     return nodo
 ```
 
-Si la recuperación de errores de PAR-4 lee los conjuntos SIGUIENTE de un archivo, hay que agregar en él la fila de `<declaracion_prima>` con los 7 tokens del paso 2.
+Las dos funciones empiezan con las dos líneas que agregó PAR-4: si la tabla no da regla ni después de sincronizar, la función devuelve un nodo ERROR. Además, la recuperación de PAR-4 lee los conjuntos SIGUIENTE de `src/parser/siguiente.csv`, así que hay que agregar en ese archivo la fila `<declaracion_prima>` con los 7 tokens del paso 2. Si falta, el parser funciona con programas correctos, pero falla con `KeyError` al recuperarse de un error dentro de una declaración, y la prueba `test_siguiente_csv_coincide_con_gic6` de PAR-4 lo detecta.
 
 **Comprobación.**
 
@@ -294,7 +299,7 @@ Si la recuperación de errores de PAR-4 lee los conjuntos SIGUIENTE de un archiv
 
 El mensaje del tercer caso sale directamente de la fila nueva de la tabla: los esperados son las celdas llenas de `<declaracion_prima>`.
 
-**Qué hay que actualizar además.** En la Fase 2: la gramática final, PRIMERO, SIGUIENTE, la tabla de predicción y la tabla LL(1). Pruebas que cambian: cada declaración tiene ahora un nodo más (`<declaracion_prima>`), así que las cantidades de reglas de los ejemplos pasan de 174, 134 y 165 a 180, 136 y 167 (`test_parser_sentencias.py`); en `test_parser_expresiones.py`, `test_dimensiones` (23 → 24 no terminales y 106 → 108 celdas); el diccionario GRAMATICA de las pruebas de PAR-3 y TST-1; y los árboles esperados de TST-1, que se regeneran con `main.py --salida` (sección 5 de `pruebas_validos.md`).
+**Qué hay que actualizar además.** En la Fase 2: la gramática final, PRIMERO, SIGUIENTE, la tabla de predicción y la tabla LL(1). Pruebas que cambian: cada declaración tiene ahora un nodo más (`<declaracion_prima>`), así que las cantidades de reglas de los ejemplos pasan de 174, 134 y 165 a 180, 136 y 167 (`test_parser_sentencias.py`); en `test_parser_expresiones.py`, `test_dimensiones` (23 → 24 no terminales y 106 → 108 celdas); el diccionario GRAMATICA de las pruebas de PAR-3 y TST-1 (y `NO_TERMINAL` en TST-1); los árboles esperados de TST-1, que se regeneran con `main.py --salida` (sección 5 de `pruebas_validos.md`); y la tabla regla ↔ función de la sección 4.2 de `docs/fase3/documento_fase3.md`, que verifica `test_documentacion.py` (DOC-4).
 
 ### 3.4 Ejercicio 4 — El operador `%` en las expresiones
 
@@ -310,7 +315,7 @@ El lenguaje de `<termino>` pasa a ser (`<factor>`)(MULT `<factor>`, DIV `<factor
 
 **Paso 2, PRIMERO y SIGUIENTE.** MOD entra en PRIMERO(`<termino_prima>`) y en SIGUIENTE(`<factor>`). Nada más cambia, porque `<factor>` no tiene regla ε.
 
-**Paso 3, tabla LL(1).** Una columna nueva, MOD, con una sola celda: M[`<termino_prima>`, MOD] = R17. No hay conflicto con R16 (ε), porque MOD no está en SIGUIENTE(`<termino_prima>`). En `src/parser/tabla_ll1.csv`: agregar la columna `MOD` (después de DIV) con R17 en la fila `<termino_prima>`.
+**Paso 3, tabla LL(1).** Una columna nueva, MOD, con una sola celda: M[`<termino_prima>`, MOD] = R17. No hay conflicto con R16 (ε), porque MOD no está en SIGUIENTE(`<termino_prima>`). En `src/parser/tabla_ll1.csv`: agregar la columna `MOD` (después de DIV) con R17 en la fila `<termino_prima>`. En `src/parser/siguiente.csv`: agregar MOD a la fila `<factor>`, por el cambio del paso 2.
 
 **Paso 4, función del parser.** **Una línea.** `termino_prima` ya trata MULT y DIV con el diccionario OPERADOR_TERMINO, que dice qué terminal pide cada regla; basta agregar R17:
 
@@ -325,7 +330,7 @@ Además se agrega R17 al comentario y al docstring de la función: la prueba de 
 
 **Verificación de los ejercicios 3 y 4 juntos.** Con los dos cambios, la gramática tiene 49 reglas y la tabla 109 celdas. Se recalcularon PRIMERO, SIGUIENTE y la tabla con el mismo procedimiento de la sección 6 de la Fase 2: **0 conflictos**, así que la gramática sigue siendo LL(1) y no ambigua.
 
-**Qué hay que actualizar además.** En la Fase 2: la regla nueva en las secciones 4 y 7, PRIMERO, SIGUIENTE, la tabla de predicción y la tabla LL(1). Pruebas que cambian: en `test_parser_expresiones.py`, `test_dimensiones` (31 → 32 terminales y una celda más).
+**Qué hay que actualizar además.** En la Fase 2: la regla nueva en las secciones 4 y 7, PRIMERO, SIGUIENTE, la tabla de predicción y la tabla LL(1). Pruebas que cambian: en `test_parser_expresiones.py`, `test_dimensiones` (31 → 32 terminales y una celda más); el diccionario GRAMATICA de las pruebas de PAR-2, PAR-3 y TST-1 (y `NO_TERMINAL` en TST-1); y la fila R17 en la tabla regla ↔ función de `docs/fase3/documento_fase3.md`, que verifica `test_documentacion.py` (DOC-4).
 
 ## 4. Resumen de los ejercicios
 
