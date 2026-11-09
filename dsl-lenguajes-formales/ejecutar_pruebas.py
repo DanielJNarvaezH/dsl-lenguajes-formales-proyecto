@@ -35,6 +35,7 @@ DESCRIPCION = {
     "tests.test_main": "Punto de entrada main.py (PAR-5)",
     "tests.test_validos": "Programas válidos (TST-1)",
     "tests.test_errores": "Programas con errores (TST-2)",
+    "tests.test_documentacion": "Coherencia de la documentación (DOC-4)",
 }
 
 
