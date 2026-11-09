@@ -1,0 +1,12 @@
+# expresiones con todos los niveles de precedencia
+inicio
+    dato a = 4;
+    dato b = 2.5;
+    dato c = 10;
+    dato listo = a + b * c - (a - b) / 2 > c o no a < b y c != 0;
+    dato doble = no no (a == 4);
+    dato mixto = (a + b) * (c - 1) / 3 >= 12 y (b <= a o a == c);
+    mostrar(listo);
+    mostrar(doble);
+    mostrar(mixto);
+fin

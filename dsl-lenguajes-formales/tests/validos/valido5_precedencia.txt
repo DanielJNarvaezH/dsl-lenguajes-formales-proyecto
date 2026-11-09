@@ -1,0 +1,510 @@
+<programa> [P1]
+├── INICIO 'inicio'
+├── <sentencias> [R1]
+│   ├── <sentencia> [P4]
+│   │   └── <declaracion> [D1]
+│   │       ├── DATO 'dato'
+│   │       ├── ID 'a'
+│   │       ├── ASIGNACION '='
+│   │       ├── <expresion> [R3]
+│   │       │   ├── <conjuncion> [R6]
+│   │       │   │   ├── <negacion> [E6]
+│   │       │   │   │   └── <comparacion> [F1]
+│   │       │   │   │       ├── <suma> [R9]
+│   │       │   │   │       │   ├── <termino> [R13]
+│   │       │   │   │       │   │   ├── <factor> [E23]
+│   │       │   │   │       │   │   │   └── ENTERO '4'
+│   │       │   │   │       │   │   └── <termino_prima> [R16]
+│   │       │   │   │       │   │       └── ε
+│   │       │   │   │       │   └── <suma_prima> [R12]
+│   │       │   │   │       │       └── ε
+│   │       │   │   │       └── <comparacion_prima> [F3]
+│   │       │   │   │           └── ε
+│   │       │   │   └── <conjuncion_prima> [R8]
+│   │       │   │       └── ε
+│   │       │   └── <expresion_prima> [R5]
+│   │       │       └── ε
+│   │       └── PUNTO_COMA ';'
+│   └── <sentencias> [R1]
+│       ├── <sentencia> [P4]
+│       │   └── <declaracion> [D1]
+│       │       ├── DATO 'dato'
+│       │       ├── ID 'b'
+│       │       ├── ASIGNACION '='
+│       │       ├── <expresion> [R3]
+│       │       │   ├── <conjuncion> [R6]
+│       │       │   │   ├── <negacion> [E6]
+│       │       │   │   │   └── <comparacion> [F1]
+│       │       │   │   │       ├── <suma> [R9]
+│       │       │   │   │       │   ├── <termino> [R13]
+│       │       │   │   │       │   │   ├── <factor> [E24]
+│       │       │   │   │       │   │   │   └── DECIMAL '2.5'
+│       │       │   │   │       │   │   └── <termino_prima> [R16]
+│       │       │   │   │       │   │       └── ε
+│       │       │   │   │       │   └── <suma_prima> [R12]
+│       │       │   │   │       │       └── ε
+│       │       │   │   │       └── <comparacion_prima> [F3]
+│       │       │   │   │           └── ε
+│       │       │   │   └── <conjuncion_prima> [R8]
+│       │       │   │       └── ε
+│       │       │   └── <expresion_prima> [R5]
+│       │       │       └── ε
+│       │       └── PUNTO_COMA ';'
+│       └── <sentencias> [R1]
+│           ├── <sentencia> [P4]
+│           │   └── <declaracion> [D1]
+│           │       ├── DATO 'dato'
+│           │       ├── ID 'c'
+│           │       ├── ASIGNACION '='
+│           │       ├── <expresion> [R3]
+│           │       │   ├── <conjuncion> [R6]
+│           │       │   │   ├── <negacion> [E6]
+│           │       │   │   │   └── <comparacion> [F1]
+│           │       │   │   │       ├── <suma> [R9]
+│           │       │   │   │       │   ├── <termino> [R13]
+│           │       │   │   │       │   │   ├── <factor> [E23]
+│           │       │   │   │       │   │   │   └── ENTERO '10'
+│           │       │   │   │       │   │   └── <termino_prima> [R16]
+│           │       │   │   │       │   │       └── ε
+│           │       │   │   │       │   └── <suma_prima> [R12]
+│           │       │   │   │       │       └── ε
+│           │       │   │   │       └── <comparacion_prima> [F3]
+│           │       │   │   │           └── ε
+│           │       │   │   └── <conjuncion_prima> [R8]
+│           │       │   │       └── ε
+│           │       │   └── <expresion_prima> [R5]
+│           │       │       └── ε
+│           │       └── PUNTO_COMA ';'
+│           └── <sentencias> [R1]
+│               ├── <sentencia> [P4]
+│               │   └── <declaracion> [D1]
+│               │       ├── DATO 'dato'
+│               │       ├── ID 'listo'
+│               │       ├── ASIGNACION '='
+│               │       ├── <expresion> [R3]
+│               │       │   ├── <conjuncion> [R6]
+│               │       │   │   ├── <negacion> [E6]
+│               │       │   │   │   └── <comparacion> [F1]
+│               │       │   │   │       ├── <suma> [R9]
+│               │       │   │   │       │   ├── <termino> [R13]
+│               │       │   │   │       │   │   ├── <factor> [E22]
+│               │       │   │   │       │   │   │   └── ID 'a'
+│               │       │   │   │       │   │   └── <termino_prima> [R16]
+│               │       │   │   │       │   │       └── ε
+│               │       │   │   │       │   └── <suma_prima> [R10]
+│               │       │   │   │       │       ├── SUMA '+'
+│               │       │   │   │       │       ├── <termino> [R13]
+│               │       │   │   │       │       │   ├── <factor> [E22]
+│               │       │   │   │       │       │   │   └── ID 'b'
+│               │       │   │   │       │       │   └── <termino_prima> [R14]
+│               │       │   │   │       │       │       ├── MULT '*'
+│               │       │   │   │       │       │       ├── <factor> [E22]
+│               │       │   │   │       │       │       │   └── ID 'c'
+│               │       │   │   │       │       │       └── <termino_prima> [R16]
+│               │       │   │   │       │       │           └── ε
+│               │       │   │   │       │       └── <suma_prima> [R11]
+│               │       │   │   │       │           ├── RESTA '-'
+│               │       │   │   │       │           ├── <termino> [R13]
+│               │       │   │   │       │           │   ├── <factor> [E21]
+│               │       │   │   │       │           │   │   ├── PAR_ABRE '('
+│               │       │   │   │       │           │   │   ├── <expresion> [R3]
+│               │       │   │   │       │           │   │   │   ├── <conjuncion> [R6]
+│               │       │   │   │       │           │   │   │   │   ├── <negacion> [E6]
+│               │       │   │   │       │           │   │   │   │   │   └── <comparacion> [F1]
+│               │       │   │   │       │           │   │   │   │   │       ├── <suma> [R9]
+│               │       │   │   │       │           │   │   │   │   │       │   ├── <termino> [R13]
+│               │       │   │   │       │           │   │   │   │   │       │   │   ├── <factor> [E22]
+│               │       │   │   │       │           │   │   │   │   │       │   │   │   └── ID 'a'
+│               │       │   │   │       │           │   │   │   │   │       │   │   └── <termino_prima> [R16]
+│               │       │   │   │       │           │   │   │   │   │       │   │       └── ε
+│               │       │   │   │       │           │   │   │   │   │       │   └── <suma_prima> [R11]
+│               │       │   │   │       │           │   │   │   │   │       │       ├── RESTA '-'
+│               │       │   │   │       │           │   │   │   │   │       │       ├── <termino> [R13]
+│               │       │   │   │       │           │   │   │   │   │       │       │   ├── <factor> [E22]
+│               │       │   │   │       │           │   │   │   │   │       │       │   │   └── ID 'b'
+│               │       │   │   │       │           │   │   │   │   │       │       │   └── <termino_prima> [R16]
+│               │       │   │   │       │           │   │   │   │   │       │       │       └── ε
+│               │       │   │   │       │           │   │   │   │   │       │       └── <suma_prima> [R12]
+│               │       │   │   │       │           │   │   │   │   │       │           └── ε
+│               │       │   │   │       │           │   │   │   │   │       └── <comparacion_prima> [F3]
+│               │       │   │   │       │           │   │   │   │   │           └── ε
+│               │       │   │   │       │           │   │   │   │   └── <conjuncion_prima> [R8]
+│               │       │   │   │       │           │   │   │   │       └── ε
+│               │       │   │   │       │           │   │   │   └── <expresion_prima> [R5]
+│               │       │   │   │       │           │   │   │       └── ε
+│               │       │   │   │       │           │   │   └── PAR_CIERRA ')'
+│               │       │   │   │       │           │   └── <termino_prima> [R15]
+│               │       │   │   │       │           │       ├── DIV '/'
+│               │       │   │   │       │           │       ├── <factor> [E23]
+│               │       │   │   │       │           │       │   └── ENTERO '2'
+│               │       │   │   │       │           │       └── <termino_prima> [R16]
+│               │       │   │   │       │           │           └── ε
+│               │       │   │   │       │           └── <suma_prima> [R12]
+│               │       │   │   │       │               └── ε
+│               │       │   │   │       └── <comparacion_prima> [F2]
+│               │       │   │   │           ├── <op_rel> [E10]
+│               │       │   │   │           │   └── MAYOR '>'
+│               │       │   │   │           └── <suma> [R9]
+│               │       │   │   │               ├── <termino> [R13]
+│               │       │   │   │               │   ├── <factor> [E22]
+│               │       │   │   │               │   │   └── ID 'c'
+│               │       │   │   │               │   └── <termino_prima> [R16]
+│               │       │   │   │               │       └── ε
+│               │       │   │   │               └── <suma_prima> [R12]
+│               │       │   │   │                   └── ε
+│               │       │   │   └── <conjuncion_prima> [R8]
+│               │       │   │       └── ε
+│               │       │   └── <expresion_prima> [R4]
+│               │       │       ├── O 'o'
+│               │       │       ├── <conjuncion> [R6]
+│               │       │       │   ├── <negacion> [E5]
+│               │       │       │   │   ├── NO 'no'
+│               │       │       │   │   └── <negacion> [E6]
+│               │       │       │   │       └── <comparacion> [F1]
+│               │       │       │   │           ├── <suma> [R9]
+│               │       │       │   │           │   ├── <termino> [R13]
+│               │       │       │   │           │   │   ├── <factor> [E22]
+│               │       │       │   │           │   │   │   └── ID 'a'
+│               │       │       │   │           │   │   └── <termino_prima> [R16]
+│               │       │       │   │           │   │       └── ε
+│               │       │       │   │           │   └── <suma_prima> [R12]
+│               │       │       │   │           │       └── ε
+│               │       │       │   │           └── <comparacion_prima> [F2]
+│               │       │       │   │               ├── <op_rel> [E9]
+│               │       │       │   │               │   └── MENOR '<'
+│               │       │       │   │               └── <suma> [R9]
+│               │       │       │   │                   ├── <termino> [R13]
+│               │       │       │   │                   │   ├── <factor> [E22]
+│               │       │       │   │                   │   │   └── ID 'b'
+│               │       │       │   │                   │   └── <termino_prima> [R16]
+│               │       │       │   │                   │       └── ε
+│               │       │       │   │                   └── <suma_prima> [R12]
+│               │       │       │   │                       └── ε
+│               │       │       │   └── <conjuncion_prima> [R7]
+│               │       │       │       ├── Y 'y'
+│               │       │       │       ├── <negacion> [E6]
+│               │       │       │       │   └── <comparacion> [F1]
+│               │       │       │       │       ├── <suma> [R9]
+│               │       │       │       │       │   ├── <termino> [R13]
+│               │       │       │       │       │   │   ├── <factor> [E22]
+│               │       │       │       │       │   │   │   └── ID 'c'
+│               │       │       │       │       │   │   └── <termino_prima> [R16]
+│               │       │       │       │       │   │       └── ε
+│               │       │       │       │       │   └── <suma_prima> [R12]
+│               │       │       │       │       │       └── ε
+│               │       │       │       │       └── <comparacion_prima> [F2]
+│               │       │       │       │           ├── <op_rel> [E14]
+│               │       │       │       │           │   └── DIFERENTE '!='
+│               │       │       │       │           └── <suma> [R9]
+│               │       │       │       │               ├── <termino> [R13]
+│               │       │       │       │               │   ├── <factor> [E23]
+│               │       │       │       │               │   │   └── ENTERO '0'
+│               │       │       │       │               │   └── <termino_prima> [R16]
+│               │       │       │       │               │       └── ε
+│               │       │       │       │               └── <suma_prima> [R12]
+│               │       │       │       │                   └── ε
+│               │       │       │       └── <conjuncion_prima> [R8]
+│               │       │       │           └── ε
+│               │       │       └── <expresion_prima> [R5]
+│               │       │           └── ε
+│               │       └── PUNTO_COMA ';'
+│               └── <sentencias> [R1]
+│                   ├── <sentencia> [P4]
+│                   │   └── <declaracion> [D1]
+│                   │       ├── DATO 'dato'
+│                   │       ├── ID 'doble'
+│                   │       ├── ASIGNACION '='
+│                   │       ├── <expresion> [R3]
+│                   │       │   ├── <conjuncion> [R6]
+│                   │       │   │   ├── <negacion> [E5]
+│                   │       │   │   │   ├── NO 'no'
+│                   │       │   │   │   └── <negacion> [E5]
+│                   │       │   │   │       ├── NO 'no'
+│                   │       │   │   │       └── <negacion> [E6]
+│                   │       │   │   │           └── <comparacion> [F1]
+│                   │       │   │   │               ├── <suma> [R9]
+│                   │       │   │   │               │   ├── <termino> [R13]
+│                   │       │   │   │               │   │   ├── <factor> [E21]
+│                   │       │   │   │               │   │   │   ├── PAR_ABRE '('
+│                   │       │   │   │               │   │   │   ├── <expresion> [R3]
+│                   │       │   │   │               │   │   │   │   ├── <conjuncion> [R6]
+│                   │       │   │   │               │   │   │   │   │   ├── <negacion> [E6]
+│                   │       │   │   │               │   │   │   │   │   │   └── <comparacion> [F1]
+│                   │       │   │   │               │   │   │   │   │   │       ├── <suma> [R9]
+│                   │       │   │   │               │   │   │   │   │   │       │   ├── <termino> [R13]
+│                   │       │   │   │               │   │   │   │   │   │       │   │   ├── <factor> [E22]
+│                   │       │   │   │               │   │   │   │   │   │       │   │   │   └── ID 'a'
+│                   │       │   │   │               │   │   │   │   │   │       │   │   └── <termino_prima> [R16]
+│                   │       │   │   │               │   │   │   │   │   │       │   │       └── ε
+│                   │       │   │   │               │   │   │   │   │   │       │   └── <suma_prima> [R12]
+│                   │       │   │   │               │   │   │   │   │   │       │       └── ε
+│                   │       │   │   │               │   │   │   │   │   │       └── <comparacion_prima> [F2]
+│                   │       │   │   │               │   │   │   │   │   │           ├── <op_rel> [E13]
+│                   │       │   │   │               │   │   │   │   │   │           │   └── IGUAL '=='
+│                   │       │   │   │               │   │   │   │   │   │           └── <suma> [R9]
+│                   │       │   │   │               │   │   │   │   │   │               ├── <termino> [R13]
+│                   │       │   │   │               │   │   │   │   │   │               │   ├── <factor> [E23]
+│                   │       │   │   │               │   │   │   │   │   │               │   │   └── ENTERO '4'
+│                   │       │   │   │               │   │   │   │   │   │               │   └── <termino_prima> [R16]
+│                   │       │   │   │               │   │   │   │   │   │               │       └── ε
+│                   │       │   │   │               │   │   │   │   │   │               └── <suma_prima> [R12]
+│                   │       │   │   │               │   │   │   │   │   │                   └── ε
+│                   │       │   │   │               │   │   │   │   │   └── <conjuncion_prima> [R8]
+│                   │       │   │   │               │   │   │   │   │       └── ε
+│                   │       │   │   │               │   │   │   │   └── <expresion_prima> [R5]
+│                   │       │   │   │               │   │   │   │       └── ε
+│                   │       │   │   │               │   │   │   └── PAR_CIERRA ')'
+│                   │       │   │   │               │   │   └── <termino_prima> [R16]
+│                   │       │   │   │               │   │       └── ε
+│                   │       │   │   │               │   └── <suma_prima> [R12]
+│                   │       │   │   │               │       └── ε
+│                   │       │   │   │               └── <comparacion_prima> [F3]
+│                   │       │   │   │                   └── ε
+│                   │       │   │   └── <conjuncion_prima> [R8]
+│                   │       │   │       └── ε
+│                   │       │   └── <expresion_prima> [R5]
+│                   │       │       └── ε
+│                   │       └── PUNTO_COMA ';'
+│                   └── <sentencias> [R1]
+│                       ├── <sentencia> [P4]
+│                       │   └── <declaracion> [D1]
+│                       │       ├── DATO 'dato'
+│                       │       ├── ID 'mixto'
+│                       │       ├── ASIGNACION '='
+│                       │       ├── <expresion> [R3]
+│                       │       │   ├── <conjuncion> [R6]
+│                       │       │   │   ├── <negacion> [E6]
+│                       │       │   │   │   └── <comparacion> [F1]
+│                       │       │   │   │       ├── <suma> [R9]
+│                       │       │   │   │       │   ├── <termino> [R13]
+│                       │       │   │   │       │   │   ├── <factor> [E21]
+│                       │       │   │   │       │   │   │   ├── PAR_ABRE '('
+│                       │       │   │   │       │   │   │   ├── <expresion> [R3]
+│                       │       │   │   │       │   │   │   │   ├── <conjuncion> [R6]
+│                       │       │   │   │       │   │   │   │   │   ├── <negacion> [E6]
+│                       │       │   │   │       │   │   │   │   │   │   └── <comparacion> [F1]
+│                       │       │   │   │       │   │   │   │   │   │       ├── <suma> [R9]
+│                       │       │   │   │       │   │   │   │   │   │       │   ├── <termino> [R13]
+│                       │       │   │   │       │   │   │   │   │   │       │   │   ├── <factor> [E22]
+│                       │       │   │   │       │   │   │   │   │   │       │   │   │   └── ID 'a'
+│                       │       │   │   │       │   │   │   │   │   │       │   │   └── <termino_prima> [R16]
+│                       │       │   │   │       │   │   │   │   │   │       │   │       └── ε
+│                       │       │   │   │       │   │   │   │   │   │       │   └── <suma_prima> [R10]
+│                       │       │   │   │       │   │   │   │   │   │       │       ├── SUMA '+'
+│                       │       │   │   │       │   │   │   │   │   │       │       ├── <termino> [R13]
+│                       │       │   │   │       │   │   │   │   │   │       │       │   ├── <factor> [E22]
+│                       │       │   │   │       │   │   │   │   │   │       │       │   │   └── ID 'b'
+│                       │       │   │   │       │   │   │   │   │   │       │       │   └── <termino_prima> [R16]
+│                       │       │   │   │       │   │   │   │   │   │       │       │       └── ε
+│                       │       │   │   │       │   │   │   │   │   │       │       └── <suma_prima> [R12]
+│                       │       │   │   │       │   │   │   │   │   │       │           └── ε
+│                       │       │   │   │       │   │   │   │   │   │       └── <comparacion_prima> [F3]
+│                       │       │   │   │       │   │   │   │   │   │           └── ε
+│                       │       │   │   │       │   │   │   │   │   └── <conjuncion_prima> [R8]
+│                       │       │   │   │       │   │   │   │   │       └── ε
+│                       │       │   │   │       │   │   │   │   └── <expresion_prima> [R5]
+│                       │       │   │   │       │   │   │   │       └── ε
+│                       │       │   │   │       │   │   │   └── PAR_CIERRA ')'
+│                       │       │   │   │       │   │   └── <termino_prima> [R14]
+│                       │       │   │   │       │   │       ├── MULT '*'
+│                       │       │   │   │       │   │       ├── <factor> [E21]
+│                       │       │   │   │       │   │       │   ├── PAR_ABRE '('
+│                       │       │   │   │       │   │       │   ├── <expresion> [R3]
+│                       │       │   │   │       │   │       │   │   ├── <conjuncion> [R6]
+│                       │       │   │   │       │   │       │   │   │   ├── <negacion> [E6]
+│                       │       │   │   │       │   │       │   │   │   │   └── <comparacion> [F1]
+│                       │       │   │   │       │   │       │   │   │   │       ├── <suma> [R9]
+│                       │       │   │   │       │   │       │   │   │   │       │   ├── <termino> [R13]
+│                       │       │   │   │       │   │       │   │   │   │       │   │   ├── <factor> [E22]
+│                       │       │   │   │       │   │       │   │   │   │       │   │   │   └── ID 'c'
+│                       │       │   │   │       │   │       │   │   │   │       │   │   └── <termino_prima> [R16]
+│                       │       │   │   │       │   │       │   │   │   │       │   │       └── ε
+│                       │       │   │   │       │   │       │   │   │   │       │   └── <suma_prima> [R11]
+│                       │       │   │   │       │   │       │   │   │   │       │       ├── RESTA '-'
+│                       │       │   │   │       │   │       │   │   │   │       │       ├── <termino> [R13]
+│                       │       │   │   │       │   │       │   │   │   │       │       │   ├── <factor> [E23]
+│                       │       │   │   │       │   │       │   │   │   │       │       │   │   └── ENTERO '1'
+│                       │       │   │   │       │   │       │   │   │   │       │       │   └── <termino_prima> [R16]
+│                       │       │   │   │       │   │       │   │   │   │       │       │       └── ε
+│                       │       │   │   │       │   │       │   │   │   │       │       └── <suma_prima> [R12]
+│                       │       │   │   │       │   │       │   │   │   │       │           └── ε
+│                       │       │   │   │       │   │       │   │   │   │       └── <comparacion_prima> [F3]
+│                       │       │   │   │       │   │       │   │   │   │           └── ε
+│                       │       │   │   │       │   │       │   │   │   └── <conjuncion_prima> [R8]
+│                       │       │   │   │       │   │       │   │   │       └── ε
+│                       │       │   │   │       │   │       │   │   └── <expresion_prima> [R5]
+│                       │       │   │   │       │   │       │   │       └── ε
+│                       │       │   │   │       │   │       │   └── PAR_CIERRA ')'
+│                       │       │   │   │       │   │       └── <termino_prima> [R15]
+│                       │       │   │   │       │   │           ├── DIV '/'
+│                       │       │   │   │       │   │           ├── <factor> [E23]
+│                       │       │   │   │       │   │           │   └── ENTERO '3'
+│                       │       │   │   │       │   │           └── <termino_prima> [R16]
+│                       │       │   │   │       │   │               └── ε
+│                       │       │   │   │       │   └── <suma_prima> [R12]
+│                       │       │   │   │       │       └── ε
+│                       │       │   │   │       └── <comparacion_prima> [F2]
+│                       │       │   │   │           ├── <op_rel> [E12]
+│                       │       │   │   │           │   └── MAYOR_IGUAL '>='
+│                       │       │   │   │           └── <suma> [R9]
+│                       │       │   │   │               ├── <termino> [R13]
+│                       │       │   │   │               │   ├── <factor> [E23]
+│                       │       │   │   │               │   │   └── ENTERO '12'
+│                       │       │   │   │               │   └── <termino_prima> [R16]
+│                       │       │   │   │               │       └── ε
+│                       │       │   │   │               └── <suma_prima> [R12]
+│                       │       │   │   │                   └── ε
+│                       │       │   │   └── <conjuncion_prima> [R7]
+│                       │       │   │       ├── Y 'y'
+│                       │       │   │       ├── <negacion> [E6]
+│                       │       │   │       │   └── <comparacion> [F1]
+│                       │       │   │       │       ├── <suma> [R9]
+│                       │       │   │       │       │   ├── <termino> [R13]
+│                       │       │   │       │       │   │   ├── <factor> [E21]
+│                       │       │   │       │       │   │   │   ├── PAR_ABRE '('
+│                       │       │   │       │       │   │   │   ├── <expresion> [R3]
+│                       │       │   │       │       │   │   │   │   ├── <conjuncion> [R6]
+│                       │       │   │       │       │   │   │   │   │   ├── <negacion> [E6]
+│                       │       │   │       │       │   │   │   │   │   │   └── <comparacion> [F1]
+│                       │       │   │       │       │   │   │   │   │   │       ├── <suma> [R9]
+│                       │       │   │       │       │   │   │   │   │   │       │   ├── <termino> [R13]
+│                       │       │   │       │       │   │   │   │   │   │       │   │   ├── <factor> [E22]
+│                       │       │   │       │       │   │   │   │   │   │       │   │   │   └── ID 'b'
+│                       │       │   │       │       │   │   │   │   │   │       │   │   └── <termino_prima> [R16]
+│                       │       │   │       │       │   │   │   │   │   │       │   │       └── ε
+│                       │       │   │       │       │   │   │   │   │   │       │   └── <suma_prima> [R12]
+│                       │       │   │       │       │   │   │   │   │   │       │       └── ε
+│                       │       │   │       │       │   │   │   │   │   │       └── <comparacion_prima> [F2]
+│                       │       │   │       │       │   │   │   │   │   │           ├── <op_rel> [E11]
+│                       │       │   │       │       │   │   │   │   │   │           │   └── MENOR_IGUAL '<='
+│                       │       │   │       │       │   │   │   │   │   │           └── <suma> [R9]
+│                       │       │   │       │       │   │   │   │   │   │               ├── <termino> [R13]
+│                       │       │   │       │       │   │   │   │   │   │               │   ├── <factor> [E22]
+│                       │       │   │       │       │   │   │   │   │   │               │   │   └── ID 'a'
+│                       │       │   │       │       │   │   │   │   │   │               │   └── <termino_prima> [R16]
+│                       │       │   │       │       │   │   │   │   │   │               │       └── ε
+│                       │       │   │       │       │   │   │   │   │   │               └── <suma_prima> [R12]
+│                       │       │   │       │       │   │   │   │   │   │                   └── ε
+│                       │       │   │       │       │   │   │   │   │   └── <conjuncion_prima> [R8]
+│                       │       │   │       │       │   │   │   │   │       └── ε
+│                       │       │   │       │       │   │   │   │   └── <expresion_prima> [R4]
+│                       │       │   │       │       │   │   │   │       ├── O 'o'
+│                       │       │   │       │       │   │   │   │       ├── <conjuncion> [R6]
+│                       │       │   │       │       │   │   │   │       │   ├── <negacion> [E6]
+│                       │       │   │       │       │   │   │   │       │   │   └── <comparacion> [F1]
+│                       │       │   │       │       │   │   │   │       │   │       ├── <suma> [R9]
+│                       │       │   │       │       │   │   │   │       │   │       │   ├── <termino> [R13]
+│                       │       │   │       │       │   │   │   │       │   │       │   │   ├── <factor> [E22]
+│                       │       │   │       │       │   │   │   │       │   │       │   │   │   └── ID 'a'
+│                       │       │   │       │       │   │   │   │       │   │       │   │   └── <termino_prima> [R16]
+│                       │       │   │       │       │   │   │   │       │   │       │   │       └── ε
+│                       │       │   │       │       │   │   │   │       │   │       │   └── <suma_prima> [R12]
+│                       │       │   │       │       │   │   │   │       │   │       │       └── ε
+│                       │       │   │       │       │   │   │   │       │   │       └── <comparacion_prima> [F2]
+│                       │       │   │       │       │   │   │   │       │   │           ├── <op_rel> [E13]
+│                       │       │   │       │       │   │   │   │       │   │           │   └── IGUAL '=='
+│                       │       │   │       │       │   │   │   │       │   │           └── <suma> [R9]
+│                       │       │   │       │       │   │   │   │       │   │               ├── <termino> [R13]
+│                       │       │   │       │       │   │   │   │       │   │               │   ├── <factor> [E22]
+│                       │       │   │       │       │   │   │   │       │   │               │   │   └── ID 'c'
+│                       │       │   │       │       │   │   │   │       │   │               │   └── <termino_prima> [R16]
+│                       │       │   │       │       │   │   │   │       │   │               │       └── ε
+│                       │       │   │       │       │   │   │   │       │   │               └── <suma_prima> [R12]
+│                       │       │   │       │       │   │   │   │       │   │                   └── ε
+│                       │       │   │       │       │   │   │   │       │   └── <conjuncion_prima> [R8]
+│                       │       │   │       │       │   │   │   │       │       └── ε
+│                       │       │   │       │       │   │   │   │       └── <expresion_prima> [R5]
+│                       │       │   │       │       │   │   │   │           └── ε
+│                       │       │   │       │       │   │   │   └── PAR_CIERRA ')'
+│                       │       │   │       │       │   │   └── <termino_prima> [R16]
+│                       │       │   │       │       │   │       └── ε
+│                       │       │   │       │       │   └── <suma_prima> [R12]
+│                       │       │   │       │       │       └── ε
+│                       │       │   │       │       └── <comparacion_prima> [F3]
+│                       │       │   │       │           └── ε
+│                       │       │   │       └── <conjuncion_prima> [R8]
+│                       │       │   │           └── ε
+│                       │       │   └── <expresion_prima> [R5]
+│                       │       │       └── ε
+│                       │       └── PUNTO_COMA ';'
+│                       └── <sentencias> [R1]
+│                           ├── <sentencia> [P6]
+│                           │   └── <salida> [M1]
+│                           │       ├── MOSTRAR 'mostrar'
+│                           │       ├── PAR_ABRE '('
+│                           │       ├── <argumento> [M2]
+│                           │       │   └── <expresion> [R3]
+│                           │       │       ├── <conjuncion> [R6]
+│                           │       │       │   ├── <negacion> [E6]
+│                           │       │       │   │   └── <comparacion> [F1]
+│                           │       │       │   │       ├── <suma> [R9]
+│                           │       │       │   │       │   ├── <termino> [R13]
+│                           │       │       │   │       │   │   ├── <factor> [E22]
+│                           │       │       │   │       │   │   │   └── ID 'listo'
+│                           │       │       │   │       │   │   └── <termino_prima> [R16]
+│                           │       │       │   │       │   │       └── ε
+│                           │       │       │   │       │   └── <suma_prima> [R12]
+│                           │       │       │   │       │       └── ε
+│                           │       │       │   │       └── <comparacion_prima> [F3]
+│                           │       │       │   │           └── ε
+│                           │       │       │   └── <conjuncion_prima> [R8]
+│                           │       │       │       └── ε
+│                           │       │       └── <expresion_prima> [R5]
+│                           │       │           └── ε
+│                           │       ├── PAR_CIERRA ')'
+│                           │       └── PUNTO_COMA ';'
+│                           └── <sentencias> [R1]
+│                               ├── <sentencia> [P6]
+│                               │   └── <salida> [M1]
+│                               │       ├── MOSTRAR 'mostrar'
+│                               │       ├── PAR_ABRE '('
+│                               │       ├── <argumento> [M2]
+│                               │       │   └── <expresion> [R3]
+│                               │       │       ├── <conjuncion> [R6]
+│                               │       │       │   ├── <negacion> [E6]
+│                               │       │       │   │   └── <comparacion> [F1]
+│                               │       │       │   │       ├── <suma> [R9]
+│                               │       │       │   │       │   ├── <termino> [R13]
+│                               │       │       │   │       │   │   ├── <factor> [E22]
+│                               │       │       │   │       │   │   │   └── ID 'doble'
+│                               │       │       │   │       │   │   └── <termino_prima> [R16]
+│                               │       │       │   │       │   │       └── ε
+│                               │       │       │   │       │   └── <suma_prima> [R12]
+│                               │       │       │   │       │       └── ε
+│                               │       │       │   │       └── <comparacion_prima> [F3]
+│                               │       │       │   │           └── ε
+│                               │       │       │   └── <conjuncion_prima> [R8]
+│                               │       │       │       └── ε
+│                               │       │       └── <expresion_prima> [R5]
+│                               │       │           └── ε
+│                               │       ├── PAR_CIERRA ')'
+│                               │       └── PUNTO_COMA ';'
+│                               └── <sentencias> [R1]
+│                                   ├── <sentencia> [P6]
+│                                   │   └── <salida> [M1]
+│                                   │       ├── MOSTRAR 'mostrar'
+│                                   │       ├── PAR_ABRE '('
+│                                   │       ├── <argumento> [M2]
+│                                   │       │   └── <expresion> [R3]
+│                                   │       │       ├── <conjuncion> [R6]
+│                                   │       │       │   ├── <negacion> [E6]
+│                                   │       │       │   │   └── <comparacion> [F1]
+│                                   │       │       │   │       ├── <suma> [R9]
+│                                   │       │       │   │       │   ├── <termino> [R13]
+│                                   │       │       │   │       │   │   ├── <factor> [E22]
+│                                   │       │       │   │       │   │   │   └── ID 'mixto'
+│                                   │       │       │   │       │   │   └── <termino_prima> [R16]
+│                                   │       │       │   │       │   │       └── ε
+│                                   │       │       │   │       │   └── <suma_prima> [R12]
+│                                   │       │       │   │       │       └── ε
+│                                   │       │       │   │       └── <comparacion_prima> [F3]
+│                                   │       │       │   │           └── ε
+│                                   │       │       │   └── <conjuncion_prima> [R8]
+│                                   │       │       │       └── ε
+│                                   │       │       └── <expresion_prima> [R5]
+│                                   │       │           └── ε
+│                                   │       ├── PAR_CIERRA ')'
+│                                   │       └── PUNTO_COMA ';'
+│                                   └── <sentencias> [R2]
+│                                       └── ε
+└── FIN 'fin'

@@ -1,0 +1,18 @@
+# secado del grano en marquesina dia por dia
+inicio
+    dato dia = 0;
+    dato humedad = 52;
+    dato lluvia = 0;
+    mientras (humedad > 12) hacer
+        dia = dia + 1;
+        si (lluvia == 1 o dia > 10) entonces
+            humedad = humedad - 2;
+        sino
+            humedad = humedad - 5;
+        fin
+        si (no (humedad > 20)) entonces
+            mostrar("grano casi seco");
+        fin
+    fin
+    mostrar(dia);
+fin

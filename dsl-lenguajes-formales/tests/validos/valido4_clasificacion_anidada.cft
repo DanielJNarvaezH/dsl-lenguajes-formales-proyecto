@@ -1,0 +1,22 @@
+# clasificacion del grano con condicionales anidados
+inicio
+    dato defectos = 3;
+    dato broca = 1.5;
+    dato pasilla = 0;
+    si (defectos < 5) entonces
+        si (broca < 2) entonces
+            mostrar("excelso");
+        sino
+            mostrar("tipo exportacion");
+        fin
+    sino
+        mostrar("consumo interno");
+    fin
+    si (pasilla > 0) entonces
+        si (pasilla > 10) entonces
+            mostrar("separar pasilla");
+        fin
+    sino
+        mostrar("sin pasilla");
+    fin
+fin
