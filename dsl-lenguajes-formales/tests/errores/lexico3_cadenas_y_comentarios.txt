@@ -1,0 +1,15 @@
+6 errores léxicos:
+  Error léxico en la línea 4, columna 13, símbolo '"': '"secar de nuevo' no forma ningún token.
+  Error léxico en la línea 5, columna 7, símbolo 'R': no pertenece al alfabeto Σ.
+  Error léxico en la línea 6, columna 13, símbolo '"': '"lote' no forma ningún token.
+  Error léxico en la línea 6, columna 18, símbolo ':': no pertenece al alfabeto Σ.
+  Error léxico en la línea 6, columna 25, símbolo '"': no forma ningún token.
+  Error léxico en la línea 7, columna 21, símbolo '@': no pertenece al alfabeto Σ.
+5 errores sintácticos:
+  Error sintáctico en la línea 4, columna 20: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'de' (ID).
+  Error sintáctico en la línea 5, columna 15: se esperaba ASIGNACION y se encontró 'el' (ID).
+  Error sintáctico en la línea 5, columna 18: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'secador' (ID).
+  Error sintáctico en la línea 6, columna 20: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'norte' (ID).
+  Error sintáctico en la línea 8, columna 1: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'fin' (FIN).
+
+11 errores en total; no se muestra el árbol de derivación.

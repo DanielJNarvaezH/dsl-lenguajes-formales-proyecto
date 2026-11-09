@@ -1,0 +1,10 @@
+5 errores léxicos:
+  Error léxico en la línea 3, columna 10, símbolo '_': no forma ningún token.
+  Error léxico en la línea 4, columna 19, símbolo '.': no forma ningún token.
+  Error léxico en la línea 5, columna 20, símbolo '.': no forma ningún token.
+  Error léxico en la línea 6, columna 9, símbolo '!': no forma ningún token.
+  Error léxico en la línea 9, columna 15, símbolo '.': no forma ningún token.
+1 error sintáctico:
+  Error sintáctico en la línea 9, columna 16: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'x' (ID).
+
+6 errores en total; no se muestra el árbol de derivación.
