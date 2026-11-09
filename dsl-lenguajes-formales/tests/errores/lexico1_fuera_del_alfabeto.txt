@@ -1,0 +1,11 @@
+5 errores léxicos:
+  Error léxico en la línea 3, columna 10, símbolo 'K': no pertenece al alfabeto Σ.
+  Error léxico en la línea 4, columna 11, símbolo 'ñ': no pertenece al alfabeto Σ.
+  Error léxico en la línea 5, columna 22, símbolo ',': no pertenece al alfabeto Σ.
+  Error léxico en la línea 6, columna 32, símbolo '{': no pertenece al alfabeto Σ.
+  Error léxico en la línea 8, columna 5, símbolo '}': no pertenece al alfabeto Σ.
+2 errores sintácticos:
+  Error sintáctico en la línea 4, columna 12: se esperaba ASIGNACION y se encontró 'o' (O).
+  Error sintáctico en la línea 5, columna 23: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró '5' (ENTERO).
+
+7 errores en total; no se muestra el árbol de derivación.

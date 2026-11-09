@@ -1,0 +1,7 @@
+4 errores sintácticos:
+  Error sintáctico en la línea 4, columna 28: se esperaba ID, ENTERO, DECIMAL o PAR_ABRE y se encontró ';' (PUNTO_COMA).
+  Error sintáctico en la línea 5, columna 26: se esperaba ID, ENTERO, DECIMAL o PAR_ABRE y se encontró '*' (MULT).
+  Error sintáctico en la línea 6, columna 20: se esperaba Y, O, PAR_CIERRA o PUNTO_COMA y se encontró '<' (MENOR).
+  Error sintáctico en la línea 10, columna 5: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'mostrar' (MOSTRAR).
+
+4 errores en total; no se muestra el árbol de derivación.

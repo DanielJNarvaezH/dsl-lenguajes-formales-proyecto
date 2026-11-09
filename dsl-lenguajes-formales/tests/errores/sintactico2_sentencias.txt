@@ -1,0 +1,8 @@
+5 errores sintácticos:
+  Error sintáctico en la línea 3, columna 10: se esperaba ID y se encontró 'si' (SI).
+  Error sintáctico en la línea 4, columna 13: se esperaba ASIGNACION y se encontró '12' (ENTERO).
+  Error sintáctico en la línea 5, columna 29: se esperaba HACER y se encontró 'entonces' (ENTONCES).
+  Error sintáctico en la línea 8, columna 13: se esperaba NO, ID, ENTERO, DECIMAL, CADENA o PAR_ABRE y se encontró ')' (PAR_CIERRA).
+  Error sintáctico en la línea 9, columna 5: se esperaba FIN y se encontró 'sino' (SINO).
+
+5 errores en total; no se muestra el árbol de derivación.

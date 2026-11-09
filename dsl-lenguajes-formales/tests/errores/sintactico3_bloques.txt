@@ -1,0 +1,6 @@
+3 errores sintácticos:
+  Error sintáctico en la línea 4, columna 8: se esperaba PAR_ABRE y se encontró 'dia' (ID).
+  Error sintáctico en la línea 4, columna 17: se esperaba Y, O, SUMA, RESTA, MULT, DIV, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL, IGUAL, DIFERENTE, PAR_CIERRA o PUNTO_COMA y se encontró 'entonces' (ENTONCES).
+  Error sintáctico en la línea 15, columna 1: se esperaba FIN, DATO, SI, SINO, MIENTRAS, MOSTRAR o ID y se encontró el fin del archivo.
+
+3 errores en total; no se muestra el árbol de derivación.
