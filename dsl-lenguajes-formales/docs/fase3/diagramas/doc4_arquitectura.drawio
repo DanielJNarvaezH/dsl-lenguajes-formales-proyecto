@@ -1,0 +1,37 @@
+<mxfile host="Electron" version="29.6.1" pages="1">
+  <diagram id="arq" name="Arquitectura">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="680" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" parent="1" style="text;html=0;fontSize=16;fontStyle=1;align=left;" value="DOC-4 — Arquitectura del analizador de Cafetal" vertex="1"><mxGeometry x="20" y="-30" width="700" height="30" as="geometry"/></mxCell>
+        <mxCell id="cft" parent="1" style="shape=note;whiteSpace=wrap;html=0;fontSize=11;size=12;" value="Programa fuente&#xa;.cft" vertex="1"><mxGeometry x="20" y="150" width="120" height="60" as="geometry"/></mxCell>
+        <mxCell id="lex" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;fontStyle=1;" value="Analizador léxico&#xa;src/lexer/lexer.py&#xa;(LXR-1, LXR-2)" vertex="1"><mxGeometry x="200" y="140" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="afd" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=0;fontSize=11;boundedLbl=1;size=8;" value="tabla_afd.csv&#xa;AFD de la Fase 1&#xa;(72 estados × 55 símbolos)" vertex="1"><mxGeometry x="200" y="20" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="tok" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Lista de tokens&#xa;Token(tipo, lexema,&#xa;línea, columna) + EOF" vertex="1"><mxGeometry x="430" y="140" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="par" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;fontStyle=1;" value="Analizador sintáctico&#xa;src/parser/parser.py&#xa;(PAR-2 a PAR-4)" vertex="1"><mxGeometry x="660" y="140" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="ll1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=0;fontSize=11;boundedLbl=1;size=8;" value="tabla_ll1.csv y siguiente.csv&#xa;Tabla LL(1) y SIGUIENTE&#xa;(GIC-6)" vertex="1"><mxGeometry x="640" y="20" width="210" height="80" as="geometry"/></mxCell>
+        <mxCell id="arb" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Árbol de derivación&#xa;Nodo (src/parser/arbol.py,&#xa;PAR-1)" vertex="1"><mxGeometry x="890" y="140" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="dec" parent="1" style="rhombus;whiteSpace=wrap;html=0;fontSize=12;" value="¿Errores léxicos&#xa;o sintácticos?" vertex="1"><mxGeometry x="660" y="280" width="170" height="100" as="geometry"/></mxCell>
+        <mxCell id="err" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Listado de errores&#xa;(stderr, código 1)" vertex="1"><mxGeometry x="420" y="300" width="170" height="60" as="geometry"/></mxCell>
+        <mxCell id="vis" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;fontStyle=1;" value="Visualización&#xa;src/parser/visualizacion.py&#xa;(ARB-1)" vertex="1"><mxGeometry x="890" y="295" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="sal" parent="1" style="shape=note;whiteSpace=wrap;html=0;fontSize=11;size=12;" value="Árbol en consola, .txt,&#xa;derivación, .dot y .png" vertex="1"><mxGeometry x="890" y="420" width="170" height="60" as="geometry"/></mxCell>
+        <mxCell id="elex" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="Errores léxicos&#xa;lexer.errores" vertex="1"><mxGeometry x="200" y="280" width="170" height="50" as="geometry"/></mxCell>
+        <mxCell id="main" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=12;" value="main.py (PAR-5): recibe la ruta del .cft por argumento, ejecuta las etapas y decide qué mostrar" vertex="1"><mxGeometry x="200" y="520" width="860" height="40" as="geometry"/></mxCell>
+        <mxCell id="a0" edge="1" parent="1" source="cft" target="lex" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="afd" target="lex" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;dashed=1;" value="decide cada token"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="lex" target="tok" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="tok" target="par" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a4" edge="1" parent="1" source="ll1" target="par" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;dashed=1;" value="decide cada regla"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a5" edge="1" parent="1" source="par" target="arb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a6" edge="1" parent="1" source="lex" target="elex" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a7" edge="1" parent="1" source="arb" target="dec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="975" y="250"/><mxPoint x="745" y="250"/></Array></mxGeometry></mxCell>
+        <mxCell id="a8" edge="1" parent="1" source="dec" target="vis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="no"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a9" edge="1" parent="1" source="dec" target="err" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value="sí"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a10" edge="1" parent="1" source="elex" target="err" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="a11" edge="1" parent="1" source="vis" target="sal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;fontSize=11;endArrow=classic;" value=""><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="nota" parent="1" style="text;html=0;fontSize=11;align=left;verticalAlign=top;whiteSpace=wrap;strokeColor=default;spacing=6;" value="Línea continua: flujo de datos. Línea punteada: tabla de datos que toma las decisiones (el código no tiene reglas propias: no usa re ni compara lexemas). El parser analiza aunque haya errores léxicos y siempre devuelve un árbol; si hubo errores, main.py muestra solo el listado (el árbol está incompleto)." vertex="1"><mxGeometry x="20" y="580" width="1040" height="50" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
